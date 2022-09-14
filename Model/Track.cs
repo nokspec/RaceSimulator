@@ -11,6 +11,9 @@ namespace Model
         string Name { get; set; }
         LinkedList<Section> Sections { get; set; }
 
-        public Track(string name, )
+        public Track(string name, SectionTypes[])
+        {
+
+        }
     }
 }

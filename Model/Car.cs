@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    internal class Car
-    {
-    }
+	public class Car : IEquipment
+	{
+	
+	}
+	
 }

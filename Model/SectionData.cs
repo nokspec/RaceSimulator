@@ -13,6 +13,5 @@ namespace Model
 
         IParticipant Right { get; set; }
         int DistanceRight { get; set; }
-
     }
 }
