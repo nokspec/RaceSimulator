@@ -8,8 +8,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{659FBD0A-1C84-42DD-94B9-4499409BA8F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Controller\Controller.csproj", "{E12871AA-A577-460F-BC76-C4CC2FA0F1F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{659FBD0A-1C84-42DD-94B9-4499409BA8F3} = {659FBD0A-1C84-42DD-94B9-4499409BA8F3}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{4373F67B-026F-4F82-A71A-A37F889A3F4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "ControllerTest\ControllerTest.csproj", "{4373F67B-026F-4F82-A71A-A37F889A3F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
