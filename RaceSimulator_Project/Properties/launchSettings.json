@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RaceSimulator_Project": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

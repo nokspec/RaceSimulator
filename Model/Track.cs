@@ -8,7 +8,7 @@ namespace Model
 {
 	public class Track
 	{
-		string Name { get; set; }
+		public string Name { get; set; }
 		LinkedList<Section> Sections { get; set; }
 
 		public Track(string name, LinkedList<Section> sectionTypes)

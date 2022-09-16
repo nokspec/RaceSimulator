@@ -2,9 +2,12 @@
 using Model;
 
 Data.Initialize();
-
 Data.NextRace();
+Console.WriteLine($"Naam track: {Data.CurrentRace.Track.Name}");
 
-Console.WriteLine($"Naam track: {Data.CurrentRace}");
+for (; ; )
+{
+	Thread.Sleep(100);
+}
 
 
