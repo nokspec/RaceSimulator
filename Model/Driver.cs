@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Model.IParticipant;
 
 namespace Model
 {
     public class Driver : IParticipant
     {
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Points { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IEquipment Equipment { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IParticipant.TeamColors TeamColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Name { get; set; }
+        public int Points { get; set; }
+        public IEquipment Equipment { get; set; }
+        public TeamColors TeamColors { get; set; }
+
+        public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
+        {
+
+            Name = name;
+            Points = points;
+            Equipment = equipment;
+            TeamColors = teamColors;
+
+        }
     }
 }

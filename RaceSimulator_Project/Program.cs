@@ -1,3 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Controller;
+using Model;
+
+Data.Initialize();
+
+Data.NextRace();
+
+Console.WriteLine($"Naam track: {Data.CurrentRace}");
+
 

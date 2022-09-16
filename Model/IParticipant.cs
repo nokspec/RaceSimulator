@@ -10,16 +10,17 @@ namespace Model
     {
         string Name { get; set; }
         int Points { get; set; }
-        IEquipment Equipment { get; set;  }
-        TeamColors TeamColor { get; set;  }
-        enum TeamColors
+        IEquipment Equipment { get; set; }
+        TeamColors TeamColors { get; set; }
 
-        {
-            Red,
-            Green,
-            Yellow,
-            Grey,
-            Blue
-        }
+    }
+    public enum TeamColors
+
+    {
+        Red,
+        Green,
+        Yellow,
+        Grey,
+        Blue
     }
 }
