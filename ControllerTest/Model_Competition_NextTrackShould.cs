@@ -23,7 +23,7 @@ namespace ControllerTest
 		public void NextTrack_EmptyQueue_ReturnNull()
 		{
 			Track result = _competition.NextTrack();
-			Assert.Null(result);
+			Assert.IsNull(result);
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace ControllerTest
 			_competition.Tracks.Enqueue(new Track("Japan", new LinkedList<Section>()));
 			Track result = _competition.NextTrack();
 			result = _competition.NextTrack(); //niet nog een keer Track ervoor omdat result hierboven al defined is.
-			Assert.Null(result);
+			Assert.IsNull(result);
 		}
 
 		[Test]

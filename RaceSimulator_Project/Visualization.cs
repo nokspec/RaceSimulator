@@ -12,7 +12,6 @@ namespace RaceSimulator_Project
 		public static void Initialize()
 		{
 
-
 		}
 
 		#region graphics
@@ -29,11 +28,20 @@ namespace RaceSimulator_Project
 
 		#endregion
 
+		public static void startHorizontal()
+		{
+			for (int i = 0; i < _startHorizontal.Length; i++)
+			{
+				Console.WriteLine(_startHorizontal[i]);
+			}
+		}
+
 		public static void DrawTrack(Track track)
 		{
+			startHorizontal();
 			
 		}
-			
+
 	}
 }
 
