@@ -16,7 +16,10 @@ namespace RaceSimulator_Project
 
 		#region graphics
 
-		private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
+		private static string[] _finishHorizontal = 
+			{ "----", 
+				"  # ", 
+				"  # ", "----" };
 		private static string[] _finishVertical = { "|  |", "|  |", "|  |", "|  |" };
 		private static string[] _startHorizontal = { "----", "  # ", "  # ", "----" };
 		private static string[] _startVertical = { "|  |", "|  |", "|  |", "|  |" };
@@ -26,19 +29,12 @@ namespace RaceSimulator_Project
 		private static string[] _leftCornerVertical = { "|  |", "|  |", "|  |", "|  |" };
 
 
+
 		#endregion
 
-		public static void startHorizontal()
-		{
-			for (int i = 0; i < _startHorizontal.Length; i++)
-			{
-				Console.WriteLine(_startHorizontal[i]);
-			}
-		}
 
 		public static void DrawTrack(Track track)
 		{
-			startHorizontal();
 			
 		}
 

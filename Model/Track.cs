@@ -18,7 +18,7 @@ namespace Model
 			Sections = SectionTypeToLinkedList(sectionTypes);
 		}
 
-		public LinkedList<Section> SectionTypeToLinkedList(LinkedList<Section> sectionTypes)
+		private LinkedList<Section> SectionTypeToLinkedList(LinkedList<Section> sectionTypes)
 		{
 			LinkedList<Section> sectionList = new LinkedList<Section>();
 

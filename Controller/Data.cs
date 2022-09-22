@@ -34,7 +34,7 @@ namespace Controller
 		public static void AddTracks()
 		{
 			competition.Tracks.Enqueue(new Track("Monza", new LinkedList<Section>()));
-			competition.Tracks.Enqueue(new Track("Spain", new LinkedList<Section>()));
+			competition.Tracks.Enqueue(new Track("Zandvoort", new LinkedList<Section>()));
 		}
 
 		public static void NextRace()
