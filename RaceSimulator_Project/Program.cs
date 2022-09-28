@@ -9,14 +9,15 @@ using RaceSimulator_Project;
 Data.Initialize();
 Data.NextRace();
 
+Visualization.Initialize();
 
-Console.WriteLine($"Naam track: {Data.CurrentRace.Track.Name}");
+//Console.WriteLine($"Naam track: {Data.CurrentRace.Track.Name}");
+Visualization.DrawTrack(Data.CurrentRace.Track);
 
 
 
-for (; ; )
+for (; ; ) //to keep the window opened
 {
 	Thread.Sleep(100);
 }
 
-//Visualization.DrawTrack(Data.CurrentRace.Track);

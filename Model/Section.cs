@@ -8,14 +8,21 @@ namespace Model
 {
     public class Section
     {
-        SectionTypes SectionType { get; set; }
-        enum SectionTypes
+        public SectionType SectionTypes { get; set; }
+
+        public Section(SectionType sectionTypes)
         {
-            Straight,
-            LeftCorner,
-            RightCorner,
-            StartGrid,
-            Finish
+	        SectionTypes = sectionTypes;
         }
+
+    }
+
+    public enum SectionType
+    {
+	    Straight,
+	    LeftCorner,
+	    RightCorner,
+	    StartGrid,
+	    Finish
     }
 }

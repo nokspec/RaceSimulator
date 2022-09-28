@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,39 +11,91 @@ namespace Controller
 {
 	public static class Data
 	{
-		public static Competition competition;
-		public static Race? CurrentRace { get; set; }
+		public static Competition Competition;
+		public static Race CurrentRace { get; set; }
 
 
 		public static void Initialize()
 		{
-			competition = new Competition(); //initialize competition
+			Competition = new Competition(); //initialize competition
 			AddParticipants();
 			AddTracks();
 		}
 
 		public static void AddParticipants()
 		{
-			competition.Participants.Add(new Driver("Mike", 0, new Car(10, 10, 10, false), TeamColors.Red));
-			competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
-			competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
-			competition.Participants.Add(new Driver("Thomas", 0, new Car(10, 10, 10, false), TeamColors.Grey));
-			competition.Participants.Add(new Driver("Yasmine", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Mike", 0, new Car(10, 10, 10, false), TeamColors.Red));
+			Competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
 		}
 
 
 		public static void AddTracks()
 		{
-			competition.Tracks.Enqueue(new Track("Monza", new LinkedList<Section>()));
-			competition.Tracks.Enqueue(new Track("Zandvoort", new LinkedList<Section>()));
+			//Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
+			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
+			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles")));
+
+
 		}
 
 		public static void NextRace()
 		{
-			if (competition.NextTrack() != null)
+			Track currentTrack = Competition.NextTrack();
+			if (currentTrack != null)
 			{
-				CurrentRace = new Race(competition.NextTrack(), competition.Participants);
+				CurrentRace = new Race(currentTrack, Competition.Participants);
 			}
+		}
+
+		public static SectionType[] MakeRace(string naam)
+		{
+			if (naam.Equals("Rechtsom"))
+			{
+				SectionType[] trackBuilder = new SectionType[]
+				{
+					SectionType.StartGrid,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Finish,
+					SectionType.RightCorner
+				};
+				return trackBuilder;
+			}
+			else if (naam.Equals("Linksom"))
+			{
+				SectionType[] trackBuilder = new SectionType[]
+				{
+
+					SectionType.LeftCorner,
+					SectionType.LeftCorner,
+					SectionType.LeftCorner,
+					SectionType.LeftCorner
+				};
+				return trackBuilder;
+			}
+			else if (naam.Equals("TestAlles"))
+			{
+				SectionType[] trackBuilder = new SectionType[]
+				{
+					SectionType.StartGrid,
+					SectionType.Finish,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.LeftCorner,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight
+				};
+				return trackBuilder;
+			}
+
+			return null;
 		}
 	}
 }
