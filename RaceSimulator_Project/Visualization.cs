@@ -17,12 +17,12 @@ namespace RaceSimulator_Project
 		public static int PositieAuto;
 
 		public static void Initialize()
-		{ 
+		{
 			X = 0;
 			Y = 0;
 			PositieAuto = 1;
 
-			SetPositie(35, 10);
+			SetPositie(35, 30);
 		}
 
 		#region graphics
@@ -46,7 +46,7 @@ namespace RaceSimulator_Project
 		private static string[] _straightStartHorizontal =
 		{
 			"----",
-			" s  ",
+			"  s ",
 			"    ",
 			"----"
 		};
@@ -110,7 +110,7 @@ namespace RaceSimulator_Project
 
 		#endregion //Sections string[]
 
-		public static void PrintToConsole(string[] array) //Prints string[]
+		public static void PrintToConsole(string[] array)
 		{
 			foreach (string s in array)
 			{
@@ -129,7 +129,7 @@ namespace RaceSimulator_Project
 		public static void DrawTrack(Track track)
 		{
 
-			foreach (Model.Section section in track.Sections) //Model. ???
+			foreach (Section section in track.Sections)
 			{
 				switch (section.SectionTypes)
 				{
@@ -154,144 +154,146 @@ namespace RaceSimulator_Project
 
 		public static void DetermineDirection(SectionType sectionType, Track track)
 		{
-	
-				switch (sectionType)
-				{
-					case SectionType.Finish:
 
-						if (PositieAuto == 1)
-						{
-							SetPositie(4, -4);
-							PrintToConsole(_finishHorizontal);
-						}
-						else if (PositieAuto == 3)
-						{
-							SetPositie(0, -8);
-							PrintToConsole(_finishHorizontal);
-						}
+			switch (sectionType)
+			{
+				case SectionType.Finish:
 
-						else if (PositieAuto == 2)
-						{
-							SetPositie(0, 4);
-							PrintToConsole(_finishVertical);
-						}
+					if (PositieAuto == 1)
+					{
+						SetPositie(4, -4);
+						PrintToConsole(_finishHorizontal);
+					}
+					else if (PositieAuto == 3)
+					{
+						SetPositie(0, -8);
+						PrintToConsole(_finishHorizontal);
+					}
 
-						else if (PositieAuto == 4)
-						{
-							SetPositie(0, -8);
-							PrintToConsole(_finishVertical);
-						}
+					else if (PositieAuto == 2)
+					{
+						SetPositie(0, 0);
+						PrintToConsole(_finishVertical);
+					}
 
-						break;
+					else if (PositieAuto == 4)
+					{
+						SetPositie(0, -8);
+						PrintToConsole(_finishVertical);
+					}
 
-					case SectionType.StartGrid:
+					break;
+
+				case SectionType.StartGrid:
 
 
-						if (PositieAuto == 1)
-						{
-							SetPositie(4, 1);
-							PrintToConsole(_straightStartHorizontal);
-						}
-						else if (PositieAuto == 3)
-						{
-							SetPositie(0, -8);
-							PrintToConsole(_straightStartHorizontal);
-						}
-						else if (PositieAuto == 2)
-						{
-							SetPositie(0, 4);
-							PrintToConsole(_straightStartVertical);
-						}
-						else if (PositieAuto == 4)
-						{
-							SetPositie(0, -8);
-							PrintToConsole(_straightStartVertical);
-						}
+					if (PositieAuto == 1)
+					{
+						SetPositie(4, 1);
+						PrintToConsole(_straightStartHorizontal);
+					}
+					else if (PositieAuto == 3)
+					{
+						SetPositie(0, -8);
+						PrintToConsole(_straightStartHorizontal);
+					}
+					else if (PositieAuto == 2)
+					{
+						SetPositie(0, 4);
+						PrintToConsole(_straightStartVertical);
+					}
+					else if (PositieAuto == 4)
+					{
+						SetPositie(0, -8);
+						PrintToConsole(_straightStartVertical);
+					}
 
-						break;
+					break;
 
-					case SectionType.Straight:
+				case SectionType.Straight:
 
-						if (PositieAuto == 1)
-						{
-							SetPositie(4, -4);
-							PrintToConsole(_straightHorizontal);
-						}
-						else if (PositieAuto == 3)
-						{
-							SetPositie(-4, -4);
-							PrintToConsole(_straightHorizontal);
-						}
-						else if (PositieAuto == 2)
-						{
-							SetPositie(0, 0);
-							PrintToConsole(_straightVertical);
-						}
-						else if (PositieAuto == 4)
-						{
-							SetPositie(0, -8);
-							PrintToConsole(_straightVertical);
-						}
+					if (PositieAuto == 1)
+					{
+						SetPositie(4, -4);
+						PrintToConsole(_straightHorizontal);
+					}
+					else if (PositieAuto == 3)
+					{
+						SetPositie(-4, -4);
+						PrintToConsole(_straightHorizontal);
+					}
+					else if (PositieAuto == 2)
+					{
+						SetPositie(0, 0);
+						PrintToConsole(_straightVertical);
+					}
+					else if (PositieAuto == 4)
+					{
+						SetPositie(0, -8);
+						PrintToConsole(_straightVertical);
 
-						break;
+					}
 
-					case SectionType.RightCorner:
-						if (PositieAuto == 1)
-						{
-							SetPositie(4, -4);
-							PositieAuto = 2;
-							PrintToConsole(_cornerNE);
-						}
-						else if (PositieAuto == 2)
-						{
-							SetPositie(0, 0);
-							PositieAuto = 3;
-							PrintToConsole(_cornerSE);
-						}
-						else if (PositieAuto == 3)
-						{
-							SetPositie(-4, -4); //-4?
-							PositieAuto = 4;
-							PrintToConsole(_cornerSW);
-						}
-						else if (PositieAuto == 4)
-						{
-							SetPositie(0, -8);
-							PositieAuto = 1;
-							PrintToConsole(_cornerNW);
-						}
 
-						break;
+					break;
 
-					case SectionType.LeftCorner:
+				case SectionType.RightCorner:
+					if (PositieAuto == 1)
+					{
+						SetPositie(4, -4);
+						PositieAuto = 2;
+						PrintToConsole(_cornerNE);
+					}
+					else if (PositieAuto == 2)
+					{
+						SetPositie(0, 0);
+						PositieAuto = 3;
+						PrintToConsole(_cornerSE);
+					}
+					else if (PositieAuto == 3)
+					{
+						SetPositie(-4, -4);
+						PositieAuto = 4;
+						PrintToConsole(_cornerSW);
+					}
+					else if (PositieAuto == 4)
+					{
+						SetPositie(0, -8);
+						PositieAuto = 1;
+						PrintToConsole(_cornerNW);
+					}
 
-						if (PositieAuto == 3)
-						{
-							SetPositie(4, -4);
-							PositieAuto = 2;
-							PrintToConsole(_cornerSE);
-						}
-						else if (PositieAuto == 4)
-						{
-							SetPositie(0, 0);
-							PositieAuto = 3;
-							PrintToConsole(_cornerSW);
-						}
-						else if (PositieAuto == 2)
-						{
-							SetPositie(0, -8);
-							PositieAuto = 1;
-							PrintToConsole(_cornerNE);
-						}
-						else if (PositieAuto == 1)
-						{
-							SetPositie(4, -4); //4?
-							PositieAuto = 4;
-							PrintToConsole(_cornerNW);
-						}
+					break;
 
-						break;
-				}
+				case SectionType.LeftCorner:
+
+					if (PositieAuto == 3)
+					{
+						SetPositie(-4, -4);
+						PositieAuto = 2;
+						PrintToConsole(_cornerNW);
+					}
+					else if (PositieAuto == 4)
+					{
+						SetPositie(0, -8);
+						PositieAuto = 3;
+						PrintToConsole(_cornerNE);
+					}
+					else if (PositieAuto == 1)
+					{
+						SetPositie(4, -4);
+						PositieAuto = 4;
+						PrintToConsole(_cornerSE); //nw
+					}
+					else if (PositieAuto == 2)
+					{
+						SetPositie(0, 0);
+						PositieAuto = 1;
+						PrintToConsole(_cornerSW);
+					}
+
+					break;
+			}
 		}
 	}
 }

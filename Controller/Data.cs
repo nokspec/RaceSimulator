@@ -24,8 +24,13 @@ namespace Controller
 
 		public static void AddParticipants()
 		{
-			Competition.Participants.Add(new Driver("Mike", 0, new Car(10, 10, 10, false), TeamColors.Red));
+			Competition.Participants.Add(new Driver("Kees", 0, new Car(10, 10, 10, false), TeamColors.Red));
 			Competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
+			Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
+			Competition.Participants.Add(new Driver("Klaas", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			//Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 		}
 
 
@@ -54,12 +59,20 @@ namespace Controller
 				SectionType[] trackBuilder = new SectionType[]
 				{
 					SectionType.StartGrid,
-					SectionType.RightCorner,
-					SectionType.Straight,
-					SectionType.RightCorner,
-					SectionType.Straight,
-					SectionType.RightCorner,
 					SectionType.Finish,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.Straight,
 					SectionType.RightCorner
 				};
 				return trackBuilder;
@@ -69,9 +82,13 @@ namespace Controller
 				SectionType[] trackBuilder = new SectionType[]
 				{
 
+					SectionType.StartGrid,
 					SectionType.LeftCorner,
+					SectionType.Straight,
 					SectionType.LeftCorner,
+					SectionType.Straight,
 					SectionType.LeftCorner,
+					SectionType.Finish,
 					SectionType.LeftCorner
 				};
 				return trackBuilder;
@@ -81,16 +98,22 @@ namespace Controller
 				SectionType[] trackBuilder = new SectionType[]
 				{
 					SectionType.StartGrid,
-					SectionType.Finish,
-					SectionType.Straight,
 					SectionType.RightCorner,
-					SectionType.Straight,
 					SectionType.LeftCorner,
 					SectionType.Straight,
 					SectionType.RightCorner,
 					SectionType.Straight,
 					SectionType.RightCorner,
-					SectionType.Straight
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.LeftCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Finish
+
 				};
 				return trackBuilder;
 			}
