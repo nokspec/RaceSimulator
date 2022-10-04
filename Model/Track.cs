@@ -11,15 +11,12 @@ namespace Model
 	{
 		public string Name { get; set; }
 		public LinkedList<Section> Sections { get; set; }
-		
-		
+
 		public Track(string name, SectionType[] sections)
 		{
 			Name = name;
 			Sections = SectionTypeToLinkedList(sections);
 		}
-
-		
 
 		private LinkedList<Section> SectionTypeToLinkedList(SectionType[] sectionTypes)
 		{

@@ -13,8 +13,10 @@ namespace Model
         public int Points { get; set; }
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColors { get; set; }
+		
 
-        public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
+
+		public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
         {
 
             Name = name;

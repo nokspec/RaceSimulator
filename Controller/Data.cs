@@ -17,7 +17,7 @@ namespace Controller
 
 		public static void Initialize()
 		{
-			Competition = new Competition(); //initialize competition
+			Competition = new Competition(); //Initialize competition.
 			AddParticipants();
 			AddTracks();
 		}
@@ -29,8 +29,8 @@ namespace Controller
 			Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
 			Competition.Participants.Add(new Driver("Klaas", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 			Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
-			//Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
-			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 		}
 
 
@@ -97,7 +97,7 @@ namespace Controller
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{
-					SectionType.StartGrid,
+					SectionType.Finish,
 					SectionType.RightCorner,
 					SectionType.LeftCorner,
 					SectionType.Straight,
@@ -112,8 +112,7 @@ namespace Controller
 					SectionType.RightCorner,
 					SectionType.Straight,
 					SectionType.RightCorner,
-					SectionType.Finish
-
+					SectionType.StartGrid
 				};
 				return trackBuilder;
 			}
