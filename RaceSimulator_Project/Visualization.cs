@@ -17,14 +17,14 @@ namespace RaceSimulator_Project
 		public static int X;
 		public static int Y;
 		public static int PositieAuto;
-		private static Section _currentSection;
+		private static Section _currentSection; //Hiermee kan je overal in de klasse de huidige section terugvinden.
 
 		public static void Initialize()
 		{
 			X = 0;
 			Y = 0;
 			PositieAuto = 1;
-			_currentSection = null;
+			_currentSection = null; //When initializing there's no _currentSection.
 			SetPositie(35, 30);
 		}
 
@@ -132,16 +132,18 @@ namespace RaceSimulator_Project
 			String str = (string)input.Clone();
 
 			return str.Replace(
-					"1",
+					"1", //The part of string that has to be replaced
 					(leftParticipant?.Equipment?.IsBroken ?? false
-						? "X"
-						: leftParticipant?.Name?.Substring(0, 1)) ?? " "
+						? "X" //If Equipment IsBroken it'll display an "X"
+						: leftParticipant?.Name?.Substring(0, 1)) ?? " " //If there is no participant it'll display a space.
+																		 //Else it'll display the first letter of the participant's name.
 				)
 				.Replace(
-					"2",
+					"2", //The part of string that has to be replaced
 					(rightParticipant?.Equipment?.IsBroken ?? false
-						? "X"
-						: rightParticipant?.Name?.Substring(0, 1)) ?? " "
+						? "X" //If Equipment IsBroken it'll display an "X"
+						: rightParticipant?.Name?.Substring(0, 1)) ?? " "//If there is no participant it'll display a space.
+																		//Else it'll display the first letter of the participant's name.
 				);
 		}
 
