@@ -38,7 +38,7 @@ namespace Controller
 		{
 			//Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
 			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
-			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles")));
+			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 
 
 		}
@@ -58,12 +58,8 @@ namespace Controller
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{
-					SectionType.StartGrid,
 					SectionType.Finish,
 					SectionType.Straight,
-					SectionType.RightCorner,
-					SectionType.Straight,
-					SectionType.Straight,
 					SectionType.Straight,
 					SectionType.RightCorner,
 					SectionType.Straight,
@@ -73,6 +69,10 @@ namespace Controller
 					SectionType.Straight,
 					SectionType.Straight,
 					SectionType.Straight,
+					SectionType.RightCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.StartGrid,
 					SectionType.RightCorner
 				};
 				return trackBuilder;
@@ -81,14 +81,21 @@ namespace Controller
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{
-
-					SectionType.StartGrid,
-					SectionType.LeftCorner,
-					SectionType.Straight,
-					SectionType.LeftCorner,
-					SectionType.Straight,
-					SectionType.LeftCorner,
 					SectionType.Finish,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.LeftCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.LeftCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.LeftCorner,
+					SectionType.Straight,
+					SectionType.Straight,
+					SectionType.StartGrid,
 					SectionType.LeftCorner
 				};
 				return trackBuilder;

@@ -26,15 +26,23 @@ namespace RaceSimulator_Project
 			PositieAuto = 1;
 			_currentSection = null; //When initializing there's no _currentSection.
 			SetPositie(35, 30);
+
+			Data.CurrentRace.DriversChanged += OnDriversChanged;
 		}
+
+		//Event
+		public static void OnDriversChanged(object source, DriversChangedEventArgs e)
+		{
+			DrawTrack(e.Track);
+		} 
 
 		#region graphics
 
 		private static string[] _finishHorizontal =
 		{
 			"----",
-			" #2 ", 
-			" 1# ", 
+			"  2#", 
+			" 1 #", 
 			"----"
 		};
 
@@ -118,33 +126,27 @@ namespace RaceSimulator_Project
 			IParticipant leftParticipant, rightParticipant;
 			foreach (string s in array)
 			{
-				string ss = s;
+				string newS = s;
 				leftParticipant = Data.CurrentRace.GetSectionData(_currentSection).Left;
 				rightParticipant = Data.CurrentRace.GetSectionData(_currentSection).Right;
 				SetPositie(0, 1);
-				ss = DrawParticipants(s, leftParticipant, rightParticipant);
-				Console.WriteLine(ss);
+				newS = DrawParticipants(s, leftParticipant, rightParticipant);
+				Console.WriteLine(newS);
 			}
 		}
 
 		public static string DrawParticipants(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{
 			String str = (string)input.Clone();
-
-			return str.Replace(
-					"1", //The part of string that has to be replaced
-					(leftParticipant?.Equipment?.IsBroken ?? false
-						? "X" //If Equipment IsBroken it'll display an "X"
-						: leftParticipant?.Name?.Substring(0, 1)) ?? " " //If there is no participant it'll display a space.
-																		 //Else it'll display the first letter of the participant's name.
-				)
-				.Replace(
-					"2", //The part of string that has to be replaced
-					(rightParticipant?.Equipment?.IsBroken ?? false
-						? "X" //If Equipment IsBroken it'll display an "X"
-						: rightParticipant?.Name?.Substring(0, 1)) ?? " "//If there is no participant it'll display a space.
-																		//Else it'll display the first letter of the participant's name.
-				);
+			
+			return str.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
+			/* Even uitleggen aan mezelf zodat ik niet vergeet wat ik heb gedaan:
+			 * str.Replace.Replace is niet per se sneller maar volgensmij wel gewoon "beter" en sowieso ook makkelijker dan 2 aparte str's.
+			 * Vervang 1/2 (oldValue) met newValueAls leftParticipant !null is en Name !null. Laten vervangen met Substring. 
+			 * ?? oftewel null coalescing operator. Betekent als er geen naam is om 1 of 2 mee te vervangen, vervang dan met een spatie.
+			 * Dit haalt dan alle 1's en 2's uit de track maar tekent wel de letters van de participants.
+			 * Dus, return de value links als die niet null is, anders de value rechts van de ??. Als links !null is, dan kijkt ie niet eens naar wat er rechts staat.
+			*/
 		}
 
 
@@ -184,7 +186,7 @@ namespace RaceSimulator_Project
 
 		public static void DetermineDirection(SectionType sectionType, Track track)
 		{
-			switch (sectionType)
+			switch (sectionType) 
 			{
 				case SectionType.Finish:
 					if (PositieAuto == 1)
@@ -222,7 +224,7 @@ namespace RaceSimulator_Project
 					}
 					else if (PositieAuto == 2)
 					{
-						SetPositie(0, 4);
+						SetPositie(0, 0);
 						PrintToConsole(_straightStartVertical);
 					}
 					else if (PositieAuto == 4)
@@ -316,7 +318,7 @@ namespace RaceSimulator_Project
 }
 
 
-/*
+/* string[] zonder 1's en 2's
  * private static string[] _finishHorizontal =
 		{
 			"----",

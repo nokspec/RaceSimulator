@@ -10,7 +10,6 @@ Data.Initialize();
 Data.NextRace();
 
 Visualization.Initialize();
-
 //Console.WriteLine($"Naam track: {Data.CurrentRace.Track.Name}");
 Visualization.DrawTrack(Data.CurrentRace.Track);
 

@@ -11,13 +11,14 @@ namespace Controller
 {
 	public class Race
 	{
+		public event EventHandler ThresholdReached; //idk
+		public event EventHandler<DriversChangedEventArgs> DriversChanged; //L5-5
+
 		public Track Track { get; set; }
 		public List<IParticipant> Participants { get; set; }
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer timer; //Timer
-		public event EventHandler ThresholdReached; //idk
-
 		private Dictionary<Section, SectionData> _positions { get; set; } //Participants positions with left and right.
 
 		public Race(Track track, List<IParticipant> participants)
@@ -64,6 +65,7 @@ namespace Controller
 				participant.Equipment.Performance = _random.Next(0, 10);
 			}
 		}
+
 
 		public void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
 		{
