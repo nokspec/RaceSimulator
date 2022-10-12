@@ -63,14 +63,14 @@ namespace RaceSimulator_Project
 		{
 			"----",
 			"  2",
-			" 1  ",
+			" 1 s",
 			"----"
 		};
 
 		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
 		{
 			"|  |",
-			"| 1| ",
+			"|s1| ",
 			"|2 |",
 			"|  |"
 		};
@@ -146,7 +146,6 @@ namespace RaceSimulator_Project
 		}
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{
-			//return input.Replace("1", leftParticipant.Name[0].ToString()).Replace("2", rightParticipant.Name[0].ToString());
 			return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
 		}
 

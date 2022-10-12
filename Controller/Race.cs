@@ -37,7 +37,7 @@ namespace Controller
 			StartPositions(Track, Participants);
 
 			//Timer
-			timer = new System.Timers.Timer(1000);
+			timer = new System.Timers.Timer(2000); //Interval
 			Start(); //Start timer
 			timer.Elapsed += OnTimedEvent;
 		}
@@ -117,6 +117,7 @@ namespace Controller
 						sectionData.Right = null;
 					}
 
+
 					if (Track.Sections.Count <= (i + 1))
 					{
 						i = -1;
@@ -132,6 +133,8 @@ namespace Controller
 					{
 						nextSectionData.Right = participant;
 					}
+
+
 					CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
 					participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 
