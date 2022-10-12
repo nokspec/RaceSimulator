@@ -13,6 +13,7 @@ namespace Model
 		IEquipment Equipment { get; set; }
 		TeamColors TeamColors { get; set; }
 		public int LapsCount { get; set; }
+		public bool Finished { get; set; } //bool is standaard false.
 		public Section CurrentSection { get; set; }
 		public int GetMovementSpeed();
 		public int MetersMoved { get; set; }

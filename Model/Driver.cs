@@ -14,6 +14,7 @@ namespace Model
 		public IEquipment Equipment { get; set; }
 		public TeamColors TeamColors { get; set; }
 		public int LapsCount { get; set; }
+		public bool Finished { get; set; }
 		public Section CurrentSection { get; set; }
 		public int MetersMoved { get; set; }
 

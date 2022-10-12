@@ -37,7 +37,6 @@ namespace RaceSimulator_Project
 		//Event
 		public static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
-			Console.Clear();
 			DrawTrack(e.Track);
 		}
 
@@ -70,7 +69,7 @@ namespace RaceSimulator_Project
 		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
 		{
 			"|  |",
-			"|s1| ",
+			"| 1| ",
 			"|2 |",
 			"|  |"
 		};
@@ -94,7 +93,7 @@ namespace RaceSimulator_Project
 		private static string[] _cornerNE =
 		{
 			"----",
-			"  2|",
+			"2  |",
 			" 1 |",
 			"   |"
 		};
@@ -138,7 +137,8 @@ namespace RaceSimulator_Project
 				else if (sectionData.Right != null)
 				{
 					newS = ReplaceString(s, sectionData.Right);
-				}
+				} 
+			
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
 				SetPositie(0, 1);
 				Console.WriteLine(newS);
@@ -149,16 +149,16 @@ namespace RaceSimulator_Project
 			return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
 		}
 
-		private static string ReplaceString(string stringMetNummer, IParticipant participant)
+		private static string ReplaceString(string input, IParticipant participant)
 		{
 			participant.CurrentSection = CurrentSection; //Geef CurrentSection mee aan Participant.CurrentSection
 			if (Race.GetSectionData(participant.CurrentSection).Left == participant)
 			{
-				return stringMetNummer.Replace("1", participant.Name[0].ToString());
+				return input.Replace("1", participant.Name[0].ToString());
 			}
 			else if (Race.GetSectionData(participant.CurrentSection).Right == participant)
 			{
-				return stringMetNummer.Replace("2", participant.Name[0].ToString());
+				return input.Replace("2", participant.Name[0].ToString());
 			}
 			return null;
 		}

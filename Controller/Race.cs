@@ -29,6 +29,9 @@ namespace Controller
 		private Random _random;
 		private System.Timers.Timer timer; //Timer
 
+		public int amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
+		public int LapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
+
 		public Race(Track track, List<IParticipant> participants)
 		{
 			Track = track;
@@ -37,7 +40,7 @@ namespace Controller
 			StartPositions(Track, Participants);
 
 			//Timer
-			timer = new System.Timers.Timer(2000); //Interval
+			timer = new System.Timers.Timer(2500); //Interval
 			Start(); //Start timer
 			timer.Elapsed += OnTimedEvent;
 		}
@@ -65,7 +68,6 @@ namespace Controller
 		public SectionData GetSectionData(Section section)
 		{
 			if (!_positions.ContainsKey(section))
-
 			{
 				_positions.Add(section, new SectionData());
 			}
@@ -78,6 +80,25 @@ namespace Controller
 			{
 				participant.Equipment.Quality = _random.Next(0, 10);
 				participant.Equipment.Performance = _random.Next(0, 10);
+			}
+		}
+
+		public int CountLaps(IParticipant participant)
+		{
+			participant.LapsCount++;
+			LapsCount++;
+			return LapsCount;
+		}
+		
+		public void NextLap(IParticipant participant, SectionData sectionData)
+		{
+			if (participant.LapsCount <= amountOfLaps)
+			{
+				CountLaps(participant);
+			}
+			else if (participant.LapsCount == (amountOfLaps + 1))
+			{
+				participant.Finished = true;
 			}
 		}
 
@@ -94,53 +115,64 @@ namespace Controller
 				}
 			}
 		}
+
 		public void MoveParticipants(IParticipant participant)
 		{
 			int i = 0;
 			foreach (Section section in Track.Sections)
 			{
-				if (section == participant.CurrentSection)
+				if (!participant.Finished)
 				{
-					if (participant.Equipment.IsBroken == true)
+					if (section == participant.CurrentSection)
 					{
+						if (participant.Equipment.IsBroken == true)
+						{
+							return;
+						}
+
+						SectionData sectionData = GetSectionData(section);
+
+						if (sectionData.Right == participant)
+						{
+							sectionData.Right = null;
+						}
+						else if (sectionData.Left == participant)
+						{
+							sectionData.Left = null;
+						}
+
+						if (Track.Sections.Count <= (i + 1))
+						{
+							i = -1;
+						}
+
+						SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
+
+						if (nextSectionData.Right == null)
+						{
+							nextSectionData.Right = participant;
+						}
+						else if (nextSectionData.Left == null)
+						{
+							nextSectionData.Left = participant;
+						}
+
+						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
+						CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
+
+						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
+						{
+							NextLap(participant, nextSectionData);
+						}
+
+						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) //First lap started.
+						{
+							LapsCount++;
+						}
 						return;
 					}
-
-					SectionData sectionData = GetSectionData(section);
-
-					if (sectionData.Left == participant)
-					{
-						sectionData.Left = null;
-					}
-					else if (sectionData.Right == participant)
-					{
-						sectionData.Right = null;
-					}
-
-
-					if (Track.Sections.Count <= (i + 1))
-					{
-						i = -1;
-					}
-
-					SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
-
-					if (nextSectionData.Left == null)
-					{
-						nextSectionData.Left = participant;
-					}
-					else if (nextSectionData.Right == null)
-					{
-						nextSectionData.Right = participant;
-					}
-
-
-					CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
-					participant.CurrentSection = Track.Sections.ElementAt(i + 1);
-
-					return;
+					i++;
 				}
-				i++;
 			}
 		}
 
