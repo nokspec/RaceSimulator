@@ -35,7 +35,7 @@ namespace RaceSimulator_Project
 		}
 
 		//Event
-		public static void OnDriversChanged(object source, DriversChangedEventArgs e)
+		private static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
 			DrawTrack(e.Track);
 		}
@@ -125,7 +125,7 @@ namespace RaceSimulator_Project
 
 		#endregion //Sections string[]
 
-		public static void PrintToConsole(string[] array, SectionData sectionData)
+		private static void PrintToConsole(string[] array, SectionData sectionData)
 		{
 			foreach (string s in array)
 			{
@@ -140,7 +140,7 @@ namespace RaceSimulator_Project
 				} 
 			
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
-				SetPositie(0, 1);
+				SetPositie(0, 1); //Important
 				Console.WriteLine(newS);
 			}
 		}
@@ -163,7 +163,7 @@ namespace RaceSimulator_Project
 			return null;
 		}
 
-		public static void SetPositie(int xVerandering, int yVerandering)
+		private static void SetPositie(int xVerandering, int yVerandering)
 		{
 			X += xVerandering;
 			Y += yVerandering;
@@ -234,8 +234,8 @@ namespace RaceSimulator_Project
 				}
 			}
 		}
-
-		public static void DetermineDirection(SectionType sectionType, Track track)
+		
+		private static void DetermineDirection(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
 			{

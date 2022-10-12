@@ -40,7 +40,7 @@ namespace Controller
 			StartPositions(Track, Participants);
 
 			//Timer
-			timer = new System.Timers.Timer(2500); //Interval
+			timer = new System.Timers.Timer(500); //Interval
 			Start(); //Start timer
 			timer.Elapsed += OnTimedEvent;
 		}
@@ -48,19 +48,19 @@ namespace Controller
 		public void OnTimedEvent(object sender, EventArgs e)
 		{
 			//Stop();
-			CheckForMoveDriver();
+			CheckDriverMovement();
 			//Start();
 			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //Dit is nodig om te laten refreshen.
 		}
 
-		public void Start() //Start Timer
+		private void Start() //Start Timer
 		{
 			StartTime = DateTime.Now;
 			timer.Elapsed += OnTimedEvent; //Subscribe
 			timer.AutoReset = true;
 			timer.Enabled = true;
 		}
-		public void Stop() //Stop Timer
+		private void Stop() //Stop Timer
 		{
 			timer.Enabled = false;
 		}
@@ -83,14 +83,14 @@ namespace Controller
 			}
 		}
 
-		public int CountLaps(IParticipant participant)
+		private int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
 			LapsCount++;
 			return LapsCount;
 		}
-		
-		public void NextLap(IParticipant participant, SectionData sectionData)
+
+		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
 			if (participant.LapsCount <= amountOfLaps)
 			{
@@ -102,7 +102,7 @@ namespace Controller
 			}
 		}
 
-		public void CheckForMoveDriver()
+		public void CheckDriverMovement()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -121,7 +121,7 @@ namespace Controller
 			int i = 0;
 			foreach (Section section in Track.Sections)
 			{
-				if (!participant.Finished)
+				if (!participant.Finished) //Als de bool false is
 				{
 					if (section == participant.CurrentSection)
 					{
@@ -177,57 +177,56 @@ namespace Controller
 		}
 
 		#region StartPositions
-		public void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
+		private void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
 		{
-			//Dit misschien globaal declareren.
 			int sectionsLength = Track.Sections.Count;
-			int participantsRemaining = Participants.Count; //Keep track of amount of participants remaining.
+			int participantsRemaining = Participants.Count;
 
 			int index = 0;
 
 			for (int i = Track.Sections.Count; i > 0; i--)
 			{
-				var section = Track.Sections.ElementAt(i - 1); //Get the section at the current index. ElementAt > Element
+				var section = Track.Sections.ElementAt(i - 1);
 				var sectionData = GetSectionData(section);
 				if (section.SectionTypes == SectionType.StartGrid)
 				{
-					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					if (participantsRemaining != 0)
 					{
 						sectionData.Right = participants[index];
-						index++; //Increase index.
+						index++;
 						participantsRemaining--;
 					}
-					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					if (participantsRemaining != 0)
 					{
 						sectionData.Left = participants[index];
-						index++; //Increase index.
+						index++;
 						participantsRemaining--;
 					}
-					GetSectionData(section); //Add participants to _positions
+					GetSectionData(section);
 				}
 				else if (section.SectionTypes == SectionType.Finish)
 				{
-					break; //Race ended.
+					break;
 				}
 				else if (sectionsLength == 0) //If there's no more sections available.
 				{
-					break; //No more space left for participants.
+					break;
 				}
 				else //Go back one section and add the participants there.
 				{
-					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					if (participantsRemaining != 0)
 					{
 						sectionData.Right = participants[index];
-						index++; //Increase index.
+						index++;
 						participantsRemaining--;
 					}
-					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					if (participantsRemaining != 0)
 					{
 						sectionData.Left = participants[index];
-						index++; //Increase index.
+						index++;
 						participantsRemaining--;
 					}
-					GetSectionData(section); //Add participant(s) to _positions
+					GetSectionData(section);
 				}
 				sectionsLength--;
 			}
