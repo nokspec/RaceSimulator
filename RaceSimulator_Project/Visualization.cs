@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -16,45 +17,49 @@ namespace RaceSimulator_Project
 	{
 		public static int X;
 		public static int Y;
-		public static int PositieAuto;
-		private static Section _currentSection; //Hiermee kan je overal in de klasse de huidige section terugvinden.
+		public static int Positie;
+		public static int OudePositie; //Is nodig voor de bochten.
+		public static Section CurrentSection;
+		private static Race Race;
 
-		public static void Initialize()
+		public static void Initialize(Race race)
 		{
+			CurrentSection = null; //When initializing there's no _currentSection.
 			X = 0;
 			Y = 0;
-			PositieAuto = 1;
-			_currentSection = null; //When initializing there's no _currentSection.
+			Positie = 1;
 			SetPositie(35, 30);
 
+			Race = race;
 			Data.CurrentRace.DriversChanged += OnDriversChanged;
 		}
 
 		//Event
 		public static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
+			Console.Clear();
 			DrawTrack(e.Track);
-		} 
+		}
 
 		#region graphics
 
 		private static string[] _finishHorizontal =
 		{
 			"----",
-			"  2#", 
-			" 1 #", 
+			"  2#",
+			" 1 #",
 			"----"
 		};
 
 		private static string[] _finishVertical =
 		{
-			"|--|",
-			"|#2|",
-			"|1#|",
+			"|##|",
+			"| 2|",
+			"|1 |",
 			"|  |"
 		};
 
-		private static string[] _straightStartHorizontal =
+		private static string[] _straightStartHorizontal = //s om aan te duiden dat t start is
 		{
 			"----",
 			"  2",
@@ -62,11 +67,11 @@ namespace RaceSimulator_Project
 			"----"
 		};
 
-		private static string[] _straightStartVertical =
+		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
 		{
 			"|  |",
-			"| 2| ",
-			"|1 |",
+			"| 1| ",
+			"|2 |",
 			"|  |"
 		};
 
@@ -81,8 +86,8 @@ namespace RaceSimulator_Project
 		private static string[] _straightVertical =
 		{
 			"|  |",
-			"| 2|",
-			"|1 |",
+			"| 1|",
+			"|2 |",
 			"|  |"
 		};
 
@@ -121,34 +126,43 @@ namespace RaceSimulator_Project
 
 		#endregion //Sections string[]
 
-		public static void PrintToConsole(string[] array)
+		public static void PrintToConsole(string[] array, SectionData sectionData)
 		{
-			IParticipant leftParticipant, rightParticipant;
 			foreach (string s in array)
 			{
 				string newS = s;
-				leftParticipant = Data.CurrentRace.GetSectionData(_currentSection).Left;
-				rightParticipant = Data.CurrentRace.GetSectionData(_currentSection).Right;
+				if (sectionData.Left != null)
+				{
+					newS = ReplaceString(s, sectionData.Left);
+				}
+				else if (sectionData.Right != null)
+				{
+					newS = ReplaceString(s, sectionData.Right);
+				}
+				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
 				SetPositie(0, 1);
-				newS = DrawParticipants(s, leftParticipant, rightParticipant);
 				Console.WriteLine(newS);
 			}
 		}
-
-		public static string DrawParticipants(string input, IParticipant leftParticipant, IParticipant rightParticipant)
+		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{
-			String str = (string)input.Clone();
-			
-			return str.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
-			/* Even uitleggen aan mezelf zodat ik niet vergeet wat ik heb gedaan:
-			 * str.Replace.Replace is niet per se sneller maar volgensmij wel gewoon "beter" en sowieso ook makkelijker dan 2 aparte str's.
-			 * Vervang 1/2 (oldValue) met newValueAls leftParticipant !null is en Name !null. Laten vervangen met Substring. 
-			 * ?? oftewel null coalescing operator. Betekent als er geen naam is om 1 of 2 mee te vervangen, vervang dan met een spatie.
-			 * Dit haalt dan alle 1's en 2's uit de track maar tekent wel de letters van de participants.
-			 * Dus, return de value links als die niet null is, anders de value rechts van de ??. Als links !null is, dan kijkt ie niet eens naar wat er rechts staat.
-			*/
+			//return input.Replace("1", leftParticipant.Name[0].ToString()).Replace("2", rightParticipant.Name[0].ToString());
+			return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
 		}
 
+		private static string ReplaceString(string stringMetNummer, IParticipant participant)
+		{
+			participant.CurrentSection = CurrentSection; //Geef CurrentSection mee aan Participant.CurrentSection
+			if (Race.GetSectionData(participant.CurrentSection).Left == participant)
+			{
+				return stringMetNummer.Replace("1", participant.Name[0].ToString());
+			}
+			else if (Race.GetSectionData(participant.CurrentSection).Right == participant)
+			{
+				return stringMetNummer.Replace("2", participant.Name[0].ToString());
+			}
+			return null;
+		}
 
 		public static void SetPositie(int xVerandering, int yVerandering)
 		{
@@ -157,28 +171,66 @@ namespace RaceSimulator_Project
 			Console.SetCursorPosition(X, Y);
 		}
 
+		#region drawtrack
 		public static void DrawTrack(Track track)
 		{
 			foreach (Section section in track.Sections)
 			{
-				_currentSection = section;
-
+				CurrentSection = section;
 				switch (section.SectionTypes)
 				{
 					case SectionType.StartGrid:
 						DetermineDirection(SectionType.StartGrid, track);
+						if (Positie == 1 || Positie == 3)
+							PrintToConsole(_straightStartHorizontal, Race.GetSectionData(section));
+						else
+						{
+							PrintToConsole(_straightStartVertical, Race.GetSectionData(section));
+						}
 						break;
+
 					case SectionType.Finish:
 						DetermineDirection(SectionType.Finish, track);
+						if (Positie == 1 || Positie == 3)
+							PrintToConsole(_finishHorizontal, Race.GetSectionData(section));
+						else
+						{
+							PrintToConsole(_finishVertical, Race.GetSectionData(section));
+						}
 						break;
+
 					case SectionType.Straight:
 						DetermineDirection(SectionType.Straight, track);
+						if (Positie == 1 || Positie == 3)
+							PrintToConsole(_straightHorizontal, Race.GetSectionData(section));
+						else
+						{
+							PrintToConsole(_straightVertical, Race.GetSectionData(section));
+						}
 						break;
-					case SectionType.LeftCorner:
-						DetermineDirection(SectionType.LeftCorner, track);
-						break;
+
 					case SectionType.RightCorner:
 						DetermineDirection(SectionType.RightCorner, track);
+						if (OudePositie == 1)
+							PrintToConsole(_cornerNE, Race.GetSectionData(section));
+						else if (OudePositie == 2)
+							PrintToConsole(_cornerSE, Race.GetSectionData(section));
+						else if (OudePositie == 3)
+							PrintToConsole(_cornerSW, Race.GetSectionData(section));
+						else if (OudePositie == 4)
+							PrintToConsole(_cornerNW, Race.GetSectionData(section));
+						break;
+
+					case SectionType.LeftCorner:
+						DetermineDirection(SectionType.LeftCorner, track);
+						if (OudePositie == 3)
+							PrintToConsole(_cornerNW, Race.GetSectionData(section));
+						else if (OudePositie == 4)
+							PrintToConsole(_cornerNE, Race.GetSectionData(section));
+						else if (OudePositie == 1)
+							PrintToConsole(_cornerSE, Race.GetSectionData(section));
+						else if (OudePositie == 2)
+							PrintToConsole(_cornerSW, Race.GetSectionData(section));
 						break;
 				}
 			}
@@ -186,135 +238,122 @@ namespace RaceSimulator_Project
 
 		public static void DetermineDirection(SectionType sectionType, Track track)
 		{
-			switch (sectionType) 
+			switch (sectionType)
 			{
 				case SectionType.Finish:
-					if (PositieAuto == 1)
+					if (Positie == 1)
 					{
 						SetPositie(4, -4);
-						PrintToConsole(_finishHorizontal);
 					}
-					else if (PositieAuto == 3)
+					else if (Positie == 3)
 					{
 						SetPositie(0, -8);
-						PrintToConsole(_finishHorizontal);
 					}
-					else if (PositieAuto == 2)
+					else if (Positie == 2)
 					{
 						SetPositie(0, 0);
-						PrintToConsole(_finishVertical);
 					}
-					else if (PositieAuto == 4)
+					else if (Positie == 4)
 					{
 						SetPositie(0, -8);
-						PrintToConsole(_finishVertical);
 					}
 					break;
 
 				case SectionType.StartGrid:
-					if (PositieAuto == 1)
+					if (Positie == 1)
 					{
 						SetPositie(4, -4);
-						PrintToConsole(_straightStartHorizontal);
 					}
-					else if (PositieAuto == 3)
+					else if (Positie == 3)
 					{
 						SetPositie(0, -8);
-						PrintToConsole(_straightStartHorizontal);
 					}
-					else if (PositieAuto == 2)
+					else if (Positie == 2)
 					{
 						SetPositie(0, 0);
-						PrintToConsole(_straightStartVertical);
 					}
-					else if (PositieAuto == 4)
+					else if (Positie == 4)
 					{
 						SetPositie(0, -8);
-						PrintToConsole(_straightStartVertical);
 					}
 					break;
 
 				case SectionType.Straight:
-					if (PositieAuto == 1)
+					if (Positie == 1)
 					{
 						SetPositie(4, -4);
-						PrintToConsole(_straightHorizontal);
 					}
-					else if (PositieAuto == 3)
+					else if (Positie == 3)
 					{
 						SetPositie(-4, -4);
-						PrintToConsole(_straightHorizontal);
 					}
-					else if (PositieAuto == 2)
+					else if (Positie == 2)
 					{
 						SetPositie(0, 0);
-						PrintToConsole(_straightVertical);
 					}
-					else if (PositieAuto == 4)
+					else if (Positie == 4)
 					{
 						SetPositie(0, -8);
-						PrintToConsole(_straightVertical);
-
 					}
-
 					break;
 
 				case SectionType.RightCorner:
-					if (PositieAuto == 1)
+					if (Positie == 1)
 					{
 						SetPositie(4, -4);
-						PositieAuto = 2;
-						PrintToConsole(_cornerNE);
+						Positie = 2;
+						OudePositie = 1;
 					}
-					else if (PositieAuto == 2)
+					else if (Positie == 2)
 					{
 						SetPositie(0, 0);
-						PositieAuto = 3;
-						PrintToConsole(_cornerSE);
+						Positie = 3;
+						OudePositie = 2;
 					}
-					else if (PositieAuto == 3)
+					else if (Positie == 3)
 					{
 						SetPositie(-4, -4);
-						PositieAuto = 4;
-						PrintToConsole(_cornerSW);
+						Positie = 4;
+						OudePositie = 3;
 					}
-					else if (PositieAuto == 4)
+					else if (Positie == 4)
 					{
 						SetPositie(0, -8);
-						PositieAuto = 1;
-						PrintToConsole(_cornerNW);
+						Positie = 1;
+						OudePositie = 4;
 					}
 					break;
 
 				case SectionType.LeftCorner:
-					if (PositieAuto == 3)
+					if (Positie == 3)
 					{
 						SetPositie(-4, -4);
-						PositieAuto = 2;
-						PrintToConsole(_cornerNW);
+						Positie = 2;
+						OudePositie = 3;
 					}
-					else if (PositieAuto == 4)
+					else if (Positie == 4)
 					{
 						SetPositie(0, -8);
-						PositieAuto = 3;
-						PrintToConsole(_cornerNE);
+						Positie = 3;
+						OudePositie = 4;
 					}
-					else if (PositieAuto == 1)
+					else if (Positie == 1)
 					{
 						SetPositie(4, -4);
-						PositieAuto = 4;
-						PrintToConsole(_cornerSE); //nw
+						Positie = 4;
+						OudePositie = 1;
 					}
-					else if (PositieAuto == 2)
+					else if (Positie == 2)
 					{
 						SetPositie(0, 0);
-						PositieAuto = 1;
-						PrintToConsole(_cornerSW);
+						Positie = 1;
+						OudePositie = 2;
 					}
 					break;
 			}
 		}
 	}
+	#endregion
 }
 
 

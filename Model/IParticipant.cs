@@ -12,9 +12,12 @@ namespace Model
 		int Points { get; set; }
 		IEquipment Equipment { get; set; }
 		TeamColors TeamColors { get; set; }
+		public int LapsCount { get; set; }
+		public Section CurrentSection { get; set; }
+		public int GetMovementSpeed();
+		public int MetersMoved { get; set; }
 	}
 	public enum TeamColors
-
 	{
 		Red,
 		Green,
@@ -22,4 +25,5 @@ namespace Model
 		Grey,
 		Blue
 	}
+
 }

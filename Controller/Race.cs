@@ -1,9 +1,13 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
+using static Model.SectionData;
 using static System.Collections.Specialized.BitVector32;
 using Section = Model.Section;
 
@@ -15,11 +19,15 @@ namespace Controller
 		public event EventHandler<DriversChangedEventArgs> DriversChanged; //L5-5
 
 		public Track Track { get; set; }
+		public Section CurrentSection;
+		public Section section;
+
 		public List<IParticipant> Participants { get; set; }
+		private Dictionary<Section, SectionData> _positions = new(); //Participants positions with left and right.
+
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer timer; //Timer
-		private Dictionary<Section, SectionData> _positions { get; set; } //Participants positions with left and right.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -29,31 +37,38 @@ namespace Controller
 			StartPositions(Track, Participants);
 
 			//Timer
-			timer = new System.Timers.Timer(500);
+			timer = new System.Timers.Timer(1000);
+			Start(); //Start timer
 			timer.Elapsed += OnTimedEvent;
 		}
 
 		public void OnTimedEvent(object sender, EventArgs e)
 		{
-			EventHandler handler = ThresholdReached;
-			handler?.Invoke(this, e);
+			//Stop();
+			CheckForMoveDriver();
+			//Start();
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //Dit is nodig om te laten refreshen.
 		}
 
-		public void Start()
+		public void Start() //Start Timer
 		{
 			StartTime = DateTime.Now;
-			timer.Elapsed += OnTimedEvent;
+			timer.Elapsed += OnTimedEvent; //Subscribe
 			timer.AutoReset = true;
 			timer.Enabled = true;
+		}
+		public void Stop() //Stop Timer
+		{
+			timer.Enabled = false;
 		}
 
 		public SectionData GetSectionData(Section section)
 		{
 			if (!_positions.ContainsKey(section))
+
 			{
 				_positions.Add(section, new SectionData());
 			}
-
 			return _positions[section];
 		}
 
@@ -66,28 +81,93 @@ namespace Controller
 			}
 		}
 
+		public void CheckForMoveDriver()
+		{
+			foreach (IParticipant participant in Participants)
+			{
+				participant.MetersMoved += participant.GetMovementSpeed();/*participant.Equipment.Speed * participant.Equipment.Performance;*/
 
+				if (participant.MetersMoved >= 100)
+				{
+					participant.MetersMoved += -100;
+					MoveParticipants(participant);
+				}
+			}
+		}
+		public void MoveParticipants(IParticipant participant)
+		{
+			int i = 0;
+			foreach (Section section in Track.Sections)
+			{
+				if (section == participant.CurrentSection)
+				{
+					if (participant.Equipment.IsBroken == true)
+					{
+						return;
+					}
+
+					SectionData sectionData = GetSectionData(section);
+
+					if (sectionData.Left == participant)
+					{
+						sectionData.Left = null;
+					}
+					else if (sectionData.Right == participant)
+					{
+						sectionData.Right = null;
+					}
+
+					if (Track.Sections.Count <= (i + 1))
+					{
+						i = -1;
+					}
+
+					SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
+
+					if (nextSectionData.Left == null)
+					{
+						nextSectionData.Left = participant;
+					}
+					else if (nextSectionData.Right == null)
+					{
+						nextSectionData.Right = participant;
+					}
+					CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
+					participant.CurrentSection = Track.Sections.ElementAt(i + 1);
+
+					return;
+				}
+				i++;
+			}
+		}
+
+		#region StartPositions
 		public void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
 		{
-			_positions = new Dictionary<Section, SectionData>(); //Without this here it crashes.
-
-			int index = 0;
+			//Dit misschien globaal declareren.
 			int sectionsLength = Track.Sections.Count;
 			int participantsRemaining = Participants.Count; //Keep track of amount of participants remaining.
 
+			int index = 0;
+
 			for (int i = Track.Sections.Count; i > 0; i--)
 			{
-				var section = Track.Sections.ElementAt(i - 1); //Get the section at the current index.
+				var section = Track.Sections.ElementAt(i - 1); //Get the section at the current index. ElementAt > Element
 				var sectionData = GetSectionData(section);
 				if (section.SectionTypes == SectionType.StartGrid)
 				{
-					sectionData.Right = participants[index];
-					index++; //Increase index.
-					sectionData.Left = participants[index];
-					index++; //Increase index
-
-					participantsRemaining = participantsRemaining - 2;
-
+					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					{
+						sectionData.Right = participants[index];
+						index++; //Increase index.
+						participantsRemaining--;
+					}
+					if (participantsRemaining != 0) //Avoid trying to add a non-existing participant to a section.
+					{
+						sectionData.Left = participants[index];
+						index++; //Increase index.
+						participantsRemaining--;
+					}
 					GetSectionData(section); //Add participants to _positions
 				}
 				else if (section.SectionTypes == SectionType.Finish)
@@ -117,6 +197,7 @@ namespace Controller
 				sectionsLength--;
 			}
 		}
+		#endregion start
 	}
 }
 
