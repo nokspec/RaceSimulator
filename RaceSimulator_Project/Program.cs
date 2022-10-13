@@ -3,10 +3,14 @@ using Model;
 using RaceSimulator_Project;
 
 Data.Initialize();
+Data.NextRaceEvent += Visualization.OnNextRaceEvent;
 Data.NextRace();
+
 
 Visualization.Initialize(Data.CurrentRace);
 Visualization.DrawTrack(Data.CurrentRace.Track);
+
+
 
 	
 

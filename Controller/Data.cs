@@ -15,7 +15,6 @@ namespace Controller
 		public static Race CurrentRace { get; set; }
 		public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
 
-
 		public static void Initialize()
 		{
 			Competition = new Competition(); //Initialize competition.
@@ -39,7 +38,7 @@ namespace Controller
 		{
 			Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
 			Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
-			//Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
+			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 		}
 
 		public static void NextRace()
@@ -61,7 +60,6 @@ namespace Controller
 			NextRace();
 		}
 		
-
 		public static SectionType[] MakeRace(string naam)
 		{
 			if (naam.Equals("Rechtsom"))

@@ -16,16 +16,16 @@ namespace Controller
 {
 	public class Race
 	{
-		//Events
-		public event EventHandler<DriversChangedEventArgs> DriversChanged;
-		public event EventHandler RaceFinished;
-
 		public Track Track { get; set; }
 		public Section CurrentSection;
 		public Section section;
 
 		public List<IParticipant> Participants { get; set; }
 		private Dictionary<Section, SectionData> _positions; //Participants positions with left and right.
+
+		//Events
+		public event EventHandler<DriversChangedEventArgs> DriversChanged;
+		public event EventHandler RaceFinished;
 
 		//Timer
 		public DateTime StartTime { get; set; }
@@ -50,6 +50,7 @@ namespace Controller
 			_timer = new System.Timers.Timer(TimerInterval); //Interval
 			Start(); //Start timer
 		}
+
 		public void Start() //Start Timer. Public zodat Data.cs erbij kan.
 		{
 			StartTime = DateTime.Now;
@@ -84,8 +85,8 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.Equipment.Quality = _random.Next(1, 10); 
-				participant.Equipment.Performance = _random.Next(1, 10);
+				participant.Equipment.Quality = _random.Next(1, 10);
+				participant.Equipment.Performance = _random.Next(3, 10);
 			}
 		}
 
@@ -107,19 +108,18 @@ namespace Controller
 				participant.Finished = true;
 			}
 		}
-
 		private void CleanUp() //Race finished, clean everything up for next race.
 		{
 			_timer.Stop();
 			DriversChanged = null;
 			RaceFinished = null;
+			CurrentSection = null;
 
 			foreach (IParticipant participant in Participants)
 			{
 				participant.Finished = false;
 				participant.LapsCount = -1;
 			}
-			Console.WriteLine("cleanup done");
 		}
 
 		private void Stop() //Voor debuggen.
@@ -177,9 +177,6 @@ namespace Controller
 						{
 							return;
 						}
-
-						//SectionData sectionData = GetSectionData(section);
-
 
 						if (sectionData.Right == participant)
 						{

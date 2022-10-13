@@ -20,20 +20,19 @@ namespace RaceSimulator_Project
 		public static int _position;
 		public static int _oldPosition; //Is nodig voor de bochten.
 		public static Section CurrentSection;
-		private static Race _race;
+		private static Race race;
 
 		public static void Initialize(Race race)
 		{
-			CurrentSection = null; //When initializing there's no _currentSection.
-			
-			_race = race;
-			Data.CurrentRace.DriversChanged += OnDriversChanged;
+			Visualization.race = race;
+			Data.CurrentRace.DriversChanged += OnDriversChanged; //Subscribe
 			ConsolePreparation();
 		}
 
-		public static void ConsolePreparation()
+		private static void ConsolePreparation()
 		{
 			Console.Clear(); //Oude track weghalen.
+							 //De waardes hieronder stonden origineel in Initialize, maar hier staan ze logischer vind ik.
 			X = 0;
 			Y = 0;
 			_position = 1;
@@ -44,6 +43,13 @@ namespace RaceSimulator_Project
 		private static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
 			DrawTrack(e.Track);
+		}
+
+		public static void OnNextRaceEvent(object sender, NextRaceEventArgs e)
+		{
+			Initialize(e.Race);
+			Data.CurrentRace.DriversChanged += OnDriversChanged; //Re-subscribe
+			DrawTrack(Data.CurrentRace.Track); //Data.CurrentRace misschien 
 		}
 
 		#region graphics
@@ -67,15 +73,15 @@ namespace RaceSimulator_Project
 		private static string[] _straightStartHorizontal = //s om aan te duiden dat t start is
 		{
 			"----",
-			"  2",
-			" 1 s",
+			"  2|",
+			" 1| ",
 			"----"
 		};
 
 		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
 		{
 			"|  |",
-			"| 1| ",
+			"| 1|",
 			"|2 |",
 			"|  |"
 		};
@@ -143,17 +149,11 @@ namespace RaceSimulator_Project
 					newS = ReplaceString(s, sectionData.Right);
 				}
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
-				SetPositie(0, 1); //Important
+				SetPositie(0, 1); //Zonder dit crasht het.
 				Console.WriteLine(newS);
 			}
 		}
 
-		private static void CheckParticipantFinished(IParticipant participant) //Dit nog uitwerken. Level 5-4
-		{
-			bool result = false;
-			if (participant.Finished)
-				result = true;
-		}
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{
 			return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
@@ -162,11 +162,11 @@ namespace RaceSimulator_Project
 		private static string ReplaceString(string input, IParticipant participant)
 		{
 			participant.CurrentSection = CurrentSection; //Geef CurrentSection mee aan Participant.CurrentSection
-			if (_race.GetSectionData(participant.CurrentSection).Left == participant)
+			if (race.GetSectionData(participant.CurrentSection).Left == participant)
 			{
 				return input.Replace("1", participant.Name[0].ToString());
 			}
-			else if (_race.GetSectionData(participant.CurrentSection).Right == participant)
+			else if (race.GetSectionData(participant.CurrentSection).Right == participant)
 			{
 				return input.Replace("2", participant.Name[0].ToString());
 			}
@@ -191,55 +191,55 @@ namespace RaceSimulator_Project
 					case SectionType.StartGrid:
 						DetermineDirection(SectionType.StartGrid, track);
 						if (_position == 1 || _position == 3)
-							PrintToConsole(_straightStartHorizontal, _race.GetSectionData(section));
+							PrintToConsole(_straightStartHorizontal, race.GetSectionData(section));
 						else
 						{
-							PrintToConsole(_straightStartVertical, _race.GetSectionData(section));
+							PrintToConsole(_straightStartVertical, race.GetSectionData(section));
 						}
 						break;
 
 					case SectionType.Finish:
 						DetermineDirection(SectionType.Finish, track);
 						if (_position == 1 || _position == 3)
-							PrintToConsole(_finishHorizontal, _race.GetSectionData(section));
+							PrintToConsole(_finishHorizontal, race.GetSectionData(section));
 						else
 						{
-							PrintToConsole(_finishVertical, _race.GetSectionData(section));
+							PrintToConsole(_finishVertical, race.GetSectionData(section));
 						}
 						break;
 
 					case SectionType.Straight:
 						DetermineDirection(SectionType.Straight, track);
 						if (_position == 1 || _position == 3)
-							PrintToConsole(_straightHorizontal, _race.GetSectionData(section));
+							PrintToConsole(_straightHorizontal, race.GetSectionData(section));
 						else
 						{
-							PrintToConsole(_straightVertical, _race.GetSectionData(section));
+							PrintToConsole(_straightVertical, race.GetSectionData(section));
 						}
 						break;
 
 					case SectionType.RightCorner:
 						DetermineDirection(SectionType.RightCorner, track);
 						if (_oldPosition == 1)
-							PrintToConsole(_cornerNE, _race.GetSectionData(section));
+							PrintToConsole(_cornerNE, race.GetSectionData(section));
 						else if (_oldPosition == 2)
-							PrintToConsole(_cornerSE, _race.GetSectionData(section));
+							PrintToConsole(_cornerSE, race.GetSectionData(section));
 						else if (_oldPosition == 3)
-							PrintToConsole(_cornerSW, _race.GetSectionData(section));
+							PrintToConsole(_cornerSW, race.GetSectionData(section));
 						else if (_oldPosition == 4)
-							PrintToConsole(_cornerNW, _race.GetSectionData(section));
+							PrintToConsole(_cornerNW, race.GetSectionData(section));
 						break;
 
 					case SectionType.LeftCorner:
 						DetermineDirection(SectionType.LeftCorner, track);
 						if (_oldPosition == 3)
-							PrintToConsole(_cornerNW, _race.GetSectionData(section));
+							PrintToConsole(_cornerNW, race.GetSectionData(section));
 						else if (_oldPosition == 4)
-							PrintToConsole(_cornerNE, _race.GetSectionData(section));
+							PrintToConsole(_cornerNE, race.GetSectionData(section));
 						else if (_oldPosition == 1)
-							PrintToConsole(_cornerSE, _race.GetSectionData(section));
+							PrintToConsole(_cornerSE, race.GetSectionData(section));
 						else if (_oldPosition == 2)
-							PrintToConsole(_cornerSW, _race.GetSectionData(section));
+							PrintToConsole(_cornerSW, race.GetSectionData(section));
 						break;
 				}
 			}
@@ -364,86 +364,3 @@ namespace RaceSimulator_Project
 	}
 	#endregion
 }
-
-
-/* string[] zonder 1's en 2's
- * private static string[] _finishHorizontal =
-		{
-			"----",
-			"  # ",
-			"  # ",
-			"----"
-		};
-
-		private static string[] _finishVertical =
-		{
-			"|--|",
-			"| #|",
-			"| #|",
-			"|  |"
-		};
-
-		private static string[] _straightStartHorizontal =
-		{
-			"----",
-			"  s ",
-			"    ",
-			"----"
-		};
-
-		private static string[] _straightStartVertical =
-		{
-			"|  |",
-			"|s | ",
-			"|  |",
-			"|  |"
-		};
-
-		private static string[] _straightHorizontal =
-		{
-			"----",
-			"    ",
-			"    ",
-			"----"
-		};
-
-		private static string[] _straightVertical =
-		{
-			"|  |",
-			"|  |",
-			"|  |",
-			"|  |"
-		};
-
-		private static string[] _cornerNE =
-		{
-			"----",
-			"   |",
-			"   |",
-			"   |"
-		};
-
-		private static string[] _cornerSE =
-		{
-			"   |",
-			"   |",
-			"   |",
-			"----"
-		};
-
-		private static string[] _cornerSW =
-		{
-			"|   ",
-			"|   ",
-			"|   ",
-			"----"
-		};
-
-		private static string[] _cornerNW =
-		{
-			"----",
-			"|   ",
-			"|   ",
-			"|   "
-		};
-*/
