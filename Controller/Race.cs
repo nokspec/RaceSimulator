@@ -25,7 +25,7 @@ namespace Controller
 		public Section section;
 
 		public List<IParticipant> Participants { get; set; }
-		private Dictionary<Section, SectionData> _positions = new(); //Participants positions with left and right.
+		private Dictionary<Section, SectionData> _positions; //Participants positions with left and right.
 
 		//Timer
 		public DateTime StartTime { get; set; }
@@ -35,14 +35,16 @@ namespace Controller
 
 		//Laps
 		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public static int _lapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
+		public static int _lapsCount = -1; //Stargrid staat achter finish, daarom -1.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
 			Track = track;
 			Participants = participants;
 			_random = new Random(DateTime.Now.Millisecond);
+			_positions = new();
 			StartPositions(Track, Participants);
+			RandomizeEquipment();
 
 			//Timer
 			_timer = new System.Timers.Timer(TimerInterval); //Interval
@@ -82,8 +84,8 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.Equipment.Quality = _random.Next(0, 10);
-				participant.Equipment.Performance = _random.Next(0, 10);
+				participant.Equipment.Quality = _random.Next(1, 10); 
+				participant.Equipment.Performance = _random.Next(1, 10);
 			}
 		}
 

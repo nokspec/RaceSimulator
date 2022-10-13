@@ -25,13 +25,19 @@ namespace RaceSimulator_Project
 		public static void Initialize(Race race)
 		{
 			CurrentSection = null; //When initializing there's no _currentSection.
+			
+			_race = race;
+			Data.CurrentRace.DriversChanged += OnDriversChanged;
+			ConsolePreparation();
+		}
+
+		public static void ConsolePreparation()
+		{
+			Console.Clear(); //Oude track weghalen.
 			X = 0;
 			Y = 0;
 			_position = 1;
 			SetPositie(35, 30);
-
-			_race = race;
-			Data.CurrentRace.DriversChanged += OnDriversChanged;
 		}
 
 		//Event

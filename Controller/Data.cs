@@ -27,9 +27,9 @@ namespace Controller
 		{
 			Competition.Participants.Add(new Driver("Kees", 0, new Car(20, 10, 10, false), TeamColors.Red));
 			Competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
-			//Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
-			//Competition.Participants.Add(new Driver("Uno", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
-			//Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
+			Competition.Participants.Add(new Driver("Uno", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
+			Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 			//Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 		}
@@ -53,7 +53,6 @@ namespace Controller
 				CurrentRace.RaceFinished += OnFinishedRace;
 				NextRaceEvent?.Invoke(null, new NextRaceEventArgs() { Race = CurrentRace });
 				CurrentRace.Start();
-
 			}
 		}
 
