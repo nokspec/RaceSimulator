@@ -32,15 +32,16 @@ namespace ControllerTest
 		{
 			_competition.Tracks.Enqueue(new Track("Test", new SectionType[] { SectionType.Straight }));
 			Track result = _competition.NextTrack();
-			Assert.IsNotNull(result);
+			Assert.AreEqual("Test", result.Name);
 		}
 
 		[Test]
 		public void NextTrack_OneInQueue_RemoveTrackFromQueue()
 		{
 			_competition.Tracks.Enqueue(new Track("Test", new SectionType[] { SectionType.Straight }));
-			_competition.NextTrack();
-			Assert.AreEqual(0, _competition.Tracks.Count);
+			var result = _competition.NextTrack();
+			result = _competition.NextTrack();
+			Assert.IsNull(result);
 		}
 
 		[Test]

@@ -5,6 +5,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using static Model.SectionData;
@@ -15,8 +16,9 @@ namespace Controller
 {
 	public class Race
 	{
-		public event EventHandler ThresholdReached; //idk
-		public event EventHandler<DriversChangedEventArgs> DriversChanged; //L5-5
+		//Events
+		public event EventHandler<DriversChangedEventArgs> DriversChanged;
+		public event EventHandler RaceFinished;
 
 		public Track Track { get; set; }
 		public Section CurrentSection;
@@ -25,12 +27,15 @@ namespace Controller
 		public List<IParticipant> Participants { get; set; }
 		private Dictionary<Section, SectionData> _positions = new(); //Participants positions with left and right.
 
+		//Timer
 		public DateTime StartTime { get; set; }
 		private Random _random;
-		private System.Timers.Timer timer; //Timer
+		private System.Timers.Timer _timer; //Timer
+		private static int TimerInterval = 500; //Bepaal timer interval.
 
-		public int amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public int LapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
+		//Laps
+		public static int amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
+		public static int LapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -40,29 +45,29 @@ namespace Controller
 			StartPositions(Track, Participants);
 
 			//Timer
-			timer = new System.Timers.Timer(500); //Interval
+			_timer = new System.Timers.Timer(TimerInterval); //Interval
 			Start(); //Start timer
-			timer.Elapsed += OnTimedEvent;
 		}
-
-		public void OnTimedEvent(object sender, EventArgs e)
-		{
-			//Stop();
-			CheckDriverMovement();
-			//Start();
-			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //Dit is nodig om te laten refreshen.
-		}
-
 		private void Start() //Start Timer
 		{
 			StartTime = DateTime.Now;
-			timer.Elapsed += OnTimedEvent; //Subscribe
-			timer.AutoReset = true;
-			timer.Enabled = true;
+			_timer.Elapsed += OnTimedEvent; //Subscribe
+			_timer.AutoReset = true;
+			_timer.Start();
 		}
-		private void Stop() //Stop Timer
+
+		protected void OnTimedEvent(object sender, EventArgs e)
 		{
-			timer.Enabled = false;
+			//Stop();
+			CheckDriverMovement();
+			//_timer.Start();
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //this is de huidige class.
+
+			if (CheckRaceFinished()) //Als de race gefinished is.
+			{
+				RaceFinished?.Invoke(this, new EventArgs());
+				CleanUp();
+			}
 		}
 
 		public SectionData GetSectionData(Section section)
@@ -92,13 +97,48 @@ namespace Controller
 
 		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
-			if (participant.LapsCount <= amountOfLaps)
+			if (participant.LapsCount < amountOfLaps)
 			{
 				CountLaps(participant);
 			}
-			else if (participant.LapsCount == (amountOfLaps + 1))
+			else if (participant.LapsCount == (amountOfLaps))
 			{
 				participant.Finished = true;
+			}
+		}
+
+		private void CleanUp() //Race finished, clean everything up for next race.
+		{
+			_timer.Stop();
+			DriversChanged = null;
+			RaceFinished = null;
+
+			foreach (IParticipant participant in Participants)
+			{
+				participant.Finished = false;
+				participant.LapsCount = -1;
+			}
+			Console.WriteLine("cleanup done");
+		}
+
+		private void Stop()
+		{
+			_timer.Enabled = false;
+		}
+
+		private bool CheckRaceFinished()
+		{
+			int count = 0;
+			foreach (IParticipant participant in Participants)
+			{
+				if (participant.Finished == true)
+					count++;
+			}
+			if (count == Participants.Count)
+				return true;
+			else
+			{
+				return false;
 			}
 		}
 
@@ -121,8 +161,15 @@ namespace Controller
 			int i = 0;
 			foreach (Section section in Track.Sections)
 			{
-				if (!participant.Finished) //Als de bool false is
+				if (!participant.Finished)
 				{
+					SectionData sectionData = GetSectionData(section);
+					if (participant == sectionData.Right) //Fix voor eerste participant die geskipt wordt.
+					{
+						participant.CurrentSection = section;
+						LapsCount++;
+					}
+
 					if (section == participant.CurrentSection)
 					{
 						if (participant.Equipment.IsBroken == true)
@@ -130,7 +177,8 @@ namespace Controller
 							return;
 						}
 
-						SectionData sectionData = GetSectionData(section);
+						//SectionData sectionData = GetSectionData(section);
+
 
 						if (sectionData.Right == participant)
 						{
@@ -177,7 +225,7 @@ namespace Controller
 		}
 
 		#region StartPositions
-		private void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
+		public void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
 		{
 			int sectionsLength = Track.Sections.Count;
 			int participantsRemaining = Participants.Count;

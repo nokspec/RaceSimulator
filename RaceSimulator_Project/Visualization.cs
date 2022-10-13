@@ -131,18 +131,22 @@ namespace RaceSimulator_Project
 			{
 				string newS = s;
 				if (sectionData.Left != null)
-				{
 					newS = ReplaceString(s, sectionData.Left);
-				}
 				else if (sectionData.Right != null)
 				{
 					newS = ReplaceString(s, sectionData.Right);
-				} 
-			
+				}
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
 				SetPositie(0, 1); //Important
 				Console.WriteLine(newS);
 			}
+		}
+
+		private static void CheckParticipantFinished(IParticipant participant) //Dit nog uitwerken. Level 5-4
+		{
+			bool result = false;
+			if (participant.Finished)
+				result = true;
 		}
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{
@@ -234,7 +238,7 @@ namespace RaceSimulator_Project
 				}
 			}
 		}
-		
+
 		private static void DetermineDirection(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
