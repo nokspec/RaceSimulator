@@ -34,8 +34,8 @@ namespace Controller
 		private static int TimerInterval = 500; //Bepaal timer interval.
 
 		//Laps
-		public static int amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public static int LapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
+		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
+		public static int _lapsCount = -1; //met -1 beginnen omdat de participants bij de eerste lap eerst over de finish gaan.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -48,11 +48,10 @@ namespace Controller
 			_timer = new System.Timers.Timer(TimerInterval); //Interval
 			Start(); //Start timer
 		}
-		private void Start() //Start Timer
+		public void Start() //Start Timer. Public zodat Data.cs erbij kan.
 		{
 			StartTime = DateTime.Now;
 			_timer.Elapsed += OnTimedEvent; //Subscribe
-			_timer.AutoReset = true;
 			_timer.Start();
 		}
 
@@ -91,17 +90,17 @@ namespace Controller
 		private int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
-			LapsCount++;
-			return LapsCount;
+			_lapsCount++;
+			return _lapsCount;
 		}
 
 		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
-			if (participant.LapsCount < amountOfLaps)
+			if (participant.LapsCount < _amountOfLaps)
 			{
 				CountLaps(participant);
 			}
-			else if (participant.LapsCount == (amountOfLaps))
+			else if (participant.LapsCount == (_amountOfLaps))
 			{
 				participant.Finished = true;
 			}
@@ -121,7 +120,7 @@ namespace Controller
 			Console.WriteLine("cleanup done");
 		}
 
-		private void Stop()
+		private void Stop() //Voor debuggen.
 		{
 			_timer.Enabled = false;
 		}
@@ -167,7 +166,7 @@ namespace Controller
 					if (participant == sectionData.Right) //Fix voor eerste participant die geskipt wordt.
 					{
 						participant.CurrentSection = section;
-						LapsCount++;
+						_lapsCount++;
 					}
 
 					if (section == participant.CurrentSection)
@@ -208,14 +207,14 @@ namespace Controller
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 						CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
+						if (section.SectionTypes == SectionType.Finish && _lapsCount >= 0) //They drove one lap.
 						{
 							NextLap(participant, nextSectionData);
 						}
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) //First lap started.
+						if (section.SectionTypes == SectionType.Finish && _lapsCount == -1) //First lap started.
 						{
-							LapsCount++;
+							_lapsCount++;
 						}
 						return;
 					}
