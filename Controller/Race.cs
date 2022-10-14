@@ -21,7 +21,7 @@ namespace Controller
 		public Section section;
 
 		public List<IParticipant> Participants { get; set; }
-		private Dictionary<Section, SectionData> _positions; //Participants positions with left and right.
+		private Dictionary<Section, SectionData> _positions;
 
 		//Events
 		public event EventHandler<DriversChangedEventArgs> DriversChanged;
@@ -31,7 +31,7 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int TimerInterval = 500; //Bepaal timer interval.
+		private static int TimerInterval = 500; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
@@ -60,9 +60,9 @@ namespace Controller
 
 		protected void OnTimedEvent(object sender, EventArgs e)
 		{
-			//Stop();
+			//Stop(); //debuggen
 			CheckDriverMovement();
-			//_timer.Start();
+			//_timer.Start(); //debuggen
 			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //this is de huidige class.
 
 			if (CheckRaceFinished()) //Als de race gefinished is.
@@ -136,13 +136,16 @@ namespace Controller
 					count++;
 			}
 			if (count == Participants.Count)
+			{
 				return true;
+			}
 			else
 			{
 				return false;
 			}
 		}
 
+		#region moveparticipants
 		public void CheckDriverMovement()
 		{
 			foreach (IParticipant participant in Participants)
@@ -219,11 +222,15 @@ namespace Controller
 					}
 					i++;
 				}
+				else
+				{
+					//Verwijder participant van de track nadat hij gefinished is.
+				}
 			}
 		}
-
+		#endregion
 		#region StartPositions
-		public void StartPositions(Track track, List<IParticipant> participants) //Place participants on their start position.
+		public void StartPositions(Track track, List<IParticipant> participants)
 		{
 			int sectionsLength = Track.Sections.Count;
 			int participantsRemaining = Participants.Count;
@@ -258,7 +265,7 @@ namespace Controller
 				{
 					break;
 				}
-				else //Go back one section and add the participants there.
+				else
 				{
 					if (participantsRemaining != 0)
 					{

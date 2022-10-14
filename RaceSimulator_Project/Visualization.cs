@@ -36,7 +36,7 @@ namespace RaceSimulator_Project
 			X = 0;
 			Y = 0;
 			_position = 1;
-			SetPositie(35, 30);
+			SetPosition(35, 30);
 		}
 
 		//Event
@@ -149,7 +149,7 @@ namespace RaceSimulator_Project
 					newS = ReplaceString(s, sectionData.Right);
 				}
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
-				SetPositie(0, 1); //Zonder dit crasht het.
+				SetPosition(0, 1); //Zonder dit crasht het.
 				Console.WriteLine(newS);
 			}
 		}
@@ -173,16 +173,19 @@ namespace RaceSimulator_Project
 			return null;
 		}
 
-		private static void SetPositie(int xVerandering, int yVerandering)
+		private static void SetPosition(int xChange, int yChange) //Sets the position for the next section.
 		{
-			X += xVerandering;
-			Y += yVerandering;
+			X += xChange;
+			Y += yChange;
 			Console.SetCursorPosition(X, Y);
 		}
 
 		#region drawtrack
 		public static void DrawTrack(Track track)
 		{
+			/* 1, 3 = horizontal
+			* 2, 4 = vertical
+			*/
 			foreach (Section section in track.Sections)
 			{
 				CurrentSection = section;
@@ -245,6 +248,7 @@ namespace RaceSimulator_Project
 			}
 		}
 
+		//TODO: Refactor deze functie
 		private static void DetermineDirection(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
@@ -252,82 +256,82 @@ namespace RaceSimulator_Project
 				case SectionType.Finish:
 					if (_position == 1)
 					{
-						SetPositie(4, -4);
+						SetPosition(4, -4);
 					}
 					else if (_position == 3)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 					}
 					else if (_position == 2)
 					{
-						SetPositie(0, 0);
+						SetPosition(0, 0);
 					}
 					else if (_position == 4)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.StartGrid:
 					if (_position == 1)
 					{
-						SetPositie(4, -4);
+						SetPosition(4, -4);
 					}
 					else if (_position == 3)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 					}
 					else if (_position == 2)
 					{
-						SetPositie(0, 0);
+						SetPosition(0, 0);
 					}
 					else if (_position == 4)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.Straight:
 					if (_position == 1)
 					{
-						SetPositie(4, -4);
+						SetPosition(4, -4);
 					}
 					else if (_position == 3)
 					{
-						SetPositie(-4, -4);
+						SetPosition(-4, -4);
 					}
 					else if (_position == 2)
 					{
-						SetPositie(0, 0);
+						SetPosition(0, 0);
 					}
 					else if (_position == 4)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.RightCorner:
 					if (_position == 1)
 					{
-						SetPositie(4, -4);
+						SetPosition(4, -4);
 						_position = 2;
 						_oldPosition = 1;
 					}
 					else if (_position == 2)
 					{
-						SetPositie(0, 0);
+						SetPosition(0, 0);
 						_position = 3;
 						_oldPosition = 2;
 					}
 					else if (_position == 3)
 					{
-						SetPositie(-4, -4);
+						SetPosition(-4, -4);
 						_position = 4;
 						_oldPosition = 3;
 					}
 					else if (_position == 4)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 						_position = 1;
 						_oldPosition = 4;
 					}
@@ -336,25 +340,25 @@ namespace RaceSimulator_Project
 				case SectionType.LeftCorner:
 					if (_position == 3)
 					{
-						SetPositie(-4, -4);
+						SetPosition(-4, -4);
 						_position = 2;
 						_oldPosition = 3;
 					}
 					else if (_position == 4)
 					{
-						SetPositie(0, -8);
+						SetPosition(0, -8);
 						_position = 3;
 						_oldPosition = 4;
 					}
 					else if (_position == 1)
 					{
-						SetPositie(4, -4);
+						SetPosition(4, -4);
 						_position = 4;
 						_oldPosition = 1;
 					}
 					else if (_position == 2)
 					{
-						SetPositie(0, 0);
+						SetPosition(0, 0);
 						_position = 1;
 						_oldPosition = 2;
 					}
@@ -364,3 +368,4 @@ namespace RaceSimulator_Project
 	}
 	#endregion
 }
+		
