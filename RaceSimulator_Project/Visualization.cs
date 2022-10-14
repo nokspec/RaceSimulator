@@ -29,6 +29,9 @@ namespace RaceSimulator_Project
 			ConsolePreparation();
 		}
 
+		/*
+		 * Prepares the Console for the next race/track.
+		 */
 		private static void ConsolePreparation()
 		{
 			Console.Clear(); //Oude track weghalen.
@@ -40,16 +43,24 @@ namespace RaceSimulator_Project
 		}
 
 		//Event
+		//TODO: Fix documentation
+		/*
+		 * 
+		 */
 		private static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
 			DrawTrack(e.Track);
 		}
 
+		//TODO: Fix documentation
+		/*
+		 * 
+		 */
 		public static void OnNextRaceEvent(object sender, NextRaceEventArgs e)
 		{
 			Initialize(e.Race);
 			Data.CurrentRace.DriversChanged += OnDriversChanged; //Re-subscribe
-			DrawTrack(Data.CurrentRace.Track); //Data.CurrentRace misschien 
+			DrawTrack(Data.CurrentRace.Track);
 		}
 
 		#region graphics
@@ -137,6 +148,10 @@ namespace RaceSimulator_Project
 
 		#endregion //Sections string[]
 
+		//TODO: Fix documentation
+		/*
+		 * 
+		 */
 		private static void PrintToConsole(string[] array, SectionData sectionData)
 		{
 			foreach (string s in array)
@@ -154,14 +169,30 @@ namespace RaceSimulator_Project
 			}
 		}
 
+		/*
+		 * Replaces the placeholder (1 and 2) with the first letter of a participants name, an empty space (" ") or with an "X".
+		 * If a participant is null, it replaces the 1 or 2 with a space.
+		 * Otherwise if the Equipment is broken it replaces 1 or 2 with an "X".
+		 * Finally, if a participant isn't null AND their Equipment isn't broken;
+		 * it'll replace the 1 or 2 with the first letter of their name.
+		 */
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
-		{
-			return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
+		{ 
+			string leftP = leftParticipant == null ? " " : leftParticipant.Equipment.IsBroken ? "X" : leftParticipant.Name.Substring(0, 1);
+			string rightP = rightParticipant == null ? " " : rightParticipant.Equipment.IsBroken ? "X" : rightParticipant.Name.Substring(0, 1);
+			//: is null-coalescing operator.
+			return input.Replace("1", leftP).Replace("2", rightP);
+
+			/* Had eerst de onderstaande return maar ik wist niet hoe je binnen de Replace de IsBroken dingen kon toevoegen
+			 * Wat ik nu heb werkt wel.
+			 *return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
+			 */
 		}
 
 		private static string ReplaceString(string input, IParticipant participant)
 		{
 			participant.CurrentSection = CurrentSection; //Geef CurrentSection mee aan Participant.CurrentSection
+
 			if (race.GetSectionData(participant.CurrentSection).Left == participant)
 			{
 				return input.Replace("1", participant.Name[0].ToString());
@@ -368,4 +399,3 @@ namespace RaceSimulator_Project
 	}
 	#endregion
 }
-		

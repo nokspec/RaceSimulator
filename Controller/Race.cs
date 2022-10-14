@@ -31,7 +31,7 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int TimerInterval = 500; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int TimerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
@@ -56,7 +56,7 @@ namespace Controller
 		/*
 		 * 
 		 */
-		public void Start() 
+		public void Start()
 		{
 			StartTime = DateTime.Now;
 			_timer.Elapsed += OnTimedEvent; //Subscribe
@@ -84,11 +84,20 @@ namespace Controller
 		}
 
 		//TODO: Fix documentation.
+		/*
+		 * 
+		 */
 		protected void OnTimedEvent(object sender, EventArgs e)
 		{
 			//Stop(); //debuggen
 			CheckDriverMovement();
 			//_timer.Start(); //debuggen
+
+			//Eerst fixen en dan pas breaken, anders kan het gebeuren dat een participant breakt
+			//en vervolgens meteen gefixt wordt.
+			RandomizeFixing();
+
+			RandomizeIsBroken();
 			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //this is de huidige class.
 
 			if (CheckRaceFinished()) //Als de race gefinished is.
@@ -96,6 +105,7 @@ namespace Controller
 				RaceFinished?.Invoke(this, new EventArgs());
 				CleanUp();
 			}
+
 		}
 
 		public SectionData GetSectionData(Section section)
@@ -107,15 +117,83 @@ namespace Controller
 			return _positions[section];
 		}
 
-		public void RandomizeEquipment()
+		#region Randomizing participants
+		public void RandomizeEquipment() //kan private?
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.Equipment.Quality = _random.Next(1, 10);
-				participant.Equipment.Performance = _random.Next(3, 10);
+				participant.Equipment.Quality = _random.Next(1, 10); 
+				participant.Equipment.Performance = _random.Next(1, 10);
+				participant.Equipment.Speed = _random.Next(4, 10); //Toegevoegd bij 5-7
 			}
 		}
 
+		/*
+		 * Gets called in OnTimedEvent()
+		 * Calculates if equipment is broken with the help of _random 
+		 * and a formula depending on the quality of a car.
+		 */
+		private void RandomizeIsBroken()
+		{
+			List<IParticipant> DrivingParticipants = new();
+			foreach (IParticipant participant in Participants)
+			{
+				if (participant.Equipment.IsBroken == false)
+					DrivingParticipants.Add(participant);
+			}
+
+			foreach (IParticipant participant in DrivingParticipants)
+			{
+				double chanceCalculation = (11 - (participant.Equipment.Quality * 0.5)) * 0.0005;
+				//NextDouble geeft waarde tussen 0.0 en 1.0.
+				if (_random.NextDouble() < chanceCalculation)
+				{
+					participant.Equipment.IsBroken = true;
+				}
+			}
+		}
+
+		private void RandomizeFixing()
+		{
+			foreach (IParticipant participant in Participants.Where(p => p.Equipment.IsBroken))
+			{
+				if (_random.NextDouble() < 0.05) //5% kans
+				{
+					participant.Equipment.IsBroken = false;
+
+					//Als speed groter is dan 5 wordt de speed verlaagd.
+					if (participant.Equipment.Speed > 7)
+						participant.Equipment.Speed--;
+
+					//Dit wordt altijd uitgevoerd.
+					if (participant.Equipment.Quality > 1)
+						participant.Equipment.Quality--;
+
+					Console.WriteLine($"{participant.Name} is gefixt"); //debugging
+				}
+			}
+
+			/*List<IParticipant> BrokenParticipants = new();
+			foreach (IParticipant participant in Participants)
+			{
+				if (participant.Equipment.IsBroken == true)
+					BrokenParticipants.Add(participant);
+			}
+
+			foreach (IParticipant participant in BrokenParticipants)
+			{
+				double chanceCalculation = (11 - (participant.Equipment.Quality * 0.05) * 0.005);
+				if (_random.NextDouble() < chanceCalculation)
+				{
+					participant.Equipment.IsBroken = false;
+					Console.WriteLine($"{participant.Name} is gefixt");
+				}
+			}*/
+		}
+
+		#endregion
+
+		#region Lap management
 		/*
 		 * Gets called by NextLap()
 		 * If this function gets called it adds +1 to participant.LapsCount & _lapsCount. Returns _lapsCount.
@@ -132,7 +210,7 @@ namespace Controller
 		 * Checks if a participant has finished and otherwise calls CountLaps
 		 */
 		//TODO: Maybe refactor this. (if, else ipv if, else if)
-		private void NextLap(IParticipant participant, SectionData sectionData) 
+		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
 			if (participant.LapsCount < _amountOfLaps)
 			{
@@ -148,7 +226,7 @@ namespace Controller
 		 * Gets called by OnTimeEvent().
 		 * Checks if all participants have finished. Returns a bool.
 		 */
-		private bool CheckRaceFinished() 
+		private bool CheckRaceFinished()
 		{
 			int count = 0;
 			foreach (IParticipant participant in Participants)
@@ -166,8 +244,9 @@ namespace Controller
 				return false;
 			}
 		}
+		#endregion
 
-		#region moveparticipants
+		#region Move participants
 		/*
 		 * Checks if a participant has moved section. If it has, MoveParticipants() is called.
 		 */
@@ -207,6 +286,7 @@ namespace Controller
 					{
 						if (participant.Equipment.IsBroken == true)
 						{
+							Console.WriteLine($"{participant.Name} is kapot"); //debugging
 							return;
 						}
 
@@ -251,7 +331,7 @@ namespace Controller
 					}
 					i++;
 				}
-				else
+				else //Verwijder participant van de track nadat hij gefinished is.
 				{
 					if (sectionData.Right == participant)
 					{
@@ -261,7 +341,7 @@ namespace Controller
 					{
 						sectionData.Left = null;
 					}
-					//Verwijder participant van de track nadat hij gefinished is.
+
 				}
 			}
 		}
@@ -330,7 +410,7 @@ namespace Controller
 		/*
 		 * Can be used when debugging with the timer is enabled.
 		 */
-		private void Stop() 
+		private void Stop()
 		{
 			_timer.Enabled = false;
 		}
