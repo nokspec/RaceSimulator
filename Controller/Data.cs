@@ -41,11 +41,15 @@ namespace Controller
 			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 		}
 
+		/*
+		 * Gets called by OnFinishedRace.
+		 * Sets the NextTrack and then checks if currentTrack isn't null. 
+		 * If it isn't it will initialize and start the next race.
+		 */
 		public static void NextRace()
 		{
-			//If not null, create new race.
 			Track currentTrack = Competition.NextTrack();
-			if (currentTrack != null)
+			if (currentTrack != null) //If not null, create new race.
 			{
 				CurrentRace = new Race(currentTrack, Competition.Participants);
 
@@ -55,6 +59,11 @@ namespace Controller
 			}
 		}
 
+		//TODO: Fix documentation.
+		/*
+		 * Is subscribed to CurrentRace.RaceFinished.
+		 * 
+		 */
 		public static void OnFinishedRace(object sender, EventArgs e)
 		{
 			NextRace();

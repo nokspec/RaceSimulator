@@ -37,6 +37,7 @@ namespace Controller
 		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
 		public static int _lapsCount = -1; //Stargrid staat achter finish, daarom -1.
 
+		//TODO: Fix documentation.
 		public Race(Track track, List<IParticipant> participants)
 		{
 			Track = track;
@@ -51,9 +52,10 @@ namespace Controller
 			Start(); //Start timer
 		}
 
+		//TODO: Fix documentation.
 		/*
 		 * 
-		 */ 
+		 */
 		public void Start() 
 		{
 			StartTime = DateTime.Now;
@@ -61,6 +63,7 @@ namespace Controller
 			_timer.Start();
 		}
 
+		//TODO: Fix documentation.
 		/*
 		 * Race finished, clean everything up for next race.
 		 */
@@ -80,6 +83,7 @@ namespace Controller
 			}
 		}
 
+		//TODO: Fix documentation.
 		protected void OnTimedEvent(object sender, EventArgs e)
 		{
 			//Stop(); //debuggen
@@ -183,7 +187,7 @@ namespace Controller
 
 		//TODO: Better explanation.
 		/*
-		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts the participant in the next section.
+		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts that participant in the next section.
 		 */
 		public void MoveParticipants(IParticipant participant)
 		{
@@ -323,7 +327,10 @@ namespace Controller
 		}
 		#endregion start
 
-		private void Stop() //Voor debuggen.
+		/*
+		 * Can be used when debugging with the timer is enabled.
+		 */
+		private void Stop() 
 		{
 			_timer.Enabled = false;
 		}
