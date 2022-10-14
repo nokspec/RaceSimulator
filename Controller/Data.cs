@@ -36,8 +36,8 @@ namespace Controller
 
 		public static void AddTracks()
 		{
-			//Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
-			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
+			Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
+			Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
 			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 		}
 

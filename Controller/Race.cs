@@ -51,11 +51,33 @@ namespace Controller
 			Start(); //Start timer
 		}
 
-		public void Start() //Start Timer. Public zodat Data.cs erbij kan.
+		/*
+		 * 
+		 */ 
+		public void Start() 
 		{
 			StartTime = DateTime.Now;
 			_timer.Elapsed += OnTimedEvent; //Subscribe
 			_timer.Start();
+		}
+
+		/*
+		 * Race finished, clean everything up for next race.
+		 */
+		private void CleanUp()
+		{
+			_timer.Stop();
+			DriversChanged = null;
+			RaceFinished = null;
+			CurrentSection = null;
+			_lapsCount = -1;
+			_amountOfLaps = 0;
+
+			foreach (IParticipant participant in Participants)
+			{
+				participant.Finished = false;
+				participant.LapsCount = -1;
+			}
 		}
 
 		protected void OnTimedEvent(object sender, EventArgs e)
@@ -90,6 +112,10 @@ namespace Controller
 			}
 		}
 
+		/*
+		 * Gets called by NextLap()
+		 * If this function gets called it adds +1 to participant.LapsCount & _lapsCount. Returns _lapsCount.
+		 */
 		private int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
@@ -97,7 +123,12 @@ namespace Controller
 			return _lapsCount;
 		}
 
-		private void NextLap(IParticipant participant, SectionData sectionData)
+		/*
+		 * Gets called by MoveParticipants() after the participants have completed one lap.
+		 * Checks if a participant has finished and otherwise calls CountLaps
+		 */
+		//TODO: Maybe refactor this. (if, else ipv if, else if)
+		private void NextLap(IParticipant participant, SectionData sectionData) 
 		{
 			if (participant.LapsCount < _amountOfLaps)
 			{
@@ -108,26 +139,12 @@ namespace Controller
 				participant.Finished = true;
 			}
 		}
-		private void CleanUp() //Race finished, clean everything up for next race.
-		{
-			_timer.Stop();
-			DriversChanged = null;
-			RaceFinished = null;
-			CurrentSection = null;
 
-			foreach (IParticipant participant in Participants)
-			{
-				participant.Finished = false;
-				participant.LapsCount = -1;
-			}
-		}
-
-		private void Stop() //Voor debuggen.
-		{
-			_timer.Enabled = false;
-		}
-
-		private bool CheckRaceFinished()
+		/*
+		 * Gets called by OnTimeEvent().
+		 * Checks if all participants have finished. Returns a bool.
+		 */
+		private bool CheckRaceFinished() 
 		{
 			int count = 0;
 			foreach (IParticipant participant in Participants)
@@ -137,6 +154,7 @@ namespace Controller
 			}
 			if (count == Participants.Count)
 			{
+				Console.WriteLine("Race finished"); //Print to show that a race has finished
 				return true;
 			}
 			else
@@ -146,6 +164,9 @@ namespace Controller
 		}
 
 		#region moveparticipants
+		/*
+		 * Checks if a participant has moved section. If it has, MoveParticipants() is called.
+		 */
 		public void CheckDriverMovement()
 		{
 			foreach (IParticipant participant in Participants)
@@ -160,14 +181,18 @@ namespace Controller
 			}
 		}
 
+		//TODO: Better explanation.
+		/*
+		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts the participant in the next section.
+		 */
 		public void MoveParticipants(IParticipant participant)
 		{
 			int i = 0;
 			foreach (Section section in Track.Sections)
 			{
+				SectionData sectionData = GetSectionData(section);
 				if (!participant.Finished)
 				{
-					SectionData sectionData = GetSectionData(section);
 					if (participant == sectionData.Right) //Fix voor eerste participant die geskipt wordt.
 					{
 						participant.CurrentSection = section;
@@ -224,12 +249,24 @@ namespace Controller
 				}
 				else
 				{
+					if (sectionData.Right == participant)
+					{
+						sectionData.Right = null;
+					}
+					else
+					{
+						sectionData.Left = null;
+					}
 					//Verwijder participant van de track nadat hij gefinished is.
 				}
 			}
 		}
 		#endregion
+
 		#region StartPositions
+		/*
+		 * Places the participants on the track, prior to the race beginning.
+		 */
 		public void StartPositions(Track track, List<IParticipant> participants)
 		{
 			int sectionsLength = Track.Sections.Count;
@@ -285,6 +322,11 @@ namespace Controller
 			}
 		}
 		#endregion start
+
+		private void Stop() //Voor debuggen.
+		{
+			_timer.Enabled = false;
+		}
 	}
 }
 
