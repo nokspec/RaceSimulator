@@ -36,9 +36,11 @@ namespace Controller
 
 		public static void AddTracks()
 		{
-			Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
-			Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
+			//Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
+			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
 			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
+			//Competition.Tracks.Enqueue(new Track("Test", MakeRace("Test"))); 
+
 		}
 
 		/*
@@ -71,6 +73,16 @@ namespace Controller
 		
 		public static SectionType[] MakeRace(string naam)
 		{
+			if (naam.Equals("Test"))
+			{
+				SectionType[] trackBuilder = new SectionType[]
+				{
+					SectionType.StartGrid,
+					SectionType.RightCorner,
+					SectionType.Finish
+				};
+				return trackBuilder;
+			}
 			if (naam.Equals("Rechtsom"))
 			{
 				SectionType[] trackBuilder = new SectionType[]
@@ -94,7 +106,7 @@ namespace Controller
 				};
 				return trackBuilder;
 			}
-			else if (naam.Equals("Linksom"))
+			if (naam.Equals("Linksom"))
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{
@@ -117,7 +129,7 @@ namespace Controller
 				};
 				return trackBuilder;
 			}
-			else if (naam.Equals("TestAlles"))
+			if (naam.Equals("TestAlles"))
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{

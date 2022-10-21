@@ -18,7 +18,6 @@ namespace Controller
 	{
 		public Track Track { get; set; }
 		public Section CurrentSection;
-		public Section section;
 
 		public List<IParticipant> Participants { get; set; }
 		private Dictionary<Section, SectionData> _positions;
@@ -31,11 +30,11 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int TimerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
-		public static int _amountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public static int _lapsCount = -1; //Stargrid staat achter finish, daarom -1.
+		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
+		public static int LapsCount = -1; //Stargrid staat achter finish, daarom -1.
 
 		//TODO: Fix documentation.
 		public Race(Track track, List<IParticipant> participants)
@@ -48,7 +47,7 @@ namespace Controller
 			RandomizeEquipment();
 
 			//Timer
-			_timer = new System.Timers.Timer(TimerInterval); //Interval
+			_timer = new System.Timers.Timer(_timerInterval); //Interval
 			Start(); //Start timer
 		}
 
@@ -73,8 +72,8 @@ namespace Controller
 			DriversChanged = null;
 			RaceFinished = null;
 			CurrentSection = null;
-			_lapsCount = -1;
-			_amountOfLaps = 0;
+			LapsCount = -1;
+			AmountOfLaps = 0;
 
 			foreach (IParticipant participant in Participants)
 			{
@@ -93,8 +92,6 @@ namespace Controller
 			CheckDriverMovement();
 			//_timer.Start(); //debuggen
 
-			//Eerst fixen en dan pas breaken, anders kan het gebeuren dat een participant breakt
-			//en vervolgens meteen gefixt wordt.
 			RandomizeFixing();
 
 			RandomizeIsBroken();
@@ -122,7 +119,7 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.Equipment.Quality = _random.Next(1, 10); 
+				participant.Equipment.Quality = _random.Next(1, 10);
 				participant.Equipment.Performance = _random.Next(1, 10);
 				participant.Equipment.Speed = _random.Next(4, 10); //Toegevoegd bij 5-7
 			}
@@ -172,23 +169,6 @@ namespace Controller
 					Console.WriteLine($"{participant.Name} is gefixt"); //debugging
 				}
 			}
-
-			/*List<IParticipant> BrokenParticipants = new();
-			foreach (IParticipant participant in Participants)
-			{
-				if (participant.Equipment.IsBroken == true)
-					BrokenParticipants.Add(participant);
-			}
-
-			foreach (IParticipant participant in BrokenParticipants)
-			{
-				double chanceCalculation = (11 - (participant.Equipment.Quality * 0.05) * 0.005);
-				if (_random.NextDouble() < chanceCalculation)
-				{
-					participant.Equipment.IsBroken = false;
-					Console.WriteLine($"{participant.Name} is gefixt");
-				}
-			}*/
 		}
 
 		#endregion
@@ -201,22 +181,21 @@ namespace Controller
 		private int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
-			_lapsCount++;
-			return _lapsCount;
+			LapsCount++;
+			return LapsCount;
 		}
 
 		/*
 		 * Gets called by MoveParticipants() after the participants have completed one lap.
 		 * Checks if a participant has finished and otherwise calls CountLaps
 		 */
-		//TODO: Maybe refactor this. (if, else ipv if, else if)
 		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
-			if (participant.LapsCount < _amountOfLaps)
+			if (participant.LapsCount < AmountOfLaps)
 			{
 				CountLaps(participant);
 			}
-			else if (participant.LapsCount == (_amountOfLaps))
+			else if (participant.LapsCount == (AmountOfLaps))
 			{
 				participant.Finished = true;
 			}
@@ -279,7 +258,7 @@ namespace Controller
 					if (participant == sectionData.Right) //Fix voor eerste participant die geskipt wordt.
 					{
 						participant.CurrentSection = section;
-						_lapsCount++;
+						LapsCount++;
 					}
 
 					if (section == participant.CurrentSection)
@@ -318,14 +297,14 @@ namespace Controller
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 						CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
 
-						if (section.SectionTypes == SectionType.Finish && _lapsCount >= 0) //They drove one lap.
+						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
 						{
 							NextLap(participant, nextSectionData);
 						}
 
-						if (section.SectionTypes == SectionType.Finish && _lapsCount == -1) //First lap started.
+						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) //First lap started.
 						{
-							_lapsCount++;
+							LapsCount++;
 						}
 						return;
 					}
@@ -408,7 +387,7 @@ namespace Controller
 		#endregion start
 
 		/*
-		 * Can be used when debugging with the timer is enabled.
+		 * Can be used when debugging with the timer enabled.
 		 */
 		private void Stop()
 		{

@@ -17,8 +17,8 @@ namespace RaceSimulator_Project
 	{
 		public static int X;
 		public static int Y;
-		public static int _position;
-		public static int _oldPosition; //Is nodig voor de bochten.
+		public static int Position;
+		public static int OldPosition; //Is nodig voor de bochten.
 		public static Section CurrentSection;
 		private static Race race;
 
@@ -38,7 +38,7 @@ namespace RaceSimulator_Project
 							 //De waardes hieronder stonden origineel in Initialize, maar hier staan ze logischer vind ik.
 			X = 0;
 			Y = 0;
-			_position = 1;
+			Position = 1;
 			SetPosition(35, 30);
 		}
 
@@ -92,8 +92,8 @@ namespace RaceSimulator_Project
 		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
 		{
 			"|  |",
-			"| 1|",
-			"|2 |",
+			"| 2|",
+			"|1 |",
 			"|  |"
 		};
 
@@ -180,7 +180,7 @@ namespace RaceSimulator_Project
 		{ 
 			string leftP = leftParticipant == null ? " " : leftParticipant.Equipment.IsBroken ? "X" : leftParticipant.Name.Substring(0, 1);
 			string rightP = rightParticipant == null ? " " : rightParticipant.Equipment.IsBroken ? "X" : rightParticipant.Name.Substring(0, 1);
-			//: is null-coalescing operator.
+			// : is null-coalescing operator.
 			return input.Replace("1", leftP).Replace("2", rightP);
 
 			/* Had eerst de onderstaande return maar ik wist niet hoe je binnen de Replace de IsBroken dingen kon toevoegen
@@ -224,174 +224,170 @@ namespace RaceSimulator_Project
 				{
 					case SectionType.StartGrid:
 						DetermineDirection(SectionType.StartGrid, track);
-						if (_position == 1 || _position == 3)
-							PrintToConsole(_straightStartHorizontal, race.GetSectionData(section));
-						else
-						{
-							PrintToConsole(_straightStartVertical, race.GetSectionData(section));
-						}
+						PrintToConsole(Position is 1 or 3 ? _straightStartHorizontal : _straightStartVertical,
+							race.GetSectionData(section));
 						break;
 
 					case SectionType.Finish:
 						DetermineDirection(SectionType.Finish, track);
-						if (_position == 1 || _position == 3)
-							PrintToConsole(_finishHorizontal, race.GetSectionData(section));
-						else
-						{
-							PrintToConsole(_finishVertical, race.GetSectionData(section));
-						}
+						PrintToConsole(Position is 1 or 3 ? _finishHorizontal : _finishVertical,
+							race.GetSectionData(section));
 						break;
 
 					case SectionType.Straight:
 						DetermineDirection(SectionType.Straight, track);
-						if (_position == 1 || _position == 3)
-							PrintToConsole(_straightHorizontal, race.GetSectionData(section));
-						else
-						{
-							PrintToConsole(_straightVertical, race.GetSectionData(section));
-						}
+						PrintToConsole(Position is 1 or 3 ? _straightHorizontal : _straightVertical,
+							race.GetSectionData(section));
 						break;
 
 					case SectionType.RightCorner:
 						DetermineDirection(SectionType.RightCorner, track);
-						if (_oldPosition == 1)
-							PrintToConsole(_cornerNE, race.GetSectionData(section));
-						else if (_oldPosition == 2)
-							PrintToConsole(_cornerSE, race.GetSectionData(section));
-						else if (_oldPosition == 3)
-							PrintToConsole(_cornerSW, race.GetSectionData(section));
-						else if (_oldPosition == 4)
-							PrintToConsole(_cornerNW, race.GetSectionData(section));
+						switch (OldPosition)
+						{
+							case 1:
+								PrintToConsole(_cornerNE, race.GetSectionData(section));
+								break;
+							case 2:
+								PrintToConsole(_cornerSE, race.GetSectionData(section));
+								break;
+							case 3:
+								PrintToConsole(_cornerSW, race.GetSectionData(section));
+								break;
+							case 4:
+								PrintToConsole(_cornerNW, race.GetSectionData(section));
+								break;
+						}
 						break;
 
 					case SectionType.LeftCorner:
 						DetermineDirection(SectionType.LeftCorner, track);
-						if (_oldPosition == 3)
-							PrintToConsole(_cornerNW, race.GetSectionData(section));
-						else if (_oldPosition == 4)
-							PrintToConsole(_cornerNE, race.GetSectionData(section));
-						else if (_oldPosition == 1)
-							PrintToConsole(_cornerSE, race.GetSectionData(section));
-						else if (_oldPosition == 2)
-							PrintToConsole(_cornerSW, race.GetSectionData(section));
+						switch (OldPosition)
+						{
+							case 3:
+								PrintToConsole(_cornerNW, race.GetSectionData(section));
+								break;
+							case 4:
+								PrintToConsole(_cornerNE, race.GetSectionData(section));
+								break;
+							case 1:
+								PrintToConsole(_cornerSE, race.GetSectionData(section));
+								break;
+							case 2:
+								PrintToConsole(_cornerSW, race.GetSectionData(section));
+								break;
+						}
 						break;
 				}
 			}
 		}
 
-		//TODO: Refactor deze functie
+		/*
+		 * TODO: documentation
+		 */
 		private static void DetermineDirection(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
 			{
 				case SectionType.Finish:
-					if (_position == 1)
+					if (Position == 1)
 					{
 						SetPosition(4, -4);
 					}
-					else if (_position == 3)
+					else if (Position == 3 || Position == 4)
 					{
 						SetPosition(0, -8);
 					}
-					else if (_position == 2)
+					else if (Position == 2)
 					{
 						SetPosition(0, 0);
-					}
-					else if (_position == 4)
-					{
-						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.StartGrid:
-					if (_position == 1)
+					if (Position == 1)
 					{
 						SetPosition(4, -4);
 					}
-					else if (_position == 3)
+					else if (Position == 3 || Position == 4)
 					{
 						SetPosition(0, -8);
 					}
-					else if (_position == 2)
+					else if (Position == 2)
 					{
 						SetPosition(0, 0);
-					}
-					else if (_position == 4)
-					{
-						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.Straight:
-					if (_position == 1)
+					if (Position == 1)
 					{
 						SetPosition(4, -4);
 					}
-					else if (_position == 3)
+					else if (Position == 3)
 					{
 						SetPosition(-4, -4);
 					}
-					else if (_position == 2)
+					else if (Position == 2)
 					{
 						SetPosition(0, 0);
 					}
-					else if (_position == 4)
+					else if (Position == 4)
 					{
 						SetPosition(0, -8);
 					}
 					break;
 
 				case SectionType.RightCorner:
-					if (_position == 1)
+					if (Position == 1)
 					{
 						SetPosition(4, -4);
-						_position = 2;
-						_oldPosition = 1;
+						Position = 2;
+						OldPosition = 1;
 					}
-					else if (_position == 2)
+					else if (Position == 2)
 					{
 						SetPosition(0, 0);
-						_position = 3;
-						_oldPosition = 2;
+						Position = 3;
+						OldPosition = 2;
 					}
-					else if (_position == 3)
+					else if (Position == 3)
 					{
 						SetPosition(-4, -4);
-						_position = 4;
-						_oldPosition = 3;
+						Position = 4;
+						OldPosition = 3;
 					}
-					else if (_position == 4)
+					else if (Position == 4)
 					{
 						SetPosition(0, -8);
-						_position = 1;
-						_oldPosition = 4;
+						Position = 1;
+						OldPosition = 4;
 					}
 					break;
 
 				case SectionType.LeftCorner:
-					if (_position == 3)
+					if (Position == 3)
 					{
 						SetPosition(-4, -4);
-						_position = 2;
-						_oldPosition = 3;
+						Position = 2;
+						OldPosition = 3;
 					}
-					else if (_position == 4)
+					else if (Position == 4)
 					{
 						SetPosition(0, -8);
-						_position = 3;
-						_oldPosition = 4;
+						Position = 3;
+						OldPosition = 4;
 					}
-					else if (_position == 1)
+					else if (Position == 1)
 					{
 						SetPosition(4, -4);
-						_position = 4;
-						_oldPosition = 1;
+						Position = 4;
+						OldPosition = 1;
 					}
-					else if (_position == 2)
+					else if (Position == 2)
 					{
 						SetPosition(0, 0);
-						_position = 1;
-						_oldPosition = 2;
+						Position = 1;
+						OldPosition = 2;
 					}
 					break;
 			}

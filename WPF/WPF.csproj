@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Participants\Blue.png" />
+    <None Remove="Images\Participants\Green.png" />
+    <None Remove="Images\Participants\Grey.png" />
+    <None Remove="Images\Participants\Red.png" />
+    <None Remove="Images\Participants\Yellow.png" />
+    <None Remove="Images\Sections\CornerNE.png" />
+    <None Remove="Images\Sections\CornerNW.png" />
+    <None Remove="Images\Sections\CornerSE.png" />
+    <None Remove="Images\Sections\CornerSW.png" />
+    <None Remove="Images\Sections\FinishHorizontal.png" />
+    <None Remove="Images\Sections\FinishVertical.png" />
+    <None Remove="Images\Sections\StartVertical.png" />
+    <None Remove="Images\Sections\StraightHorizontal.png" />
+    <None Remove="Images\Sections\StraightVertical.png" />
+    <None Remove="Images\StartHorizontal.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Participants\Blue.png" />
+    <Content Include="Images\Participants\Green.png" />
+    <Content Include="Images\Participants\Grey.png" />
+    <Content Include="Images\Participants\Red.png" />
+    <Content Include="Images\Participants\Yellow.png" />
+    <Content Include="Images\Sections\CornerNE.png" />
+    <Content Include="Images\Sections\CornerNW.png" />
+    <Content Include="Images\Sections\CornerSE.png" />
+    <Content Include="Images\Sections\CornerSW.png" />
+    <Content Include="Images\Sections\FinishHorizontal.png" />
+    <Content Include="Images\Sections\FinishVertical.png" />
+    <Content Include="Images\Sections\StartVertical.png" />
+    <Content Include="Images\Sections\StraightHorizontal.png" />
+    <Content Include="Images\Sections\StraightVertical.png" />
+    <Content Include="Images\Sections\StartHorizontal.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+</Project>
