@@ -61,7 +61,7 @@ namespace Controller
 			}
 		}
 
-		//TODO: Fix documentation.
+		//TODO: documentation.
 		/*
 		 * Is subscribed to CurrentRace.RaceFinished.
 		 * 
@@ -77,9 +77,8 @@ namespace Controller
 			{
 				SectionType[] trackBuilder = new SectionType[]
 				{
-					SectionType.StartGrid,
-					SectionType.RightCorner,
-					SectionType.Finish
+					SectionType.StartGrid
+					//SectionType.Straight
 				};
 				return trackBuilder;
 			}

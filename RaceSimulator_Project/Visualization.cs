@@ -43,7 +43,7 @@ namespace RaceSimulator_Project
 		}
 
 		//Event
-		//TODO: Fix documentation
+		//TODO: documentation
 		/*
 		 * 
 		 */
@@ -52,7 +52,7 @@ namespace RaceSimulator_Project
 			DrawTrack(e.Track);
 		}
 
-		//TODO: Fix documentation
+		//TODO: documentation
 		/*
 		 * 
 		 */
@@ -148,7 +148,7 @@ namespace RaceSimulator_Project
 
 		#endregion //Sections string[]
 
-		//TODO: Fix documentation
+		//TODO: documentation
 		/*
 		 * 
 		 */
@@ -289,105 +289,104 @@ namespace RaceSimulator_Project
 			switch (sectionType)
 			{
 				case SectionType.Finish:
-					if (Position == 1)
+					switch (Position)
 					{
-						SetPosition(4, -4);
-					}
-					else if (Position == 3 || Position == 4)
-					{
-						SetPosition(0, -8);
-					}
-					else if (Position == 2)
-					{
-						SetPosition(0, 0);
+						case 1:
+							SetPosition(4, -4);
+							break;
+						case 3:
+						case 4:
+							SetPosition(0, -8);
+							break;
+						case 2:
+							SetPosition(0, 0);
+							break;
 					}
 					break;
 
 				case SectionType.StartGrid:
-					if (Position == 1)
+					switch (Position)
 					{
-						SetPosition(4, -4);
-					}
-					else if (Position == 3 || Position == 4)
-					{
-						SetPosition(0, -8);
-					}
-					else if (Position == 2)
-					{
-						SetPosition(0, 0);
+						case 1:
+							SetPosition(4, -4);
+							break;
+						case 3:
+						case 4:
+							SetPosition(0, -8);
+							break;
+						case 2:
+							SetPosition(0, 0);
+							break;
 					}
 					break;
 
 				case SectionType.Straight:
-					if (Position == 1)
+					switch (Position)
 					{
-						SetPosition(4, -4);
-					}
-					else if (Position == 3)
-					{
-						SetPosition(-4, -4);
-					}
-					else if (Position == 2)
-					{
-						SetPosition(0, 0);
-					}
-					else if (Position == 4)
-					{
-						SetPosition(0, -8);
+						case 1:
+							SetPosition(4, -4);
+							break;
+						case 3:
+							SetPosition(-4, -4);
+							break;
+						case 2:
+							SetPosition(0, 0);
+							break;
+						case 4:
+							SetPosition(0, -8);
+							break;
 					}
 					break;
 
 				case SectionType.RightCorner:
-					if (Position == 1)
+					switch (Position)
 					{
-						SetPosition(4, -4);
-						Position = 2;
-						OldPosition = 1;
-					}
-					else if (Position == 2)
-					{
-						SetPosition(0, 0);
-						Position = 3;
-						OldPosition = 2;
-					}
-					else if (Position == 3)
-					{
-						SetPosition(-4, -4);
-						Position = 4;
-						OldPosition = 3;
-					}
-					else if (Position == 4)
-					{
-						SetPosition(0, -8);
-						Position = 1;
-						OldPosition = 4;
+						case 1:
+							SetPosition(4, -4);
+							Position = 2;
+							OldPosition = 1;
+							break;
+						case 2:
+							SetPosition(0, 0);
+							Position = 3;
+							OldPosition = 2;
+							break;
+						case 3:
+							SetPosition(-4, -4);
+							Position = 4;
+							OldPosition = 3;
+							break;
+						case 4:
+							SetPosition(0, -8);
+							Position = 1;
+							OldPosition = 4;
+							break;
 					}
 					break;
 
 				case SectionType.LeftCorner:
-					if (Position == 3)
+					switch (Position)
 					{
-						SetPosition(-4, -4);
-						Position = 2;
-						OldPosition = 3;
-					}
-					else if (Position == 4)
-					{
-						SetPosition(0, -8);
-						Position = 3;
-						OldPosition = 4;
-					}
-					else if (Position == 1)
-					{
-						SetPosition(4, -4);
-						Position = 4;
-						OldPosition = 1;
-					}
-					else if (Position == 2)
-					{
-						SetPosition(0, 0);
-						Position = 1;
-						OldPosition = 2;
+						case 3:
+							SetPosition(-4, -4);
+							Position = 2;
+							OldPosition = 3;
+							break;
+						case 4:
+							SetPosition(0, -8);
+							Position = 3;
+							OldPosition = 4;
+							break;
+						case 1:
+							SetPosition(4, -4);
+							Position = 4;
+							OldPosition = 1;
+							break;
+						case 2:
+							SetPosition(0, 0);
+							Position = 1;
+							OldPosition = 2;
+							break;
 					}
 					break;
 			}

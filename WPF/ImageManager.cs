@@ -14,15 +14,15 @@ namespace WPF
 {
 	public static class ImageManager
 	{
-		static Dictionary<string, Bitmap> _imageCache = new();
+		static Dictionary<string, Bitmap> _imageCache;
 
 		public static void Initialize()
 		{
-			_imageCache = new();
+			_imageCache = new Dictionary<string, Bitmap>();
 		}
 
 		/*
-		 * TODO: Fix documentation
+		 * TODO: documentation
 		 */
 		public static Bitmap GetImage(string url)
 		{
@@ -36,6 +36,12 @@ namespace WPF
 				_imageCache.Add(url, bitmap);
 				return bitmap;
 			}
+			/*if (!_imageCache.ContainsKey(url))
+			{
+				_imageCache.Add(url, new Bitmap(url));
+			}
+
+			return (Bitmap)_imageCache[url].Clone();*/
 		}
 
 		/*
@@ -44,13 +50,13 @@ namespace WPF
 		public static void ClearCache() => _imageCache.Clear();
 
 		/*
-		 * TODO: Fix documentation
+		 * TODO: documentation
 		 */
 		public static Bitmap EmptyTrack(int x, int y)
 		{
 			Bitmap bitmap = new(x, y);
 			Graphics graphics = Graphics.FromImage(bitmap);
-			graphics.Clear(System.Drawing.Color.White);
+			graphics.Clear(System.Drawing.Color.Green);
 			return bitmap;
 		}
 

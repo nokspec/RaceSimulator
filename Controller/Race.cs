@@ -36,7 +36,7 @@ namespace Controller
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
 		public static int LapsCount = -1; //Stargrid staat achter finish, daarom -1.
 
-		//TODO: Fix documentation.
+		//TODO: documentation.
 		public Race(Track track, List<IParticipant> participants)
 		{
 			Track = track;
@@ -51,7 +51,7 @@ namespace Controller
 			Start(); //Start timer
 		}
 
-		//TODO: Fix documentation.
+		//TODO: documentation
 		/*
 		 * 
 		 */
@@ -62,7 +62,7 @@ namespace Controller
 			_timer.Start();
 		}
 
-		//TODO: Fix documentation.
+		//TODO: documentation
 		/*
 		 * Race finished, clean everything up for next race.
 		 */
@@ -82,7 +82,7 @@ namespace Controller
 			}
 		}
 
-		//TODO: Fix documentation.
+		//TODO: documentation.
 		/*
 		 * 
 		 */
@@ -243,7 +243,7 @@ namespace Controller
 			}
 		}
 
-		//TODO: Better explanation.
+		//TODO: documentation
 		/*
 		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts that participant in the next section.
 		 */

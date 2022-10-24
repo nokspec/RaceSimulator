@@ -15,14 +15,16 @@ namespace WPF
 		public static int XPosition;
 		public static int YPosition;
 		public static int ImageSize { get; set; }
+		private static int SectionSize { get; set; }
 		public static int TrackWidth { get; set; }
 		public static int TrackHeight { get; set; }
 
+		public static Graphics Graphics;
+
 		//declare direction
-		public static Direction direction;
+		public static Direction _direction;
 
 		private static Race _race;
-		public static Graphics Graphics { get; set; }
 
 		#region graphics
 
@@ -71,121 +73,123 @@ namespace WPF
 		{
 			_race = race;
 
-			XPosition = 0;
-			YPosition = 0;
+			//Hiermee bepaal je de grootte van de track
+			TrackHeight = 6;
+			TrackWidth = 6;
 
-			direction = Direction.Right;
+			_direction = Direction.Right;
 
 			ImageSize = 80;
 
 			CalculateTrackSize();
 
-			TrackWidth += ImageSize;
-			TrackHeight += ImageSize;
+			TrackWidth *= ImageSize;
+			TrackHeight *= ImageSize;
 		}
 
 		public static BitmapSource DrawTrack(Track track)
 		{
+			XPosition = 4;
+			YPosition = 4;
+
 			Bitmap bitmap = ImageManager.EmptyTrack(TrackWidth, TrackHeight);
-			Graphics graphics = Graphics.FromImage(bitmap);
+			Graphics = Graphics.FromImage(bitmap);
 
 			foreach (Section section in track.Sections)
 			{
 				switch (section.SectionTypes)
 				{
 					case SectionType.StartGrid:
-						if (direction is Direction.Right or Direction.Left)
+						switch (_direction)
 						{
-							graphics.DrawImage(ImageManager.CloneImage(_StartHorizontal), CalculateX(), CalculateY());
-						}
-						else if (direction is Direction.Up or Direction.Down)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_StartVertical), CalculateX(), CalculateY());
+							case Direction.Right or Direction.Left:
+								Graphics.DrawImage(ImageManager.CloneImage(_StartHorizontal), CalculateX(), CalculateY());
+								break;
+							case Direction.Up or Direction.Down:
+								Graphics.DrawImage(ImageManager.CloneImage(_StartVertical), CalculateX(), CalculateY());
+								break;
 						}
 						break;
 					case SectionType.Finish:
-						if (direction is Direction.Right or Direction.Left)
+						switch (_direction)
 						{
-							graphics.DrawImage(ImageManager.CloneImage(_FinishHorizontal), CalculateX(), CalculateY());
-						}
-						else if (direction is Direction.Up or Direction.Down)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_FinishVertical), CalculateX(), CalculateY());
+							case Direction.Right or Direction.Left:
+								Graphics.DrawImage(ImageManager.CloneImage(_FinishHorizontal), CalculateX(), CalculateY());
+								break;
+							case Direction.Up or Direction.Down:
+								Graphics.DrawImage(ImageManager.CloneImage(_FinishVertical), CalculateX(), CalculateY());
+								break;
 						}
 						break;
 					case SectionType.Straight:
-						if (direction is Direction.Right or Direction.Left)
+						switch (_direction)
 						{
-							graphics.DrawImage(ImageManager.CloneImage(_StraightHorizontal), CalculateX(), CalculateY());
-						}
-						else if (direction is Direction.Up or Direction.Down)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_StraightVertical), CalculateX(), CalculateY());
+							case Direction.Right or Direction.Left:
+								Graphics.DrawImage(ImageManager.CloneImage(_StraightHorizontal), CalculateX(), CalculateY());
+								break;
+							case Direction.Up or Direction.Down:
+								Graphics.DrawImage(ImageManager.CloneImage(_StraightVertical), CalculateX(), CalculateY());
+								break;
 						}
 						break;
 					case SectionType.RightCorner:
-						if (direction == Direction.Right)
+						switch (_direction)
 						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerNE), CalculateX(), CalculateY());
+							case Direction.Right:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerNE), CalculateX(), CalculateY());
+								break;
+							case Direction.Down:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerSE), CalculateX(), CalculateY());
+								break;
+							case Direction.Left:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerSW), CalculateX(), CalculateY());
+								break;
+							case Direction.Up:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerNW), CalculateX(), CalculateY());
+								break;
 						}
-						else if (direction == Direction.Down)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerSE), CalculateX(), CalculateY());
-						}
-						else if (direction == Direction.Left)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerSW), CalculateX(), CalculateY());
-						}
-						else if (direction == Direction.Up)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerNW), CalculateX(), CalculateY());
-						}
-
 						break;
 					case SectionType.LeftCorner:
-						if (direction == Direction.Left)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerNE), CalculateX(), CalculateY());
-						}
-						else if (direction == Direction.Up)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerSE), CalculateX(), CalculateY());
-						}
-						else if (direction == Direction.Right)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerSW), CalculateX(), CalculateY());
-						}
-						else if (direction == Direction.Down)
-						{
-							graphics.DrawImage(ImageManager.CloneImage(_CornerNW), CalculateX(), CalculateY());
-						}
 
+						switch (_direction)
+						{
+							case Direction.Right:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerSE), CalculateX(), CalculateY());
+								break;
+							case Direction.Down:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerSW), CalculateX(), CalculateY());
+								break;
+							case Direction.Left:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerNW), CalculateX(), CalculateY());
+								break;
+							case Direction.Up:
+								Graphics.DrawImage(ImageManager.CloneImage(_CornerNE), CalculateX(), CalculateY());
+								break;
+						}
 						break;
 				}
-
-				DetermineDirection(section.SectionTypes, direction);
-				//MoveImagePointer();
+				DetermineDirection(section.SectionTypes, _direction);
+				MoveImagePointer();
 			}
 			return ImageManager.CreateBitmapSourceFromGdiBitmap(bitmap);
 		}
 
 		private static void MoveImagePointer()
 		{
-			if (direction == Direction.Right)
+			switch (_direction)
 			{
-				XPosition += 80;
-			}
-			else if (direction == Direction.Left)
-			{
-				XPosition -= 80;
-			}
-			else if (direction == Direction.Up)
-			{
-				YPosition -= 80;
-			}
-			else if (direction == Direction.Down)
-			{
-				YPosition += 80;
+				case Direction.Right:
+					XPosition++;
+					break;
+				case Direction.Down:
+					YPosition++;
+					break;
+				case Direction.Left:
+					XPosition--;
+					break;
+				case Direction.Up:
+					YPosition--;
+					break;
 			}
 		}
 
@@ -194,53 +198,49 @@ namespace WPF
 			switch (sectionType)
 			{
 				case SectionType.Finish:
-					direction = VisualizationWPF.direction;
-
 					break;
 				case SectionType.StartGrid:
-					direction = VisualizationWPF.direction;
-
 					break;
 				case SectionType.Straight:
-					direction = VisualizationWPF.direction;
-
 					break;
 				case SectionType.RightCorner:
 					if (direction == Direction.Right)
-						direction = Direction.Down;
+						_direction = Direction.Down;
 					else if (direction == Direction.Up)
-						direction = Direction.Left;
+						_direction = Direction.Right;
 					else if (direction == Direction.Left)
-						direction = Direction.Up;
+						_direction = Direction.Up;
 					else if (direction == Direction.Down)
-						direction = Direction.Right;
+						_direction = Direction.Left;
 					break;
 				case SectionType.LeftCorner:
 					if (direction == Direction.Right)
-						direction = Direction.Up;
+						_direction = Direction.Up;
 					else if (direction == Direction.Down)
-						direction = Direction.Left;
+						_direction = Direction.Right;
 					else if (direction == Direction.Left)
-						direction = Direction.Down;
+						_direction = Direction.Down;
 					else if (direction == Direction.Up)
-						direction = Direction.Right;
+						_direction = Direction.Left;
 					break;
-
 			}
 		}
 
 		private static void CalculateTrackSize()
 		{
-			TrackWidth = 5;
-			TrackHeight = 5;
 			foreach (Section section in _race.Track.Sections)
 			{
-				DetermineDirection(section.SectionTypes, direction);
+				DetermineDirection(section.SectionTypes, _direction);
 
-				if (direction == Direction.Right)
-					TrackWidth += 5;
-				if (direction == Direction.Down)
-					TrackHeight += 5;
+				switch (_direction)
+				{
+					case Direction.Right:
+						TrackWidth++;
+						break;
+					case Direction.Down:
+						TrackHeight++;
+						break;
+				}
 			}
 		}
 
