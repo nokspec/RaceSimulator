@@ -23,9 +23,12 @@ namespace WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private CurrentRaceStatistics _currentRaceStatistics;
+		private CompetitionStatistics _competitionStatistics;
+		
 		public MainWindow()
 		{
-			InitializeComponent(); //gwn laten
+			InitializeComponent(); 
 			
 			Data.Initialize();
 			ImageManager.Initialize();
@@ -51,6 +54,42 @@ namespace WPF
 					this.ImageComponent.Source = null;
 					this.ImageComponent.Source = VisualizationWPF.DrawTrack(e.Track);
 				}));
+		}
+
+		//Closes application
+		private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
+
+		private void Race_Statistics_Click(object sender, RoutedEventArgs e)
+		{
+			// initialize window
+			_currentRaceStatistics = new CurrentRaceStatistics();
+
+			// link next race event
+			//Data.NextRaceEvent += ((RaceStatisticsDataContext)_currentRaceStatistics.DataContext).OnNextRace;
+
+			// send current race to data context to show data mid race
+			//((RaceStatisticsDataContext)_currentRaceStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
+
+			// show window
+			_currentRaceStatistics.Show();
+		}
+
+		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
+		{
+			// initialize window
+			_competitionStatistics = new CompetitionStatistics();
+
+			// link next race event
+			//Data.NextRaceEvent += ((CompetitionStatisticsDataContext)_competitionStatistics.DataContext).OnNextRace;
+
+			// send current race to data context to show data mid race
+			//((CompetitionStatisticsDataContext)_competitionStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
+
+			// show window
+			_competitionStatistics.Show();
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 350; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.

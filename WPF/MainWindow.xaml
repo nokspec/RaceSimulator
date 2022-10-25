@@ -1,13 +1,27 @@
-﻿<Window x:Class="WPF.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
+        xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="720" Width="1280" Icon="/AppIcon.png">
+	<Window.DataContext>
+		<Controller:DataContext/>
+	</Window.DataContext>
 	<Grid Background="#FF4F8C14">
+		<DockPanel LastChildFill="False">
+			<Menu Width="43" DockPanel.Dock="Top" Height="20">
+				<MenuItem Header="Menu">
+					<MenuItem Header="Race statistics" Click="Race_Statistics_Click"/>
+					<MenuItem Header="Competition statistics" Click="Competition_Statistics_Click"/>
+					<MenuItem Header="Close" Click="MenuItem_Exit_Click"/>
+				</MenuItem>
+			</Menu>
+		</DockPanel>
 		<Image x:Name="ImageComponent" Margin="23,19,34,24"/>
+		<Label HorizontalAlignment="Left" Margin="35,33,0,0" VerticalAlignment="Top" Content="{Binding TrackName}" Height="22" Width="34"/>
 
 	</Grid>
 </Window>

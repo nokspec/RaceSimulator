@@ -25,7 +25,6 @@ namespace WPF
 		private static Direction _direction;
 
 		private static Race _race;
-		private static Section currentSection;
 
 		#region graphics
 
@@ -107,9 +106,8 @@ namespace WPF
 		{
 			_race = race;
 
-			//Hiermee bepaal je de grootte van de track
-			TrackHeight = 5;
-			TrackWidth = 5;
+			//Hiermee bepaal je de grootte van de track (dit vind ik wel even big brain van mezelf met de single statement assign)
+			TrackHeight = TrackWidth = 5;
 
 			_direction = Direction.Right;
 
@@ -135,7 +133,6 @@ namespace WPF
 			{
 				switch (section.SectionTypes)
 				{
-
 					case SectionType.StartGrid:
 						switch (_direction)
 						{

@@ -26,8 +26,8 @@ namespace Controller
 		{
 			Competition.Participants.Add(new Driver("Kees", 0, new Car(10, 10, 10, false), TeamColors.Red));
 			Competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
-			Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
-			Competition.Participants.Add(new Driver("Uno", 0, new Car(10, 10, 10, false), TeamColors.Grey));
+			//Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
+			//Competition.Participants.Add(new Driver("Uno", 0, new Car(10, 10, 10, false), TeamColors.Grey));
 			//Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 			//Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Red));
 			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Green));
@@ -36,7 +36,7 @@ namespace Controller
 
 		public static void AddTracks()
 		{
-			//Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
+			Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
 			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
 			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 			//Competition.Tracks.Enqueue(new Track("Test", MakeRace("Test"))); 

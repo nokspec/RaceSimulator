@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AppIcon.png" />
     <None Remove="Images\Participants\Blue.png" />
     <None Remove="Images\Participants\Green.png" />
     <None Remove="Images\Participants\Grey.png" />
@@ -51,6 +52,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Controller\Controller.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="AppIcon.png" />
   </ItemGroup>
 
 </Project>
