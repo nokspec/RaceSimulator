@@ -182,11 +182,6 @@ namespace RaceSimulator_Project
 			string rightP = rightParticipant == null ? " " : rightParticipant.Equipment.IsBroken ? "X" : rightParticipant.Name.Substring(0, 1);
 			// : is null-coalescing operator.
 			return input.Replace("1", leftP).Replace("2", rightP);
-
-			/* Had eerst de onderstaande return maar ik wist niet hoe je binnen de Replace de IsBroken dingen kon toevoegen
-			 * Wat ik nu heb werkt wel.
-			 *return input.Replace("1", (leftParticipant?.Name?.Substring(0, 1)) ?? " ").Replace("2", (rightParticipant?.Name?.Substring(0, 1)) ?? " ");
-			 */
 		}
 
 		private static string ReplaceString(string input, IParticipant participant)

@@ -36,12 +36,6 @@ namespace WPF
 				_imageCache.Add(url, bitmap);
 				return bitmap;
 			}
-			/*if (!_imageCache.ContainsKey(url))
-			{
-				_imageCache.Add(url, new Bitmap(url));
-			}
-
-			return (Bitmap)_imageCache[url].Clone();*/
 		}
 
 		/*
@@ -52,11 +46,11 @@ namespace WPF
 		/*
 		 * TODO: documentation
 		 */
-		public static Bitmap EmptyTrack(int x, int y)
+		public static Bitmap CreateEmptyTrack(int x, int y)
 		{
 			Bitmap bitmap = new(x, y);
 			Graphics graphics = Graphics.FromImage(bitmap);
-			graphics.Clear(System.Drawing.Color.Green);
+			graphics.Clear(System.Drawing.Color.LawnGreen);
 			return bitmap;
 		}
 

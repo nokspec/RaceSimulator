@@ -62,7 +62,6 @@ namespace Controller
 			_timer.Start();
 		}
 
-		//TODO: documentation
 		/*
 		 * Race finished, clean everything up for next race.
 		 */
@@ -115,7 +114,7 @@ namespace Controller
 		}
 
 		#region Randomizing participants
-		public void RandomizeEquipment() //kan private?
+		private void RandomizeEquipment()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -150,6 +149,9 @@ namespace Controller
 			}
 		}
 
+		/*
+		 * TODO: documentation
+		 */
 		private void RandomizeFixing()
 		{
 			foreach (IParticipant participant in Participants.Where(p => p.Equipment.IsBroken))
