@@ -11,17 +11,24 @@
 		<Controller:DataContext/>
 	</Window.DataContext>
 	<Grid Background="#FF4F8C14">
-		<DockPanel LastChildFill="False">
-			<Menu Width="43" DockPanel.Dock="Top" Height="20">
-				<MenuItem Header="Menu">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="77*"/>
+			<ColumnDefinition Width="179*"/>
+		</Grid.ColumnDefinitions>
+		<DockPanel LastChildFill="False" Grid.ColumnSpan="2">
+			<Menu Width="43" DockPanel.Dock="Top" Height="20" HorizontalAlignment="Left">
+				<Menu.Effect>
+					<DropShadowEffect/>
+				</Menu.Effect>
+				<MenuItem Header="Menu" HorizontalAlignment="Left">
 					<MenuItem Header="Race statistics" Click="Race_Statistics_Click"/>
 					<MenuItem Header="Competition statistics" Click="Competition_Statistics_Click"/>
 					<MenuItem Header="Close" Click="MenuItem_Exit_Click"/>
 				</MenuItem>
 			</Menu>
 		</DockPanel>
-		<Image x:Name="ImageComponent" Margin="23,19,34,24"/>
-		<Label HorizontalAlignment="Left" Margin="35,33,0,0" VerticalAlignment="Top" Content="{Binding TrackName}" Height="22" Width="34"/>
+		<Image x:Name="ImageComponent" Margin="23,19,34,24" Grid.ColumnSpan="2"/>
+		<Label HorizontalAlignment="Left" Margin="42,42,0,0" VerticalAlignment="Top" Height="59" Width="217" Content="{Binding TrackName}" FontFamily="Cascadia Code SemiBold" FontSize="20"/>
 
 	</Grid>
 </Window>

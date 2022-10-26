@@ -216,16 +216,16 @@ namespace WPF
 			
 			if (rightParticipant != null)
 			{
-				DrawSingleParticipant(rightParticipant, g, currentDirection, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); // draw participant
+				DrawSingleParticipant(rightParticipant, g, currentDirection, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section));
 				if (rightParticipant.Equipment.IsBroken)
-					DrawBrokenImageOnCoord(g, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); // draw broken image on top of participant if participant is broken.
+					DrawBroken(g, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); //Broken image sits on top of participant
 			}
 			
 			if (leftParticipant != null)
 			{
-				DrawSingleParticipant(leftParticipant, g, currentDirection, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section)); // draw participant
+				DrawSingleParticipant(leftParticipant, g, currentDirection, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section));
 				if (leftParticipant.Equipment.IsBroken)
-					DrawBrokenImageOnCoord(g, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section)); // draw broken image on top of participant if participant is broken.
+					DrawBroken(g, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section)); //Broken image sits on top of participant
 			}
 		}
 
@@ -234,12 +234,12 @@ namespace WPF
 			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
-		private static void DrawBrokenImageOnCoord(Graphics g, int x, int y)
+		
+		private static void DrawBroken(Graphics g, int x, int y)
 		{
 			g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize);
 		}
 
-		//TODO: refactor
 		private static string GetColorFileName(TeamColors color, Direction currentDirection)
 		{
 			return currentDirection switch
@@ -352,17 +352,6 @@ namespace WPF
 				}
 			}
 		}
-
-		private static int SectionXPosition()
-		{
-			return XPosition * SectionSize;
-		}
-
-		private static int SectionYPosition()
-		{
-			return YPosition * SectionSize;
-		}
-
 		private static int ParticipantXPosition(IParticipant participant, Section section)
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
@@ -379,13 +368,25 @@ namespace WPF
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
 			IParticipant leftParticipant = _race.GetSectionData(section).Left;
-			
+
 			if (participant == rightParticipant)
 				return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) - (ParticipantSize / 2);
 			if (participant == leftParticipant)
 				return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) + (ParticipantSize / 2);
 			return 0;
 		}
+
+		private static int SectionXPosition()
+		{
+			return XPosition * SectionSize;
+		}
+
+		private static int SectionYPosition()
+		{
+			return YPosition * SectionSize;
+		}
+
+		
 	}
 }
 

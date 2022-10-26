@@ -28,13 +28,13 @@ namespace WPF
 		
 		public MainWindow()
 		{
-			InitializeComponent(); 
-			
 			Data.Initialize();
+			
 			ImageManager.Initialize();
 			Data.NextRaceEvent += OnNextRaceEvent;
 			Data.NextRace();
-			
+			InitializeComponent();
+
 		}
 
 		public void OnNextRaceEvent(object sender, NextRaceEventArgs e)
@@ -73,7 +73,6 @@ namespace WPF
 			// send current race to data context to show data mid race
 			//((RaceStatisticsDataContext)_currentRaceStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
 
-			// show window
 			_currentRaceStatistics.Show();
 		}
 
@@ -88,7 +87,6 @@ namespace WPF
 			// send current race to data context to show data mid race
 			//((CompetitionStatisticsDataContext)_competitionStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
 
-			// show window
 			_competitionStatistics.Show();
 		}
 	}

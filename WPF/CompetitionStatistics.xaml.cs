@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 namespace WPF
 {
 	/// <summary>
-	/// Interaction logic for Screen2.xaml
+	/// Interaction logic for CompetitionStatistics.xaml
 	/// </summary>
 	public partial class CompetitionStatistics : Window
 	{

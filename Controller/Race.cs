@@ -24,19 +24,18 @@ namespace Controller
 
 		//Events
 		public event EventHandler<DriversChangedEventArgs> DriversChanged;
-		public event EventHandler RaceFinished;
+		public event EventHandler<NextRaceEventArgs> RaceFinished;
 
 		//Timer
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 500; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
 		public static int LapsCount = -1; //Stargrid staat achter finish, daarom -1.
 
-		//TODO: documentation.
 		public Race(Track track, List<IParticipant> participants)
 		{
 			Track = track;
@@ -94,11 +93,11 @@ namespace Controller
 			RandomizeFixing();
 
 			RandomizeIsBroken();
-			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //this is de huidige class.
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //"this" is de huidige class.
 
 			if (CheckRaceFinished()) //Als de race gefinished is.
 			{
-				RaceFinished?.Invoke(this, new EventArgs());
+				RaceFinished?.Invoke(this, new NextRaceEventArgs());
 				CleanUp();
 			}
 
@@ -235,7 +234,7 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.MetersMoved += participant.GetMovementSpeed();/*participant.Equipment.Speed * participant.Equipment.Performance;*/
+				participant.MetersMoved += participant.GetMovementSpeed();
 
 				if (participant.MetersMoved >= 100)
 				{
@@ -257,60 +256,42 @@ namespace Controller
 				SectionData sectionData = GetSectionData(section);
 				if (!participant.Finished)
 				{
-					if (participant == sectionData.Right) //Fix voor eerste participant die geskipt wordt.
+					if (participant == sectionData.Right || participant == sectionData.Left) //Make sure participants move
 					{
 						participant.CurrentSection = section;
 						LapsCount++;
 					}
-					else if (participant == sectionData.Left) //Fix voor tweede participant die geskipt wordt.
-					{
-						participant.CurrentSection = section;
-						LapsCount++;
-					}
-
+				
 					if (section == participant.CurrentSection)
 					{
+
 						//If participant is broken
 						if (participant.Equipment.IsBroken == true)
 						{
-							Console.WriteLine($"{participant.Name} is kapot"); //debugging
+							//Console.WriteLine($"{participant.Name} is kapot"); //debugging
 							return;
 						}
 
 						//Remove participant from currentsection
 						if (sectionData.Right == participant)
-						{
 							sectionData.Right = null;
-						}
 						else if (sectionData.Left == participant)
-						{
 							sectionData.Left = null;
-						}
 
-						
 						if (Track.Sections.Count <= (i + 1))
-						{
 							i = -1;
-						}
 
 						SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
 
 						if (nextSectionData.Right == null)
-						{
 							nextSectionData.Right = participant;
-						}
 						else if (nextSectionData.Left == null)
-						{
 							nextSectionData.Left = participant;
-						}
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
-						//CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
 
 						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
-						{
 							NextLap(participant, nextSectionData);
-						}
 
 						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) //First lap started.
 						{
@@ -323,14 +304,9 @@ namespace Controller
 				else //Remove participant from track when finished
 				{
 					if (sectionData.Right == participant)
-					{
 						sectionData.Right = null;
-					}
 					if (sectionData.Right == participant)
-					{
 						sectionData.Left = null;
-					}
-
 				}
 			}
 		}
@@ -368,13 +344,9 @@ namespace Controller
 					GetSectionData(section);
 				}
 				else if (section.SectionTypes == SectionType.Finish)
-				{
 					break;
-				}
 				else if (sectionsLength == 0) //If there's no more sections available.
-				{
 					break;
-				}
 				else
 				{
 					if (participantsRemaining != 0)
