@@ -30,7 +30,7 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 350; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 700; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
@@ -262,15 +262,22 @@ namespace Controller
 						participant.CurrentSection = section;
 						LapsCount++;
 					}
+					else if (participant == sectionData.Left) //Fix voor tweede participant die geskipt wordt.
+					{
+						participant.CurrentSection = section;
+						LapsCount++;
+					}
 
 					if (section == participant.CurrentSection)
 					{
+						//If participant is broken
 						if (participant.Equipment.IsBroken == true)
 						{
 							Console.WriteLine($"{participant.Name} is kapot"); //debugging
 							return;
 						}
 
+						//Remove participant from currentsection
 						if (sectionData.Right == participant)
 						{
 							sectionData.Right = null;
@@ -280,6 +287,7 @@ namespace Controller
 							sectionData.Left = null;
 						}
 
+						
 						if (Track.Sections.Count <= (i + 1))
 						{
 							i = -1;
@@ -297,7 +305,7 @@ namespace Controller
 						}
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
-						CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
+						//CurrentSection = section; //Denk niet dat dit nodig is, maar staat er wel leuk.
 
 						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
 						{
@@ -312,13 +320,13 @@ namespace Controller
 					}
 					i++;
 				}
-				else //Verwijder participant van de track nadat hij gefinished is.
+				else //Remove participant from track when finished
 				{
 					if (sectionData.Right == participant)
 					{
 						sectionData.Right = null;
 					}
-					else
+					if (sectionData.Right == participant)
 					{
 						sectionData.Left = null;
 					}

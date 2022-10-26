@@ -12,17 +12,11 @@ namespace Controller
 	{
 		public event PropertyChangedEventHandler? PropertyChanged;
 
-	/*	public string TrackName //get the Track.Name using lambda expression and set the value.
-		{
-			get => Data.CurrentRace.Track.Name;
-		}*/
-
-		public string TrackName { get; set; }
+		//public string TrackName => Data.CurrentRace.Track.Name;
 
 		public void OnDriversChanged(object sender, DriversChangedEventArgs e)
 		{
-			//TrackName = e.Track.Name;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TrackName)));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
 		}
 	}
 }

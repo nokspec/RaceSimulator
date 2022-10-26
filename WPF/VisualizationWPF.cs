@@ -123,7 +123,7 @@ namespace WPF
 		public static BitmapSource DrawTrack(Track track)
 		{
 			//start position
-			XPosition = 4;
+			XPosition = 3;
 			YPosition = 2;
 
 			Bitmap bitmap = ImageManager.CreateEmptyTrack(TrackWidth, TrackHeight);
