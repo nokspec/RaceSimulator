@@ -18,6 +18,7 @@ namespace Model
 		public int GetMovementSpeed();
 		public int MetersMoved { get; set; }
 	}
+	
 	public enum TeamColors
 	{
 		Red,
@@ -26,5 +27,4 @@ namespace Model
 		Grey,
 		Blue
 	}
-
 }

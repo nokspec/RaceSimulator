@@ -12,10 +12,7 @@ namespace Controller
 	public class DataContext : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler? PropertyChanged;
-
-		//private string _trackName => Data.CurrentRace.Track.Name;
 		private string _trackName { get; set; }
-
 		public string TrackName { get { return _trackName; } set { _trackName = value; OnPropertyChanged(); } } //data bind aan label in maiwindow.xaml.cs
 
 		public DataContext()
