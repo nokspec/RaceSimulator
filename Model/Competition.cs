@@ -9,10 +9,12 @@ namespace Model
 	public class Competition
 	{
 		public List<IParticipant> Participants { get; set; }
-
 		public Queue<Track> Tracks { get; set; }
-        
-        public Competition()
+		
+		//generic
+		public CurrentRaceData CurrentRaceData { get; set; }
+
+		public Competition()
 		{
 			Participants = new List<IParticipant>();
 			Tracks = new Queue<Track>();

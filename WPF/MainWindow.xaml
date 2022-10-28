@@ -28,7 +28,7 @@
 			</Menu>
 		</DockPanel>
 		<Image x:Name="ImageComponent" Margin="23,19,34,24" Grid.ColumnSpan="2"/>
-		<Label HorizontalAlignment="Left" Margin="42,42,0,0" VerticalAlignment="Top" Height="59" Width="217" Content="{Binding TrackName}" FontFamily="Cascadia Code SemiBold" FontSize="20"/>
+		<Label Margin="42,42,0,0" VerticalAlignment="Top" Height="59" Width="217" Content="{Binding TrackName}" FontFamily="Bahnschrift SemiBold SemiCondensed" FontSize="20" HorizontalAlignment="Center"/>
 
 	</Grid>
 </Window>

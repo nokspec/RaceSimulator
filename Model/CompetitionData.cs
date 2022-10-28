@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public class ParticipantLapTime
+	public class CompetitionData
 	{
+		public string Name { get; set; }
+		public int Points { get; set; }
+
 		
 	}
 }

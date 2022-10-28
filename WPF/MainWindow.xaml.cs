@@ -30,8 +30,11 @@ namespace WPF
 		{
 			Data.Initialize();
 			
-			ImageManager.Initialize();
+			
 			Data.NextRaceEvent += OnNextRaceEvent;
+			
+			ImageManager.Initialize();
+			
 			Data.NextRace();
 			InitializeComponent();
 
@@ -47,7 +50,7 @@ namespace WPF
 
 		public void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
-			this.ImageComponent.Dispatcher.BeginInvoke(
+		this.Dispatcher.BeginInvoke(
 				DispatcherPriority.Render,
 				new Action(() =>
 				{
@@ -67,12 +70,6 @@ namespace WPF
 			// initialize window
 			_currentRaceStatistics = new CurrentRaceStatistics();
 
-			// link next race event
-			//Data.NextRaceEvent += ((RaceStatisticsDataContext)_currentRaceStatistics.DataContext).OnNextRace;
-
-			// send current race to data context to show data mid race
-			//((RaceStatisticsDataContext)_currentRaceStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
-
 			_currentRaceStatistics.Show();
 		}
 
@@ -80,12 +77,6 @@ namespace WPF
 		{
 			// initialize window
 			_competitionStatistics = new CompetitionStatistics();
-
-			// link next race event
-			//Data.NextRaceEvent += ((CompetitionStatisticsDataContext)_competitionStatistics.DataContext).OnNextRace;
-
-			// send current race to data context to show data mid race
-			//((CompetitionStatisticsDataContext)_competitionStatistics.DataContext).OnNextRace(null, new NextRaceEventArgs() { Race = Data.CurrentRace });
 
 			_competitionStatistics.Show();
 		}

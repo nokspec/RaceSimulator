@@ -20,6 +20,8 @@ namespace Controller
 		public Section CurrentSection;
 
 		public List<IParticipant> Participants { get; set; }
+		public List<IParticipant> FinishedParticipants { get; set; } = new();
+
 		private Dictionary<Section, SectionData> _positions;
 
 		//Events
@@ -30,7 +32,7 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 500; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 200; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
 
 		//Laps
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
@@ -73,6 +75,8 @@ namespace Controller
 			LapsCount = -1;
 			AmountOfLaps = 0;
 
+			FinishedParticipants.Clear();
+
 			foreach (IParticipant participant in Participants)
 			{
 				participant.Finished = false;
@@ -97,7 +101,16 @@ namespace Controller
 
 			if (CheckRaceFinished()) //Als de race gefinished is.
 			{
+				//als niet alle participants in FinishedParticipants zitten.
+				if (Participants.Count != FinishedParticipants.Count)
+				{
+					var participant = Participants[^1];
+					FinishedParticipants.Add(participant);
+				}
+
+				AddPoints();
 				RaceFinished?.Invoke(this, new NextRaceEventArgs());
+
 				CleanUp();
 			}
 
@@ -168,6 +181,41 @@ namespace Controller
 						participant.Equipment.Quality--;
 
 					Console.WriteLine($"{participant.Name} is gefixt"); //debugging
+				}
+			}
+		}
+		#endregion
+
+		#region Points management
+
+		/*
+		 * Adds finished participant to FinishedParticipants List.
+		 * Which is used to add points to participants
+		 */
+		public void AddFinishedParticipantsToList(IParticipant participant)
+		{
+			FinishedParticipants.Add(participant);
+		}
+
+		public void AddPoints()
+		{
+			int count = 0;
+
+			foreach (IParticipant participant in FinishedParticipants)
+			{
+				{
+					count++;
+					if (count == 1) participant.Points += 25;
+					if (count == 2) participant.Points += 18;
+					if (count == 3) participant.Points += 15;
+					if (count == 4) participant.Points += 12;
+					if (count == 5) participant.Points += 10;
+					if (count == 6) participant.Points += 8;
+					if (count == 7) participant.Points += 6;
+					if (count == 8) participant.Points += 4;
+					if (count == 9) participant.Points += 2;
+					if (count == 10) participant.Points += 1;
+					else participant.Points += 0; //hoeft er niet te staan maar geeft wat meer duidelijkheid vind ik
 				}
 			}
 		}
@@ -244,8 +292,7 @@ namespace Controller
 			}
 		}
 
-		//TODO: documentation
-		/*
+		/*TODO: documentation
 		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts that participant in the next section.
 		 */
 		public void MoveParticipants(IParticipant participant)
@@ -261,7 +308,7 @@ namespace Controller
 						participant.CurrentSection = section;
 						LapsCount++;
 					}
-				
+
 					if (section == participant.CurrentSection)
 					{
 
@@ -301,15 +348,22 @@ namespace Controller
 					}
 					i++;
 				}
-				else //Remove participant from track when finished
+
+				else
 				{
+					//Remove participant from track when finished
 					if (sectionData.Right == participant)
 						sectionData.Right = null;
-					if (sectionData.Right == participant)
+					if (sectionData.Left == participant)
 						sectionData.Left = null;
+
+					//Fill FinishedParticipants List
+					if (!FinishedParticipants.Contains(participant))
+						AddFinishedParticipantsToList(participant);
 				}
 			}
 		}
+
 		#endregion
 
 		#region StartPositions

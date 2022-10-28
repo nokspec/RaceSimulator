@@ -59,6 +59,7 @@ namespace Controller
 				NextRaceEvent?.Invoke(null, new NextRaceEventArgs() { Race = CurrentRace });
 				CurrentRace.Start();
 			}
+			//TODO hierin finalscore aanroepen?
 		}
 
 		//TODO: documentation.

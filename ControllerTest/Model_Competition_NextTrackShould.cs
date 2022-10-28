@@ -47,13 +47,11 @@ namespace ControllerTest
 		[Test]
 		public void NextTrack_TwoInQueue_ReturnNextTrack()
 		{
-			{
-				_competition.Tracks.Enqueue(new Track("Test1", new SectionType[] { SectionType.Straight }));
-				_competition.Tracks.Enqueue(new Track("Test2", new SectionType[] { SectionType.Straight }));
-				_competition.NextTrack();
-				Track result = _competition.NextTrack();
-				Assert.AreEqual("Test2", result.Name);
-			}
+			_competition.Tracks.Enqueue(new Track("Test1", new SectionType[] { SectionType.Straight }));
+			_competition.Tracks.Enqueue(new Track("Test2", new SectionType[] { SectionType.Straight }));
+			_competition.NextTrack();
+			Track result = _competition.NextTrack();
+			Assert.AreEqual("Test2", result.Name);
 		}
 
 		/*[Test]
