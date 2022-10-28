@@ -20,7 +20,7 @@ namespace Controller
 		public Section CurrentSection;
 
 		public List<IParticipant> Participants { get; set; }
-		public List<IParticipant> FinishedParticipants { get; set; } = new();
+		public List<IParticipant> FinishedParticipants { get; set; }
 
 		private Dictionary<Section, SectionData> _positions;
 
@@ -44,6 +44,7 @@ namespace Controller
 			Participants = participants;
 			_random = new Random(DateTime.Now.Millisecond);
 			_positions = new();
+			FinishedParticipants = new();
 			StartPositions(Track, Participants);
 			RandomizeEquipment();
 
@@ -52,10 +53,6 @@ namespace Controller
 			Start(); //Start timer
 		}
 
-		//TODO: documentation
-		/*
-		 * 
-		 */
 		public void Start()
 		{
 			StartTime = DateTime.Now;
@@ -64,7 +61,8 @@ namespace Controller
 		}
 
 		/*
-		 * Race finished, clean everything up for next race.
+		 * Gets called when race finishes.
+		 * Cleans everything for the next race.
 		 */
 		private void CleanUp()
 		{
@@ -76,9 +74,17 @@ namespace Controller
 			AmountOfLaps = 0;
 
 			FinishedParticipants.Clear();
+			ResetParticipants();
+		}
 
+		/*
+		 * Sets finished and lapscount to zero
+		 */
+		public void ResetParticipants()
+		{
 			foreach (IParticipant participant in Participants)
 			{
+				participant.MetersMoved = 0;
 				participant.Finished = false;
 				participant.LapsCount = -1;
 			}
@@ -101,19 +107,11 @@ namespace Controller
 
 			if (CheckRaceFinished()) //Als de race gefinished is.
 			{
-				//als niet alle participants in FinishedParticipants zitten.
-				if (Participants.Count != FinishedParticipants.Count)
-				{
-					var participant = Participants[^1];
-					FinishedParticipants.Add(participant);
-				}
-
-				AddPoints();
+				AddParticipantToFinishedParticipants();
+				ReturnStandings();
 				RaceFinished?.Invoke(this, new NextRaceEventArgs());
-
-				CleanUp();
+				CleanUp(); 
 			}
-
 		}
 
 		public SectionData GetSectionData(Section section)
@@ -191,33 +189,24 @@ namespace Controller
 		/*
 		 * Adds finished participant to FinishedParticipants List.
 		 * Which is used to add points to participants
+		 * The List gets reset by CleanUp().
 		 */
-		public void AddFinishedParticipantsToList(IParticipant participant)
+		public void AddParticipantToFinishedParticipants()
 		{
-			FinishedParticipants.Add(participant);
+			foreach (IParticipant participant in Participants)
+			{
+				//als de participant gefinished is EN de participant zit nog niet in FinishedParticipants
+				if (participant.Finished && !FinishedParticipants.Contains(participant)) FinishedParticipants.Add(participant);
+			}
 		}
 
-		public void AddPoints()
-		{
-			int count = 0;
 
-			foreach (IParticipant participant in FinishedParticipants)
-			{
-				{
-					count++;
-					if (count == 1) participant.Points += 25;
-					if (count == 2) participant.Points += 18;
-					if (count == 3) participant.Points += 15;
-					if (count == 4) participant.Points += 12;
-					if (count == 5) participant.Points += 10;
-					if (count == 6) participant.Points += 8;
-					if (count == 7) participant.Points += 6;
-					if (count == 8) participant.Points += 4;
-					if (count == 9) participant.Points += 2;
-					if (count == 10) participant.Points += 1;
-					else participant.Points += 0; //hoeft er niet te staan maar geeft wat meer duidelijkheid vind ik
-				}
-			}
+		/*
+		 * Returns the list of FinishedParticipants
+		 */
+		public List<IParticipant> ReturnStandings()
+		{
+			return FinishedParticipants;
 		}
 
 		#endregion
@@ -344,6 +333,9 @@ namespace Controller
 						{
 							LapsCount++;
 						}
+
+
+
 						return;
 					}
 					i++;
@@ -351,17 +343,17 @@ namespace Controller
 
 				else
 				{
+					//adds all but the last participant to FinishedParticipants
+					AddParticipantToFinishedParticipants();
+
 					//Remove participant from track when finished
 					if (sectionData.Right == participant)
 						sectionData.Right = null;
 					if (sectionData.Left == participant)
 						sectionData.Left = null;
-
-					//Fill FinishedParticipants List
-					if (!FinishedParticipants.Contains(participant))
-						AddFinishedParticipantsToList(participant);
 				}
 			}
+
 		}
 
 		#endregion

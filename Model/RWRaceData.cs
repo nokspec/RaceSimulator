@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace Controller
 {
-	public class CurrentRaceData<T>
+	public class RWRaceData<T>
 	{
-		private List<T> _list = new List<T>();
+		private List<T> _list;
+
+		public RWRaceData()
+		{
+			_list = new();
+		}
 
 		public void Add(T item)
 		{
 			_list.Add(item);
 		}
-
-
 	}
 }
