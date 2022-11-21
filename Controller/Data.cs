@@ -11,7 +11,7 @@ namespace Controller
 {
 	public static class Data
 	{
-		public static Competition Competition;
+		public static Competition Competition { get; set; }
 		public static Race CurrentRace { get; set; }
 		public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
 
@@ -59,7 +59,6 @@ namespace Controller
 				NextRaceEvent?.Invoke(null, new NextRaceEventArgs() { Race = CurrentRace });
 				CurrentRace.Start();
 			}
-			//TODO hierin finalscore aanroepen?
 		}
 
 		//TODO: documentation.
@@ -69,6 +68,7 @@ namespace Controller
 		 */
 		public static void OnFinishedRace(object sender, EventArgs e)
 		{
+			Competition.FinalScore(CurrentRace.FinishedParticipants);
 			NextRace();
 		}
 		

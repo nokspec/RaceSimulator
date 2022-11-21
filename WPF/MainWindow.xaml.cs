@@ -29,8 +29,6 @@ namespace WPF
 		public MainWindow()
 		{
 			Data.Initialize();
-			
-			
 			Data.NextRaceEvent += OnNextRaceEvent;
 			
 			ImageManager.Initialize();

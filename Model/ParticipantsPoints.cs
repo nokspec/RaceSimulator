@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public class CompetitionData
+	public class ParticipantsPoints
 	{
 		public string Name { get; set; }
 		public int Points { get; set; }
-
-		
 	}
 }

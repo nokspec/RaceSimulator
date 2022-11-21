@@ -1,6 +1,7 @@
 ﻿using Controller;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,42 +12,39 @@ namespace Model
 	{
 		public List<IParticipant> Participants { get; set; }
 		public Queue<Track> Tracks { get; set; }
+		public List<IParticipant> FinishedParticipants { get; set; }
 
 		//generic
-		//iparticipant want we willen de data daaruit gebruiken
-		public RWRaceData<IParticipant> RaceData { get; set; }
-		//RWRaceData = data template
-		
-		public List<IParticipant> FinishedParticipants { get; set; }
-		
+		public RWRaceData<ParticipantsPoints> RaceData { get; set; }
+
+
 		public Competition()
 		{
-			Participants = new List<IParticipant>();
-			Tracks = new Queue<Track>();
-			RaceData = new RWRaceData<IParticipant>();
+			Participants = new();
+			Tracks = new();
 		}
 
 		public void FinalScore(List<IParticipant> FinishedParticipants)
 		{
-			/*//cast
-			RaceData.Add((IParticipant)FinishedParticipants);
-*/
-			int count = 0;
-
+			//add points to finished participants
+			int i = 0;
 			foreach (IParticipant participant in FinishedParticipants)
 			{
+				i++;
+				switch (i)
 				{
-					count++;
-					if (count == 1) participant.Points += 25;
-					if (count == 2) participant.Points += 18;
-					if (count == 3) participant.Points += 15;
-					if (count == 4) participant.Points += 12;
-					if (count == 5) participant.Points += 10;
-					if (count == 6) participant.Points += 8;
-					if (count == 7) participant.Points += 6;
-					if (count == 8) participant.Points += 4;
-					if (count == 9) participant.Points += 2;
-					if (count == 10) participant.Points += 1;
+					case 1:
+						participant.Points += 10;
+						break;
+					case 2:
+						participant.Points += 5;
+						break;
+					case 3:
+						participant.Points += 3;
+						break;
+					case 4:
+						participant.Points += 1;
+						break;
 				}
 			}
 		}

@@ -28,6 +28,10 @@ namespace Controller
 		public event EventHandler<DriversChangedEventArgs> DriversChanged;
 		public event EventHandler<NextRaceEventArgs> RaceFinished;
 
+		//Section times
+		private Dictionary<IParticipant, DateTime> _participantTimes;
+		public RWRaceData<ParticipantSectionTime> SectionTimeStorage { get; set; }
+
 		//Timer
 		public DateTime StartTime { get; set; }
 		private Random _random;
@@ -36,7 +40,7 @@ namespace Controller
 
 		//Laps
 		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public static int LapsCount = -1; //Stargrid staat achter finish, daarom -1.
+		public static int LapsCount = -1; //Startgrid staat achter finish, daarom -1.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -45,6 +49,7 @@ namespace Controller
 			_random = new Random(DateTime.Now.Millisecond);
 			_positions = new();
 			FinishedParticipants = new();
+			SectionTimeStorage = new();
 			StartPositions(Track, Participants);
 			RandomizeEquipment();
 
@@ -218,10 +223,20 @@ namespace Controller
 		 */
 		private int CountLaps(IParticipant participant)
 		{
+			ParticipantSectionTime.Add(new ParticipantSectionTime()
+			{
+				Name = participant.Name,
+				Section = _lapsDriven[participant],
+				Time = elapsedDateTime - _participantTimes[participant]
+			}); ;
+			_participantTimes[participant] = elapsedDateTime;
+
 			participant.LapsCount++;
 			LapsCount++;
 			return LapsCount;
 		}
+
+		
 
 		/*
 		 * Gets called by MoveParticipants() after the participants have completed one lap.
