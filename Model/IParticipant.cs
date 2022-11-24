@@ -15,8 +15,11 @@ namespace Model
 		public int LapsCount { get; set; }
 		public bool Finished { get; set; } //bool is standaard false.
 		public Section CurrentSection { get; set; }
-		public int GetMovementSpeed();
+		public int CalculateSpeed();
 		public int MetersMoved { get; set; }
+		
+		//TODO rename
+		public int SectionCount { get; set; }
 	}
 	
 	public enum TeamColors

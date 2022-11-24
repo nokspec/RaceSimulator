@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPF"
         xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1280" Icon="/AppIcon.png">
@@ -22,7 +21,7 @@
 				</Menu.Effect>
 				<MenuItem Header="Menu" HorizontalAlignment="Left">
 					<MenuItem Header="Race statistics" Click="Race_Statistics_Click"/>
-					<MenuItem Header="Competition statistics" Click="Competition_Statistics_Click"/>
+					
 					<MenuItem Header="Close" Click="MenuItem_Exit_Click"/>
 				</MenuItem>
 			</Menu>

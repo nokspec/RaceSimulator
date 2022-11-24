@@ -17,6 +17,7 @@ namespace Model
 		public bool Finished { get; set; }
 		public Section CurrentSection { get; set; }
 		public int MetersMoved { get; set; }
+		public int SectionCount { get; set; }
 
 		public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
 		{
@@ -26,7 +27,7 @@ namespace Model
 			TeamColors = teamColors;
 		}
 
-		public int GetMovementSpeed() //Calculate driver speed.
+		public int CalculateSpeed()
 		{
 			return Equipment.Performance * Equipment.Speed;
 		}

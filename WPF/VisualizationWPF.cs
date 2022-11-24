@@ -12,6 +12,8 @@ namespace WPF
 {
 	public static class VisualizationWPF
 	{
+
+
 		private static int XPosition;
 		private static int YPosition;
 		public static int SectionSize { get; set; }
@@ -29,65 +31,56 @@ namespace WPF
 		#region graphics
 
 		//sections
-		private const string _StartHorizontal =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\StartHorizontal.png";
-
-		private const string _StartVertical =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\StartVertical.png";
-
-		private const string _FinishHorizontal =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\FinishHorizontal.png";
-
-		private const string _FinishVertical =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\FinishVertical.png";
-
-		private const string _StraightHorizontal =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\StraightHorizontal.png";
-
-		private const string _StraightVertical =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\StraightVertical.png";
-
-		private const string _CornerNE =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\CornerNE.png";
-
-		private const string _CornerNW =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\CornerNW.png";
-
-		private const string _CornerSE =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\CornerSE.png";
-
-		private const string _CornerSW =
-			"C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\CornerSW.png";
+		private const string _urlDefaultSection = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\";
+		
+		private const string _StartHorizontal = _urlDefaultSection + "StartHorizontal.png";
+		private const string _StartVertical = _urlDefaultSection + "StartVertical.png";
+		private const string _FinishHorizontal = _urlDefaultSection + "FinishHorizontal.png";
+		private const string _FinishVertical = _urlDefaultSection + "FinishVertical.png";
+		private const string _StraightHorizontal = _urlDefaultSection + "StraightHorizontal.png";
+		private const string _StraightVertical = _urlDefaultSection + "StraightVertical.png";
+		private const string _CornerNE = _urlDefaultSection + "CornerNE.png";
+		private const string _CornerNW = _urlDefaultSection + "CornerNW.png";
+		private const string _CornerSE = _urlDefaultSection + "CornerSE.png";
+		private const string _CornerSW = _urlDefaultSection + "CornerSW.png";
 
 		//participants
 
 		//north
-		private const string _BluePlayerN = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\BlueNorth.png";
-		private const string _GreenPlayerN = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\GreenNorth.png";
-		private const string _GreyPlayerN = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\GreyNorth.png";
-		private const string _RedPlayerN = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\RedNorth.png";
-		private const string _YellowPlayerN = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\YellowNorth.png";
+		private const string _urlDefaultDriverNorth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\";
+
+		private const string _BluePlayerN = _urlDefaultDriverNorth + "BlueNorth.png";
+		private const string _GreenPlayerN = _urlDefaultDriverNorth + "GreenNorth.png";
+		private const string _GreyPlayerN = _urlDefaultDriverNorth + "GreyNorth.png";
+		private const string _RedPlayerN = _urlDefaultDriverNorth + "RedNorth.png";
+		private const string _YellowPlayerN = _urlDefaultDriverNorth + "YellowNorth.png";
 
 		//east
-		private const string _BluePlayerE = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\BlueEast.png";
-		private const string _GreenPlayerE = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\GreenEast.png";
-		private const string _GreyPlayerE = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\GreyEast.png";
-		private const string _RedPlayerE = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\RedEast.png";
-		private const string _YellowPlayerE = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\YellowEast.png";
+		private const string _urlDefaultDriverEast = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\";
+
+		private const string _BluePlayerE = _urlDefaultDriverEast + "BlueEast.png";
+		private const string _GreenPlayerE = _urlDefaultDriverEast + "GreenEast.png";
+		private const string _GreyPlayerE = _urlDefaultDriverEast + "GreyEast.png";
+		private const string _RedPlayerE = _urlDefaultDriverEast + "RedEast.png";
+		private const string _YellowPlayerE = _urlDefaultDriverEast + "YellowEast.png";
 
 		//south
-		private const string _BluePlayerS = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\BlueSouth.png";
-		private const string _GreenPlayerS = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\GreenSouth.png";
-		private const string _GreyPlayerS = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\GreySouth.png";
-		private const string _RedPlayerS = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\RedSouth.png";
-		private const string _YellowPlayerS = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\YellowSouth.png";
+		private const string _urlDefaultDriverSouth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\";
+
+		private const string _BluePlayerS = _urlDefaultDriverSouth + "BlueSouth.png";
+		private const string _GreenPlayerS = _urlDefaultDriverSouth + "GreenSouth.png";
+		private const string _GreyPlayerS = _urlDefaultDriverSouth + "GreySouth.png";
+		private const string _RedPlayerS = _urlDefaultDriverSouth + "RedSouth.png";
+		private const string _YellowPlayerS = _urlDefaultDriverSouth + "YellowSouth.png";
 
 		//west
-		private const string _BluePlayerW = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\BlueWest.png";
-		private const string _GreenPlayerW = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\GreenWest.png";
-		private const string _GreyPlayerW = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\GreyWest.png";
-		private const string _RedPlayerW = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\ReDWest.png";
-		private const string _YellowPlayerW = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\YellowWest.png";
+		private const string _urlDefaultDriverWest = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
+
+		private const string _BluePlayerW = _urlDefaultDriverWest + "BlueWest.png";
+		private const string _GreenPlayerW = _urlDefaultDriverWest + "GreenWest.png";
+		private const string _GreyPlayerW = _urlDefaultDriverWest + "GreyWest.png";
+		private const string _RedPlayerW = _urlDefaultDriverWest + "ReDWest.png";
+		private const string _YellowPlayerW = _urlDefaultDriverWest + "YellowWest.png";
 
 		//broken
 		private const string _Broken = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Broken.png";
@@ -111,9 +104,9 @@ namespace WPF
 
 			_direction = Direction.Right;
 
-			SectionSize = 80; 
-			ParticipantSize = 35; 
-			
+			SectionSize = 80;
+			ParticipantSize = 35;
+
 			CalculateTrackSize();
 
 			TrackWidth *= SectionSize;
@@ -213,14 +206,14 @@ namespace WPF
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
 			IParticipant leftParticipant = _race.GetSectionData(section).Left;
-			
+
 			if (rightParticipant != null)
 			{
 				DrawSingleParticipant(rightParticipant, g, currentDirection, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section));
 				if (rightParticipant.Equipment.IsBroken)
 					DrawBroken(g, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); //Broken image sits on top of participant
 			}
-			
+
 			if (leftParticipant != null)
 			{
 				DrawSingleParticipant(leftParticipant, g, currentDirection, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section));
@@ -234,7 +227,7 @@ namespace WPF
 			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
-		
+
 		private static void DrawBroken(Graphics g, int x, int y)
 		{
 			g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize);
@@ -386,7 +379,7 @@ namespace WPF
 			return YPosition * SectionSize;
 		}
 
-		
+
 	}
 }
 

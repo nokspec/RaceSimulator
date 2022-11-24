@@ -23,8 +23,8 @@ namespace WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private CurrentRaceStatistics _currentRaceStatistics;
-		private CompetitionStatistics _competitionStatistics;
+		private RaceStatistics _raceStatistics;
+		//private CompetitionStatistics _competitionStatistics;
 		
 		public MainWindow()
 		{
@@ -68,17 +68,17 @@ namespace WPF
 		private void Race_Statistics_Click(object sender, RoutedEventArgs e)
 		{
 			// initialize window
-			_currentRaceStatistics = new CurrentRaceStatistics();
+			_raceStatistics = new RaceStatistics();
 
-			_currentRaceStatistics.Show();
+			_raceStatistics.Show();
 		}
 
-		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
+/*		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
 		{
 			// initialize window
 			_competitionStatistics = new CompetitionStatistics();
 
 			_competitionStatistics.Show();
-		}
+		}*/
 	}
 }

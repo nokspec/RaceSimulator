@@ -78,7 +78,7 @@ namespace Controller
 		}
 
 		/*
-		 * Sets finished and lapscount to zero
+		 * Resets participants to prepare for next race.
 		 */
 		public void ResetParticipants()
 		{
@@ -87,6 +87,8 @@ namespace Controller
 				participant.MetersMoved = 0;
 				participant.Finished = false;
 				participant.LapsCount = -1;
+				participant.SectionCount = 0;
+				participant.CurrentSection = null;
 			}
 		}
 
@@ -177,8 +179,6 @@ namespace Controller
 					//Dit wordt altijd uitgevoerd.
 					if (participant.Equipment.Quality > 1)
 						participant.Equipment.Quality--;
-
-					Console.WriteLine($"{participant.Name} is gefixt"); //debugging
 				}
 			}
 		}
@@ -193,13 +193,13 @@ namespace Controller
 		 */
 		public void AddParticipantToFinishedParticipants()
 		{
+
 			foreach (IParticipant participant in Participants)
 			{
 				//als de participant gefinished is EN de participant zit nog niet in FinishedParticipants
 				if (participant.Finished && !FinishedParticipants.Contains(participant)) FinishedParticipants.Add(participant);
 			}
 		}
-
 
 		/*
 		 * Returns the list of FinishedParticipants
@@ -248,18 +248,12 @@ namespace Controller
 			int count = 0;
 			foreach (IParticipant participant in Participants)
 			{
-				if (participant.Finished == true)
-					count++;
+				if (participant.Finished == true) count++;
 			}
-			if (count == Participants.Count)
-			{
-				Console.WriteLine("Race finished"); //Print to show that a race has finished
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			if (count == Participants.Count) return true;
+			
+			else return false;
+			
 		}
 		#endregion
 
@@ -271,8 +265,7 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				participant.MetersMoved += participant.GetMovementSpeed();
-
+				participant.MetersMoved += participant.CalculateSpeed();
 				if (participant.MetersMoved >= 100)
 				{
 					participant.MetersMoved += -100;
@@ -304,15 +297,21 @@ namespace Controller
 						//If participant is broken
 						if (participant.Equipment.IsBroken == true)
 						{
-							//Console.WriteLine($"{participant.Name} is kapot"); //debugging
 							return;
 						}
 
 						//Remove participant from currentsection
 						if (sectionData.Right == participant)
+						{
+							participant.SectionCount++; //To display drivers in correct order on race statistics screen
 							sectionData.Right = null;
+						}
+							
 						else if (sectionData.Left == participant)
+						{
+							participant.SectionCount++;
 							sectionData.Left = null;
+						}
 
 						if (Track.Sections.Count <= (i + 1))
 							i = -1;
@@ -333,9 +332,6 @@ namespace Controller
 						{
 							LapsCount++;
 						}
-
-
-
 						return;
 					}
 					i++;

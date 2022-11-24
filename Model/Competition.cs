@@ -1,11 +1,4 @@
-﻿using Controller;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Model
+﻿namespace Model
 {
 	public class Competition
 	{
@@ -14,7 +7,6 @@ namespace Model
 
 		//generic
 		//iparticipant want we willen de data daaruit gebruiken
-		public RWRaceData<IParticipant> RaceData { get; set; }
 		//RWRaceData = data template
 		
 		public List<IParticipant> FinishedParticipants { get; set; }
@@ -23,7 +15,6 @@ namespace Model
 		{
 			Participants = new List<IParticipant>();
 			Tracks = new Queue<Track>();
-			RaceData = new RWRaceData<IParticipant>();
 		}
 
 		public void FinalScore(List<IParticipant> FinishedParticipants)
