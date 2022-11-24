@@ -12,8 +12,6 @@ namespace WPF
 {
 	public static class VisualizationWPF
 	{
-
-
 		private static int XPosition;
 		private static int YPosition;
 		public static int SectionSize { get; set; }
@@ -209,7 +207,8 @@ namespace WPF
 		}
 
 		/// <summary>
-		/// Draws a participant on the track.
+		/// Draws participants on the track.
+		/// Calls DrawSingleParticipant to actually draw the participant.
 		/// If a participant breaks, a "broken" image is displayed on top of the participant.
 		/// </summary>
 		/// <param name="currentDirection"></param>
@@ -235,12 +234,26 @@ namespace WPF
 			}
 		}
 
+		/// <summary>
+		/// Gets called by DrawParticipants to draw a single participant on their position.
+		/// </summary>
+		/// <param name="participant"></param>
+		/// <param name="g"></param>
+		/// <param name="currentDirection"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		private static void DrawSingleParticipant(IParticipant participant, Graphics g, Direction currentDirection, int x, int y)
 		{
 			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
 
+		/// <summary>
+		/// Draws the "broken" image.
+		/// </summary>
+		/// <param name="g"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		private static void DrawBroken(Graphics g, int x, int y)
 		{
 			g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize);
