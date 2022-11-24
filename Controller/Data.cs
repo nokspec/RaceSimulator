@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model;
-
+﻿using Model;
 
 namespace Controller
 {
@@ -22,6 +15,9 @@ namespace Controller
 			AddTracks();
 		}
 
+		/// <summary>
+		/// Adds participants to the competition.
+		/// </summary>
 		public static void AddParticipants()
 		{
 			Competition.Participants.Add(new Driver("Kees", 0, new Car(10, 10, 10, false), TeamColors.Red));
@@ -33,7 +29,9 @@ namespace Controller
 			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Green));
 		}
 
-
+		/// <summary>
+		/// Adds tracks to the competition.
+		/// </summary>
 		public static void AddTracks()
 		{
 			Competition.Tracks.Enqueue(new Track("Rechtsom", MakeRace("Rechtsom")));
@@ -42,11 +40,11 @@ namespace Controller
 			//Competition.Tracks.Enqueue(new Track("Test", MakeRace("Test"))); 
 		}
 
-		/*
-		 * Gets called by OnFinishedRace.
-		 * Sets the NextTrack and then checks if currentTrack isn't null. 
-		 * If it isn't it will initialize and start the next race.
-		 */
+		/// <summary>
+		/// Gets called by OnFinishedRace.
+		/// Sets the NextTrack and then checks if currentTrack isn't null. 
+		/// If it isn't it will initialize and start the next race.
+		/// </summary>
 		public static void NextRace()
 		{
 			Track currentTrack = Competition.NextTrack();
@@ -58,14 +56,14 @@ namespace Controller
 				NextRaceEvent?.Invoke(null, new NextRaceEventArgs() { Race = CurrentRace });
 				CurrentRace.Start();
 			}
-			//TODO hierin finalscore aanroepen?
 		}
-
-		//TODO: documentation.
-		/*
-		 * Is subscribed to CurrentRace.RaceFinished.
-		 * 
-		 */
+		
+		/// <summary>
+		/// Calls NextRace() to initiate the next race.
+		/// Is subscribed to CurrentRace.RaceFinished.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		public static void OnFinishedRace(object sender, EventArgs e)
 		{
 			NextRace();
@@ -73,15 +71,6 @@ namespace Controller
 		
 		public static SectionType[] MakeRace(string naam)
 		{
-			if (naam.Equals("Test"))
-			{
-				SectionType[] trackBuilder = new SectionType[]
-				{
-					SectionType.StartGrid
-					//SectionType.Straight
-				};
-				return trackBuilder;
-			}
 			if (naam.Equals("Rechtsom"))
 			{
 				SectionType[] trackBuilder = new SectionType[]
@@ -151,7 +140,6 @@ namespace Controller
 				};
 				return trackBuilder;
 			}
-
 			return null;
 		}
 	}

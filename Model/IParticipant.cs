@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Model
+﻿namespace Model
 {
 	public interface IParticipant
 	{
@@ -13,12 +7,10 @@ namespace Model
 		IEquipment Equipment { get; set; }
 		TeamColors TeamColors { get; set; }
 		public int LapsCount { get; set; }
-		public bool Finished { get; set; } //bool is standaard false.
+		public bool Finished { get; set; }
 		public Section CurrentSection { get; set; }
 		public int CalculateSpeed();
 		public int MetersMoved { get; set; }
-		
-		//TODO rename
 		public int SectionCount { get; set; }
 	}
 	

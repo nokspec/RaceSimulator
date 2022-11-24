@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Model.IParticipant;
-
-namespace Model
+﻿namespace Model
 {
 	public class Driver : IParticipant
 	{
@@ -27,6 +20,10 @@ namespace Model
 			TeamColors = teamColors;
 		}
 
+		/// <summary>
+		/// Calculates the speed of a driver.
+		/// </summary>
+		/// <returns></returns>
 		public int CalculateSpeed()
 		{
 			return Equipment.Performance * Equipment.Speed;

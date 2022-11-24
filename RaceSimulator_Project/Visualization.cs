@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Controller;
+﻿using Controller;
 using Model;
-using static System.Collections.Specialized.BitVector32;
 using Section = Model.Section;
 
 namespace RaceSimulator_Project
@@ -18,48 +9,38 @@ namespace RaceSimulator_Project
 		public static int X;
 		public static int Y;
 		public static int Position;
-		public static int OldPosition; //Is nodig voor de bochten.
+		public static int OldPosition; //Used for corners
 		public static Section CurrentSection;
 		private static Race race;
 
 		public static void Initialize(Race race)
 		{
 			Visualization.race = race;
-			Data.CurrentRace.DriversChanged += OnDriversChanged; //Subscribe
+			Data.CurrentRace.DriversChanged += OnDriversChanged;
 			ConsolePreparation();
 		}
-
-		/*
-		 * Prepares the Console for the next race/track.
-		 */
+		
+		/// <summary>
+		/// Prepares the Console for the next race/track.
+		/// </summary>
 		private static void ConsolePreparation()
 		{
-			Console.Clear(); //Oude track weghalen.
-							 //De waardes hieronder stonden origineel in Initialize, maar hier staan ze logischer vind ik.
+			Console.Clear(); //Remove old track
 			X = 0;
 			Y = 0;
 			Position = 1;
 			SetPosition(35, 30);
 		}
 
-		//Event
-		//TODO: documentation
-		/*
-		 * 
-		 */
 		private static void OnDriversChanged(object source, DriversChangedEventArgs e)
 		{
 			DrawTrack(e.Track);
 		}
 
-		//TODO: documentation
-		/*
-		 * 
-		 */
 		public static void OnNextRaceEvent(object sender, NextRaceEventArgs e)
 		{
 			Initialize(e.Race);
-			Data.CurrentRace.DriversChanged += OnDriversChanged; //Re-subscribe
+			Data.CurrentRace.DriversChanged += OnDriversChanged; 
 			DrawTrack(Data.CurrentRace.Track);
 		}
 
@@ -81,7 +62,7 @@ namespace RaceSimulator_Project
 			"|  |"
 		};
 
-		private static string[] _straightStartHorizontal = //s om aan te duiden dat t start is
+		private static string[] _straightStartHorizontal = 
 		{
 			"----",
 			"  2|",
@@ -89,7 +70,7 @@ namespace RaceSimulator_Project
 			"----"
 		};
 
-		private static string[] _straightStartVertical = //s om aan te duiden dat t start is
+		private static string[] _straightStartVertical = 
 		{
 			"|  |",
 			"| 2|",
@@ -146,12 +127,14 @@ namespace RaceSimulator_Project
 		};
 
 
-		#endregion //Sections string[]
+		#endregion
 
-		//TODO: documentation
-		/*
-		 * 
-		 */
+		/// <summary>
+		/// Prints the track to the console.
+		/// Also puts the drivers on their respective positions.
+		/// </summary>
+		/// <param name="array"></param>
+		/// <param name="sectionData"></param>
 		private static void PrintToConsole(string[] array, SectionData sectionData)
 		{
 			foreach (string s in array)
@@ -164,18 +147,22 @@ namespace RaceSimulator_Project
 					newS = ReplaceString(s, sectionData.Right);
 				}
 				newS = ReplaceString(s, sectionData.Left, sectionData.Right);
-				SetPosition(0, 1); //Zonder dit crasht het.
+				SetPosition(0, 1); //Crashes without this line
 				Console.WriteLine(newS);
 			}
 		}
 
-		/*
-		 * Replaces the placeholder (1 and 2) with the first letter of a participants name, an empty space (" ") or with an "X".
-		 * If a participant is null, it replaces the 1 or 2 with a space.
-		 * Otherwise if the Equipment is broken it replaces 1 or 2 with an "X".
-		 * Finally, if a participant isn't null AND their Equipment isn't broken;
-		 * it'll replace the 1 or 2 with the first letter of their name.
-		 */
+		/// <summary>
+		/// Replaces the placeholder (1 and 2) with the first letter of a participants name, an empty space (" ") or with an "X".
+		/// If a participant is null, it replaces the 1 or 2 with a space.
+		/// Otherwise if the Equipment is broken it replaces 1 or 2 with an "X".
+		/// Finally, if a participant isn't null AND their Equipment isn't broken;
+		/// it'll replace the 1 or 2 with the first letter of their name.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <param name="leftParticipant"></param>
+		/// <param name="rightParticipant"></param>
+		/// <returns></returns>
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{ 
 			string leftP = leftParticipant == null ? " " : leftParticipant.Equipment.IsBroken ? "X" : leftParticipant.Name.Substring(0, 1);
@@ -186,7 +173,7 @@ namespace RaceSimulator_Project
 
 		private static string ReplaceString(string input, IParticipant participant)
 		{
-			participant.CurrentSection = CurrentSection; //Geef CurrentSection mee aan Participant.CurrentSection
+			participant.CurrentSection = CurrentSection;
 
 			if (race.GetSectionData(participant.CurrentSection).Left == participant)
 			{
@@ -199,44 +186,53 @@ namespace RaceSimulator_Project
 			return null;
 		}
 
-		private static void SetPosition(int xChange, int yChange) //Sets the position for the next section.
+		/// <summary>
+		/// Sets the position for the next section.
+		/// </summary>
+		/// <param name="xChange"></param>
+		/// <param name="yChange"></param>
+		private static void SetPosition(int xChange, int yChange)
 		{
 			X += xChange;
 			Y += yChange;
 			Console.SetCursorPosition(X, Y);
 		}
 
-		#region drawtrack
+		#region Draw track
+		/// <summary>
+		/// Draws the track.
+		/// Uses DeterminePosition to determine where to draw the next section.
+		/// 1, 3 = horizontal
+		/// 2, 4 = vertical
+		/// </summary>
+		/// <param name="track"></param>
 		public static void DrawTrack(Track track)
 		{
-			/* 1, 3 = horizontal
-			* 2, 4 = vertical
-			*/
 			foreach (Section section in track.Sections)
 			{
 				CurrentSection = section;
 				switch (section.SectionTypes)
 				{
 					case SectionType.StartGrid:
-						DetermineDirection(SectionType.StartGrid, track);
+						DeterminePosition(SectionType.StartGrid, track);
 						PrintToConsole(Position is 1 or 3 ? _straightStartHorizontal : _straightStartVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.Finish:
-						DetermineDirection(SectionType.Finish, track);
+						DeterminePosition(SectionType.Finish, track);
 						PrintToConsole(Position is 1 or 3 ? _finishHorizontal : _finishVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.Straight:
-						DetermineDirection(SectionType.Straight, track);
+						DeterminePosition(SectionType.Straight, track);
 						PrintToConsole(Position is 1 or 3 ? _straightHorizontal : _straightVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.RightCorner:
-						DetermineDirection(SectionType.RightCorner, track);
+						DeterminePosition(SectionType.RightCorner, track);
 						switch (OldPosition)
 						{
 							case 1:
@@ -255,7 +251,7 @@ namespace RaceSimulator_Project
 						break;
 
 					case SectionType.LeftCorner:
-						DetermineDirection(SectionType.LeftCorner, track);
+						DeterminePosition(SectionType.LeftCorner, track);
 						switch (OldPosition)
 						{
 							case 3:
@@ -276,10 +272,12 @@ namespace RaceSimulator_Project
 			}
 		}
 
-		/*
-		 * TODO: documentation
-		 */
-		private static void DetermineDirection(SectionType sectionType, Track track)
+		/// <summary>
+		/// Determines the position of the next section that has to be drawn.
+		/// </summary>
+		/// <param name="sectionType"></param>
+		/// <param name="track"></param>
+		private static void DeterminePosition(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
 			{

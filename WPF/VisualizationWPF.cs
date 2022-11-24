@@ -23,14 +23,13 @@ namespace WPF
 
 		private static Graphics Graphics;
 
-		//declare direction
 		private static Direction _direction;
 
 		private static Race _race;
 
 		#region graphics
 
-		//sections
+		//Sections
 		private const string _urlDefaultSection = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\";
 		
 		private const string _StartHorizontal = _urlDefaultSection + "StartHorizontal.png";
@@ -44,45 +43,45 @@ namespace WPF
 		private const string _CornerSE = _urlDefaultSection + "CornerSE.png";
 		private const string _CornerSW = _urlDefaultSection + "CornerSW.png";
 
-		//participants
+		//Participants
 
-		//north
+		//North
 		private const string _urlDefaultDriverNorth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\";
 
-		private const string _BluePlayerN = _urlDefaultDriverNorth + "BlueNorth.png";
-		private const string _GreenPlayerN = _urlDefaultDriverNorth + "GreenNorth.png";
-		private const string _GreyPlayerN = _urlDefaultDriverNorth + "GreyNorth.png";
-		private const string _RedPlayerN = _urlDefaultDriverNorth + "RedNorth.png";
-		private const string _YellowPlayerN = _urlDefaultDriverNorth + "YellowNorth.png";
+		private const string _BlueDriverN = _urlDefaultDriverNorth + "BlueNorth.png";
+		private const string _GreenDriverN = _urlDefaultDriverNorth + "GreenNorth.png";
+		private const string _GreyDriverN = _urlDefaultDriverNorth + "GreyNorth.png";
+		private const string _RedDriverN = _urlDefaultDriverNorth + "RedNorth.png";
+		private const string _YellowDriverN = _urlDefaultDriverNorth + "YellowNorth.png";
 
-		//east
+		//East
 		private const string _urlDefaultDriverEast = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\";
 
-		private const string _BluePlayerE = _urlDefaultDriverEast + "BlueEast.png";
-		private const string _GreenPlayerE = _urlDefaultDriverEast + "GreenEast.png";
-		private const string _GreyPlayerE = _urlDefaultDriverEast + "GreyEast.png";
-		private const string _RedPlayerE = _urlDefaultDriverEast + "RedEast.png";
-		private const string _YellowPlayerE = _urlDefaultDriverEast + "YellowEast.png";
+		private const string _BlueDriverE = _urlDefaultDriverEast + "BlueEast.png";
+		private const string _GreenDriverE = _urlDefaultDriverEast + "GreenEast.png";
+		private const string _GreyDriverE = _urlDefaultDriverEast + "GreyEast.png";
+		private const string _RedDriverE = _urlDefaultDriverEast + "RedEast.png";
+		private const string _YellowDriverE = _urlDefaultDriverEast + "YellowEast.png";
 
-		//south
+		//South
 		private const string _urlDefaultDriverSouth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\";
 
-		private const string _BluePlayerS = _urlDefaultDriverSouth + "BlueSouth.png";
-		private const string _GreenPlayerS = _urlDefaultDriverSouth + "GreenSouth.png";
-		private const string _GreyPlayerS = _urlDefaultDriverSouth + "GreySouth.png";
-		private const string _RedPlayerS = _urlDefaultDriverSouth + "RedSouth.png";
-		private const string _YellowPlayerS = _urlDefaultDriverSouth + "YellowSouth.png";
+		private const string _BlueDriverS = _urlDefaultDriverSouth + "BlueSouth.png";
+		private const string _GreenDriverS = _urlDefaultDriverSouth + "GreenSouth.png";
+		private const string _GreyDriverS = _urlDefaultDriverSouth + "GreySouth.png";
+		private const string _RedDriverS = _urlDefaultDriverSouth + "RedSouth.png";
+		private const string _YellowDriverS = _urlDefaultDriverSouth + "YellowSouth.png";
 
-		//west
+		//West
 		private const string _urlDefaultDriverWest = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
 
-		private const string _BluePlayerW = _urlDefaultDriverWest + "BlueWest.png";
-		private const string _GreenPlayerW = _urlDefaultDriverWest + "GreenWest.png";
-		private const string _GreyPlayerW = _urlDefaultDriverWest + "GreyWest.png";
-		private const string _RedPlayerW = _urlDefaultDriverWest + "ReDWest.png";
-		private const string _YellowPlayerW = _urlDefaultDriverWest + "YellowWest.png";
+		private const string _BlueDriverW = _urlDefaultDriverWest + "BlueWest.png";
+		private const string _GreenDriverW = _urlDefaultDriverWest + "GreenWest.png";
+		private const string _GreyDriverW = _urlDefaultDriverWest + "GreyWest.png";
+		private const string _RedDriverW = _urlDefaultDriverWest + "ReDWest.png";
+		private const string _YellowDriverW = _urlDefaultDriverWest + "YellowWest.png";
 
-		//broken
+		//Broken
 		private const string _Broken = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Broken.png";
 
 		#endregion
@@ -99,8 +98,7 @@ namespace WPF
 		{
 			_race = race;
 
-			//Hiermee bepaal je de grootte van de track (dit vind ik wel even big brain van mezelf met de single statement assign)
-			TrackHeight = TrackWidth = 5;
+			TrackHeight = TrackWidth = 5; //Set the track size
 
 			_direction = Direction.Right;
 
@@ -113,9 +111,17 @@ namespace WPF
 			TrackHeight *= SectionSize;
 		}
 
+		/// <summary>
+		/// Draws the track on the WPF window.
+		/// Calls DrawParticipants() to draw the participants on the track.
+		/// Calls DeterminePosition to determine the position of a section.
+		/// Calls MovePointerPosition() to move the pointer to the next position.
+		/// </summary>
+		/// <param name="track"></param>
+		/// <returns></returns>
 		public static BitmapSource DrawTrack(Track track)
 		{
-			//start position
+			//Start positions
 			XPosition = 3;
 			YPosition = 2;
 
@@ -196,12 +202,19 @@ namespace WPF
 						break;
 				}
 				DrawParticipants(_direction, Graphics, section);
-				DetermineDirection(section.SectionTypes, _direction);
+				DeterminePosition(section.SectionTypes, _direction);
 				MovePointerPosition();
 			}
 			return ImageManager.CreateBitmapSourceFromGdiBitmap(bitmap);
 		}
 
+		/// <summary>
+		/// Draws a participant on the track.
+		/// If a participant breaks, a "broken" image is displayed on top of the participant.
+		/// </summary>
+		/// <param name="currentDirection"></param>
+		/// <param name="g"></param>
+		/// <param name="section"></param>
 		public static void DrawParticipants(Direction currentDirection, Graphics g, Section section)
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
@@ -237,45 +250,53 @@ namespace WPF
 		{
 			return currentDirection switch
 			{
-				//east
+				//East
 				Direction.Right => color switch
 				{
-					TeamColors.Red => _RedPlayerE,
-					TeamColors.Green => _GreenPlayerE,
-					TeamColors.Yellow => _YellowPlayerE,
-					TeamColors.Blue => _BluePlayerE,
-					TeamColors.Grey => _GreyPlayerE,
+					TeamColors.Red => _RedDriverE,
+					TeamColors.Green => _GreenDriverE,
+					TeamColors.Yellow => _YellowDriverE,
+					TeamColors.Blue => _BlueDriverE,
+					TeamColors.Grey => _GreyDriverE,
+					_ => throw new InvalidDirectionException(),
 				},
-				//south
+				//South
 				Direction.Down => color switch
 				{
-					TeamColors.Red => _RedPlayerS,
-					TeamColors.Green => _GreenPlayerS,
-					TeamColors.Yellow => _YellowPlayerS,
-					TeamColors.Blue => _BluePlayerS,
-					TeamColors.Grey => _GreyPlayerS,
+					TeamColors.Red => _RedDriverS,
+					TeamColors.Green => _GreenDriverS,
+					TeamColors.Yellow => _YellowDriverS,
+					TeamColors.Blue => _BlueDriverS,
+					TeamColors.Grey => _GreyDriverS,
+					_ => throw new InvalidDirectionException(),
 				},
-				//west
+				//West
 				Direction.Left => color switch
 				{
-					TeamColors.Red => _RedPlayerW,
-					TeamColors.Green => _GreenPlayerW,
-					TeamColors.Yellow => _YellowPlayerW,
-					TeamColors.Blue => _BluePlayerW,
-					TeamColors.Grey => _GreyPlayerW,
+					TeamColors.Red => _RedDriverW,
+					TeamColors.Green => _GreenDriverW,
+					TeamColors.Yellow => _YellowDriverW,
+					TeamColors.Blue => _BlueDriverW,
+					TeamColors.Grey => _GreyDriverW,
+					_ => throw new InvalidDirectionException(),
 				},
-				//north
+				//North
 				Direction.Up => color switch
 				{
-					TeamColors.Red => _RedPlayerN,
-					TeamColors.Green => _GreenPlayerN,
-					TeamColors.Yellow => _YellowPlayerN,
-					TeamColors.Blue => _BluePlayerN,
-					TeamColors.Grey => _GreyPlayerN,
-				}
+					TeamColors.Red => _RedDriverN,
+					TeamColors.Green => _GreenDriverN,
+					TeamColors.Yellow => _YellowDriverN,
+					TeamColors.Blue => _BlueDriverN,
+					TeamColors.Grey => _GreyDriverN,
+					_ => throw new InvalidDirectionException(),
+				},
+				_ => throw new InvalidDirectionException()
 			};
 		}
 
+		/// <summary>
+		/// Determines the position of the pointer.
+		/// </summary>
 		private static void MovePointerPosition()
 		{
 			switch (_direction)
@@ -295,7 +316,12 @@ namespace WPF
 			}
 		}
 
-		private static void DetermineDirection(SectionType sectionType, Direction direction)
+		/// <summary>
+		/// Determines the position of the next section that has to be drawn.
+		/// </summary>
+		/// <param name="sectionType"></param>
+		/// <param name="direction"></param>
+		private static void DeterminePosition(SectionType sectionType, Direction direction)
 		{
 			switch (sectionType)
 			{
@@ -327,12 +353,15 @@ namespace WPF
 					break;
 			}
 		}
-
+		
+		/// <summary>
+		/// Calculate the size of the track.
+		/// </summary>
 		private static void CalculateTrackSize()
 		{
 			foreach (Section section in _race.Track.Sections)
 			{
-				DetermineDirection(section.SectionTypes, _direction);
+				DeterminePosition(section.SectionTypes, _direction);
 
 				switch (_direction)
 				{
@@ -345,6 +374,13 @@ namespace WPF
 				}
 			}
 		}
+
+		/// <summary>
+		/// Calculate the position of the participants on the X-axis.
+		/// </summary>
+		/// <param name="participant"></param>
+		/// <param name="section"></param>
+		/// <returns></returns>
 		private static int ParticipantXPosition(IParticipant participant, Section section)
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
@@ -357,6 +393,12 @@ namespace WPF
 			return 0;
 		}
 
+		/// <summary>
+		/// Calculate the position of the participants on the Y-axis.
+		/// </summary>
+		/// <param name="participant"></param>
+		/// <param name="section"></param>
+		/// <returns></returns>
 		private static int ParticipantYPosition(IParticipant participant, Section section)
 		{
 			IParticipant rightParticipant = _race.GetSectionData(section).Right;
@@ -369,17 +411,23 @@ namespace WPF
 			return 0;
 		}
 
+		/// <summary>
+		/// Calculate the position of the section on the X-axis.
+		/// </summary>
+		/// <returns></returns>
 		private static int SectionXPosition()
 		{
 			return XPosition * SectionSize;
 		}
 
+		/// <summary>
+		/// Calculate the position of the section on the Y-axis.
+		/// </summary>
+		/// <returns></returns>
 		private static int SectionYPosition()
 		{
 			return YPosition * SectionSize;
 		}
-
-
 	}
 }
 

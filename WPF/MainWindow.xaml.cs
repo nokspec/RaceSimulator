@@ -67,7 +67,7 @@ namespace WPF
 
 		private void Race_Statistics_Click(object sender, RoutedEventArgs e)
 		{
-			// initialize window
+			//Initialize window
 			_raceStatistics = new RaceStatistics();
 
 			_raceStatistics.Show();
@@ -75,7 +75,7 @@ namespace WPF
 
 		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
 		{
-			// initialize window
+			//Initialize window
 			_competitionStatistics = new CompetitionStatistics();
 
 			_competitionStatistics.Show();

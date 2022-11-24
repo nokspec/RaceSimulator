@@ -25,6 +25,12 @@ namespace Controller
 			Name = participant.Name;
 		}
 
+		/// <summary>
+		/// Returns a list of Participants sorted by their position.
+		/// First by the amount of sections they've been through, secondly by the amount of laps they've driven.
+		/// </summary>
+		/// <param name="list"></param>
+		/// <returns></returns>
 		public static List<ParticipantRaceData> SortByPosition(List<ParticipantRaceData> list)
 		{
 			return list.OrderByDescending(x => x.SectionCount).ThenByDescending(x => x.LapCount).ToList();

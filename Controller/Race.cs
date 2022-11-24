@@ -32,11 +32,11 @@ namespace Controller
 		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 200; //Bepaal timer interval. Nummer bepalen hier vind ik wat mooier dan in de constructor.
+		private static int _timerInterval = 500; //Set timer interval
 
 		//Laps
-		public static int AmountOfLaps = 1; //Hier bepaal je hoeveel laps een race heeft.
-		public static int LapsCount = -1; //Stargrid staat achter finish, daarom -1.
+		public static int AmountOfLaps = 2; //Set amount of laps a race has.
+		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why the value is -1.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -60,10 +60,10 @@ namespace Controller
 			_timer.Start();
 		}
 
-		/*
-		 * Gets called when race finishes.
-		 * Cleans everything for the next race.
-		 */
+		/// <summary>
+		/// Gets called when a race finishes.
+		/// Cleans everything for the next race.
+		/// </summary>
 		private void CleanUp()
 		{
 			_timer.Stop();
@@ -77,9 +77,9 @@ namespace Controller
 			ResetParticipants();
 		}
 
-		/*
-		 * Resets participants to prepare for next race.
-		 */
+		/// <summary>
+		/// Resets all participants values to default values.
+		/// </summary>
 		public void ResetParticipants()
 		{
 			foreach (IParticipant participant in Participants)
@@ -92,22 +92,13 @@ namespace Controller
 			}
 		}
 
-		//TODO: documentation.
-		/*
-		 * 
-		 */
 		protected void OnTimedEvent(object sender, EventArgs e)
 		{
-			//Stop(); //debuggen
 			CheckDriverMovement();
-			//_timer.Start(); //debuggen
-
 			RandomizeFixing();
-
 			RandomizeIsBroken();
-			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); //"this" is de huidige class.
-
-			if (CheckRaceFinished()) //Als de race gefinished is.
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); 
+			if (CheckRaceFinished()) //If the race has finished
 			{
 				AddParticipantToFinishedParticipants();
 				ReturnStandings();
@@ -119,14 +110,14 @@ namespace Controller
 
 		public SectionData GetSectionData(Section section)
 		{
-			if (!_positions.ContainsKey(section))
-			{
-				_positions.Add(section, new SectionData());
-			}
+			if (!_positions.ContainsKey(section)) _positions.Add(section, new SectionData());
 			return _positions[section];
 		}
 
 		#region Randomizing participants
+		/// <summary>
+		/// Randomizes the equipment of the participants.
+		/// </summary>
 		private void RandomizeEquipment()
 		{
 			foreach (IParticipant participant in Participants)
@@ -137,11 +128,9 @@ namespace Controller
 			}
 		}
 
-		/*
-		 * Gets called in OnTimedEvent()
-		 * Calculates if equipment is broken with the help of _random 
-		 * and a formula depending on the quality of a car.
-		 */
+		/// <summary>
+		/// Randomizes if a participant's equipment is broken.
+		/// </summary>
 		private void RandomizeIsBroken()
 		{
 			List<IParticipant> DrivingParticipants = new();
@@ -162,9 +151,9 @@ namespace Controller
 			}
 		}
 
-		/*
-		 * TODO: documentation
-		 */
+		/// <summary>
+		/// Randomizes if a participant's equipment is fixed.
+		/// </summary>
 		private void RandomizeFixing()
 		{
 			foreach (IParticipant participant in Participants.Where(p => p.Equipment.IsBroken))
@@ -186,6 +175,11 @@ namespace Controller
 		#endregion
 
 		#region Points management
+
+		/// <summary>
+		/// Distributes points to participants based on their position.
+		/// </summary>
+		/// <param name="finishedParticipants"></param>
 		public void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
 		{
 			int count = 0;
@@ -207,14 +201,11 @@ namespace Controller
 			}
 		}
 
-		/*
-		 * Adds finished participant to FinishedParticipants List.
-		 * Which is used to add points to participants
-		 * The List gets reset by CleanUp().
-		 */
+		/// <summary>
+		/// Adds participant to FinishedParticipants list in order of their position.
+		/// </summary>
 		public void AddParticipantToFinishedParticipants()
 		{
-
 			foreach (IParticipant participant in Participants)
 			{
 				//als de participant gefinished is EN de participant zit nog niet in FinishedParticipants
@@ -222,22 +213,19 @@ namespace Controller
 			}
 		}
 
-		/*
-		 * Returns the list of FinishedParticipants
-		 */
 		public List<IParticipant> ReturnStandings()
 		{
 			return FinishedParticipants;
 		}
-
-
 		#endregion
 
 		#region Lap management
-		/*
-		 * Gets called by NextLap()
-		 * If this function gets called it adds +1 to participant.LapsCount & _lapsCount. Returns _lapsCount.
-		 */
+		/// <summary>
+		/// Gets called by NextLap()
+		/// Adds +1 to participant.LapsCount & _lapsCount. Returns _lapsCount.
+		/// </summary>
+		/// <param name="participant"></param>
+		/// <returns></returns>
 		private int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
@@ -245,10 +233,12 @@ namespace Controller
 			return LapsCount;
 		}
 
-		/*
-		 * Gets called by MoveParticipants() after the participants have completed one lap.
-		 * Checks if a participant has finished and otherwise calls CountLaps
-		 */
+		/// <summary>
+		/// Gets called by MoveParticipants() after the participants have completed one lap.
+		/// Checks if a participant has finished and otherwise calls CountLaps
+		/// </summary>
+		/// <param name="participant"></param>
+		/// <param name="sectionData"></param>
 		private void NextLap(IParticipant participant, SectionData sectionData)
 		{
 			if (participant.LapsCount < AmountOfLaps)
@@ -261,10 +251,12 @@ namespace Controller
 			}
 		}
 
-		/*
-		 * Gets called by OnTimeEvent().
-		 * Checks if all participants have finished. Returns a bool.
-		 */
+		/// <summary>
+		/// Gets called by OnTimedEvent().
+		/// Checks if all participants have finished.
+		/// Returns a bool.
+		/// </summary>
+		/// <returns></returns>
 		private bool CheckRaceFinished()
 		{
 			int count = 0;
@@ -280,9 +272,11 @@ namespace Controller
 		#endregion
 
 		#region Move participants
-		/*
-		 * Checks if a participant has moved section. If it has, MoveParticipants() is called.
-		 */
+		
+		/// <summary>
+		/// Checks if a participant has moved to an other section. 
+		/// If it has, MoveParticipants() is called.
+		/// </summary>
 		public void CheckDriverMovement()
 		{
 			foreach (IParticipant participant in Participants)
@@ -296,9 +290,13 @@ namespace Controller
 			}
 		}
 
-		/*TODO: documentation
-		 * Gets called by CheckDriverMovement(). Checks where the participant has to go and puts that participant in the next section.
-		 */
+		/// <summary>
+		/// Gets called by CheckDriverMovement(). 
+		/// Checks where the participant has to go and puts that participant in the next section.
+		/// Calls AddParticipantToFinishedParticipants() after a participant finishes the race to add them to the List FinishedParticipants.
+		/// When a participant finishes the race, they get removed from the track.
+		/// </summary>
+		/// <param name="participant"></param>
 		public void MoveParticipants(IParticipant participant)
 		{
 			int i = 0;
@@ -315,12 +313,8 @@ namespace Controller
 
 					if (section == participant.CurrentSection)
 					{
-
 						//If participant is broken
-						if (participant.Equipment.IsBroken == true)
-						{
-							return;
-						}
+						if (participant.Equipment.IsBroken == true) return;
 
 						//Remove participant from currentsection
 						if (sectionData.Right == participant)
@@ -328,18 +322,19 @@ namespace Controller
 							participant.SectionCount++; //To display drivers in correct order on race statistics screen
 							sectionData.Right = null;
 						}
-							
+
 						else if (sectionData.Left == participant)
 						{
 							participant.SectionCount++;
 							sectionData.Left = null;
 						}
 
-						if (Track.Sections.Count <= (i + 1))
-							i = -1;
+						if (Track.Sections.Count <= (i + 1)) i = -1;
 
+						//Get SectionData of next Section.
 						SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
 
+						//If the next section has a free spot.
 						if (nextSectionData.Right == null)
 							nextSectionData.Right = participant;
 						else if (nextSectionData.Left == null)
@@ -347,21 +342,16 @@ namespace Controller
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) //They drove one lap.
-							NextLap(participant, nextSectionData);
+						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) NextLap(participant, nextSectionData); //They have driven one lap.
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) //First lap started.
-						{
-							LapsCount++;
-						}
+						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) LapsCount++; //First lap has started.	
 						return;
 					}
 					i++;
 				}
-
 				else
 				{
-					//adds all but the last participant to FinishedParticipants
+					//Adds all but the last participant to FinishedParticipants
 					AddParticipantToFinishedParticipants();
 
 					//Remove participant from track when finished
@@ -371,15 +361,15 @@ namespace Controller
 						sectionData.Left = null;
 				}
 			}
-
 		}
-
 		#endregion
 
 		#region StartPositions
-		/*
-		 * Places the participants on the track, prior to the race beginning.
-		 */
+		/// <summary>
+		/// Places the participants on the track, prior to the race beginning.
+		/// </summary>
+		/// <param name="track"></param>
+		/// <param name="participants"></param>
 		public void StartPositions(Track track, List<IParticipant> participants)
 		{
 			int sectionsLength = Track.Sections.Count;
@@ -432,9 +422,9 @@ namespace Controller
 		}
 		#endregion start
 
-		/*
-		 * Can be used when debugging with the timer enabled.
-		 */
+		/// <summary>
+		/// Can be used when debugging with timer enabled.
+		/// </summary>
 		private void Stop()
 		{
 			_timer.Enabled = false;

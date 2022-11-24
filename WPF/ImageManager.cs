@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -21,9 +17,6 @@ namespace WPF
 			_imageCache = new Dictionary<string, Bitmap>();
 		}
 
-		/*
-		 * TODO: documentation
-		 */
 		public static Bitmap GetImage(string url)
 		{
 			if (_imageCache.ContainsKey(url))
@@ -38,14 +31,11 @@ namespace WPF
 			}
 		}
 
-		/*
-		 * Clears Cache.
-		 */
+		/// <summary>
+		/// Clears cache.
+		/// </summary>
 		public static void ClearCache() => _imageCache.Clear();
 
-		/*
-		 * TODO: documentation
-		 */
 		public static Bitmap CreateEmptyTrack(int x, int y)
 		{
 			Bitmap bitmap = new(x, y);
@@ -54,9 +44,11 @@ namespace WPF
 			return bitmap;
 		}
 
-		/*
-		 * Clones a bitmap 
-		 */
+		/// <summary>
+		/// Clones a bitmap
+		/// </summary>
+		/// <param name="image"></param>
+		/// <returns></returns>
 		public static Bitmap CloneImage(string image)
 		{
 			Bitmap newBitmap = GetImage(image);
@@ -64,13 +56,15 @@ namespace WPF
 			return clone;
 		} 
 
-		/*
-		 * Converts Bitmap to a BitmapSource.
-		 */
+		/// <summary>
+		/// Converts Bitmap to BitmapSource.
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"></exception>
 		public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
 		{
-			if (bitmap == null)
-				throw new ArgumentNullException("bitmap");
+			if (bitmap == null) throw new ArgumentNullException("bitmap");
 
 			var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
 
