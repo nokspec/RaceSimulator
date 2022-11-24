@@ -111,6 +111,7 @@ namespace Controller
 			{
 				AddParticipantToFinishedParticipants();
 				ReturnStandings();
+				CompetitionPointsDistribution(FinishedParticipants);
 				RaceFinished?.Invoke(this, new NextRaceEventArgs());
 				CleanUp(); 
 			}
@@ -185,6 +186,26 @@ namespace Controller
 		#endregion
 
 		#region Points management
+		public void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
+		{
+			int count = 0;
+			foreach (IParticipant participant in finishedParticipants)
+			{
+				{
+					count++;
+					if (count == 1) participant.Points += 25;
+					if (count == 2) participant.Points += 18;
+					if (count == 3) participant.Points += 15;
+					if (count == 4) participant.Points += 12;
+					if (count == 5) participant.Points += 10;
+					if (count == 6) participant.Points += 8;
+					if (count == 7) participant.Points += 6;
+					if (count == 8) participant.Points += 4;
+					if (count == 9) participant.Points += 2;
+					if (count == 10) participant.Points += 1;
+				}
+			}
+		}
 
 		/*
 		 * Adds finished participant to FinishedParticipants List.
@@ -208,6 +229,7 @@ namespace Controller
 		{
 			return FinishedParticipants;
 		}
+
 
 		#endregion
 

@@ -21,7 +21,7 @@
 				</Menu.Effect>
 				<MenuItem Header="Menu" HorizontalAlignment="Left">
 					<MenuItem Header="Race statistics" Click="Race_Statistics_Click"/>
-					
+					<MenuItem Header="Competition statistics" Click="Competition_Statistics_Click"/>
 					<MenuItem Header="Close" Click="MenuItem_Exit_Click"/>
 				</MenuItem>
 			</Menu>

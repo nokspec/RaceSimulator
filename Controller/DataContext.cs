@@ -41,10 +41,12 @@ namespace Controller
 		public void OnRaceFinished(object sender, NextRaceEventArgs e)
 		{
 			TrackName = Data.CurrentRace.Track.Name;
+			Data.CurrentRace.DriversChanged += OnDriversChanged;
+			Data.CurrentRace.RaceFinished += OnRaceFinished;
 		}
+		
 		private List<ParticipantCompetitionData> CreateParticipantCompetitionList(List<IParticipant> participants)
 		{
-			// Hier word een List gemaakt van ParticipantCompetitionData
 			List<ParticipantCompetitionData> list = new List<ParticipantCompetitionData>();
 			foreach (IParticipant participant in participants)
 			{
@@ -67,7 +69,7 @@ namespace Controller
 
 		public static string UrlCarImage(TeamColors teamColor)
 		{
-			switch(teamColor)
+			switch (teamColor)
 			{
 				case TeamColors.Blue:
 					return _urlDefaultCar + "BlueNorth.png";

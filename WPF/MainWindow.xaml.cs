@@ -24,7 +24,7 @@ namespace WPF
 	public partial class MainWindow : Window
 	{
 		private RaceStatistics _raceStatistics;
-		//private CompetitionStatistics _competitionStatistics;
+		private CompetitionStatistics _competitionStatistics;
 		
 		public MainWindow()
 		{
@@ -73,12 +73,12 @@ namespace WPF
 			_raceStatistics.Show();
 		}
 
-/*		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
+		private void Competition_Statistics_Click(object sender, RoutedEventArgs e)
 		{
 			// initialize window
 			_competitionStatistics = new CompetitionStatistics();
 
 			_competitionStatistics.Show();
-		}*/
+		}
 	}
 }

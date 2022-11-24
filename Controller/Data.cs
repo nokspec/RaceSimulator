@@ -40,7 +40,6 @@ namespace Controller
 			//Competition.Tracks.Enqueue(new Track("Linksom", MakeRace("Linksom")));
 			Competition.Tracks.Enqueue(new Track("TestAlles", MakeRace("TestAlles"))); 
 			//Competition.Tracks.Enqueue(new Track("Test", MakeRace("Test"))); 
-
 		}
 
 		/*
@@ -70,7 +69,7 @@ namespace Controller
 		public static void OnFinishedRace(object sender, EventArgs e)
 		{
 			NextRace();
-		}
+		} 
 		
 		public static SectionType[] MakeRace(string naam)
 		{
