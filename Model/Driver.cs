@@ -11,6 +11,7 @@
 		public Section CurrentSection { get; set; }
 		public int MetersMoved { get; set; }
 		public int SectionCount { get; set; }
+		public int BrokenCount { get; set; }
 
 		public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
 		{

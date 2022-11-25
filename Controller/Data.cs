@@ -40,6 +40,8 @@ namespace Controller
 			//Competition.Tracks.Enqueue(new Track("Test", MakeRace("Test"))); 
 		}
 
+
+
 		/// <summary>
 		/// Gets called by OnFinishedRace.
 		/// Sets the NextTrack and then checks if currentTrack isn't null. 

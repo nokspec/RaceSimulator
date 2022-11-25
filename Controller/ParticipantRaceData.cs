@@ -7,6 +7,7 @@ namespace Controller
 		public Section CurrentSection { get; set; }
 		public int SectionCount { get; set; }
 		public int LapCount { get; set; }
+		public int BrokenCount { get; set; }
 		public string Name { get; set; }
 		public string ImageSource { get; set; }
 
@@ -15,6 +16,7 @@ namespace Controller
 			SectionCount = participant.SectionCount;
 			LapCount = participant.LapsCount;
 			CurrentSection = participant.CurrentSection;
+			BrokenCount = participant.BrokenCount;
 
 			ImageSource = DataContext.UrlCarImage(participant.TeamColors);
 			Name = participant.Name;

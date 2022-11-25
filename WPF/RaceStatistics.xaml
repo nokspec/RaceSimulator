@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:WPF"
         xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.RaceStatistics"
         mc:Ignorable="d"
-        Title="RaceStatistics" Height="450" Width="400">
+        Title="RaceStatistics" Height="450" Width="800">
 	<Grid x:Name="grid" Margin="10">
-		<DataGrid ItemsSource="{Binding ParticipantsRace}" x:Name="DataGrid" MinColumnWidth="100" Height="400" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="32,7,32,7" >
+		<DataGrid ItemsSource="{Binding ParticipantsRace}" x:Name="DataGrid" MinColumnWidth="100" Height="400" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="32,7,0,7" HorizontalAlignment="Left" Width="402" >
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="Car">
 					<DataGridTemplateColumn.CellTemplate>
@@ -19,6 +19,7 @@
 				</DataGridTemplateColumn>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
 				<DataGridTextColumn Header="Current Section" Binding="{Binding CurrentSection.SectionTypes}"/>
+				<DataGridTextColumn Header="Amount broken" Binding="{Binding BrokenCount}" />
 			</DataGrid.Columns>
 			<DataGrid.DataContext>
 				<Controller:DataContext/>

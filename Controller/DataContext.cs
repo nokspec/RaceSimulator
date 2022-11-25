@@ -11,14 +11,18 @@ namespace Controller
 		public event PropertyChangedEventHandler? PropertyChanged;
 		private string _trackName { get; set; }
 		public string TrackName { get { return _trackName; } set { _trackName = value; OnPropertyChanged(); } }
+		public Track Track { get; set; }
 		private List<ParticipantCompetitionData> _participantsCompetition => CreateParticipantCompetitionList(Data.Competition.Participants);
-
 		//Used in XAML
 		public List<ParticipantCompetitionData> ParticipantsCompetition { get { return _participantsCompetition; } private set { } }
+
+		private List<TrackCompetitionData> _trackCompetition => CreateTrackNameList(Data.Competition.TracksList);
+		public List<TrackCompetitionData> TrackCompetition { get { return _trackCompetition; } private set { } }
+
 		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
-		
 		//Used in XAML
 		public List<ParticipantRaceData> ParticipantsRace { get { return _participantsRace; } private set { } }
+
 
 		public DataContext()
 		{
@@ -30,7 +34,6 @@ namespace Controller
 		public void OnDriversChanged(object sender, DriversChangedEventArgs e)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
-
 		}
 
 		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -52,7 +55,7 @@ namespace Controller
 		/// <returns></returns>
 		private List<ParticipantCompetitionData> CreateParticipantCompetitionList(List<IParticipant> participants)
 		{
-			List<ParticipantCompetitionData> list = new List<ParticipantCompetitionData>();
+			List<ParticipantCompetitionData> list = new();
 			foreach (IParticipant participant in participants)
 			{
 				list.Add(new ParticipantCompetitionData(participant));
@@ -68,7 +71,7 @@ namespace Controller
 		/// <returns></returns>
 		private List<ParticipantRaceData> CreateParticipantRaceList(List<IParticipant> participants)
 		{
-			List<ParticipantRaceData> list = new List<ParticipantRaceData>();
+			List<ParticipantRaceData> list = new();
 			foreach (IParticipant participant in participants)
 			{
 				list.Add(new ParticipantRaceData(participant));
@@ -77,9 +80,21 @@ namespace Controller
 			return list;
 		}
 
+		private List<TrackCompetitionData> CreateTrackNameList(List<Track> tracks)
+		{
+			List<TrackCompetitionData> list = new();
+			//TODO fix error
+			foreach (Track track in tracks)
+			{
+				list.Add(new TrackCompetitionData(track));
+			}
+			//list = TrackCompetition.RemainingTracks(list);
+			return list;
+		}
+
 		/// <summary>
 		/// Used to display the image of the car on the competition & race statistics windows.
-		/// Returns the url of the car image based on the team colors
+		/// Returns the url of the car image based on the team colors.
 		/// </summary>
 		/// <param name="teamColor"></param>
 		/// <returns></returns>

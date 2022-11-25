@@ -89,6 +89,7 @@ namespace Controller
 				participant.LapsCount = -1;
 				participant.SectionCount = 0;
 				participant.CurrentSection = null;
+				participant.BrokenCount = 0;
 			}
 		}
 
@@ -147,6 +148,7 @@ namespace Controller
 				if (_random.NextDouble() < chanceCalculation)
 				{
 					participant.Equipment.IsBroken = true;
+					participant.BrokenCount++;
 				}
 			}
 		}

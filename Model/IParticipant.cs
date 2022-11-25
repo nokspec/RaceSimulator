@@ -12,6 +12,7 @@
 		public int CalculateSpeed();
 		public int MetersMoved { get; set; }
 		public int SectionCount { get; set; }
+		public int BrokenCount { get; set; }
 	}
 	
 	public enum TeamColors
