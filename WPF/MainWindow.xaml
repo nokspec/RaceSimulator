@@ -9,7 +9,7 @@
 	<Window.DataContext>
 		<Controller:DataContext/>
 	</Window.DataContext>
-	<Grid Background="#FF4F8C14">
+	<Grid Background="ForestGreen">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="77*"/>
 			<ColumnDefinition Width="179*"/>

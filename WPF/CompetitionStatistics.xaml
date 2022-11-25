@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.CompetitionStatistics"
         mc:Ignorable="d"
-        Title="CompetitionStatistics" Height="450" Width="600">
+        Title="CompetitionStatistics" Height="450" Width="579">
 	<Grid Margin="10,10,10,10">
 
-		<DataGrid ItemsSource="{Binding ParticipantsCompetition}" x:Name="DataGrid" MinColumnWidth="100" Height="400" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="32,7,240,7">
+		<DataGrid ItemsSource="{Binding ParticipantsCompetition}" x:Name="DataGrid" MinColumnWidth="100" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="32,7,240,10">
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="Driver">
 					<DataGridTemplateColumn.CellTemplate>
@@ -24,9 +24,9 @@
 			</DataGrid.DataContext>
 		</DataGrid>
 
-		<DataGrid ItemsSource="{Binding TrackCompetition}" MinColumnWidth="100" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="367,7,32,10">
+		<DataGrid ItemsSource="{Binding CompetitionData}" MinColumnWidth="100" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="367,7,32,10">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Tracks left" Binding="{Binding TrackName }" />
+				<DataGridTextColumn Header="Tracks left" Binding="{Binding Name }" />
 			</DataGrid.Columns>
 			<DataGrid.DataContext>
 				<Controller:DataContext/>

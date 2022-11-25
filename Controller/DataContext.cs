@@ -13,19 +13,21 @@ namespace Controller
 		public string TrackName { get { return _trackName; } set { _trackName = value; OnPropertyChanged(); } }
 		public Track Track { get; set; }
 		private List<ParticipantCompetitionData> _participantsCompetition => CreateParticipantCompetitionList(Data.Competition.Participants);
-		//Used in XAML
+
 		public List<ParticipantCompetitionData> ParticipantsCompetition { get { return _participantsCompetition; } private set { } }
 
-		private List<TrackCompetitionData> _trackCompetition => CreateTrackNameList(Data.Competition.TracksList);
-		public List<TrackCompetitionData> TrackCompetition { get { return _trackCompetition; } private set { } }
+		private BindingList<Track> _competitionData { get; set; }
+		public BindingList<Track> CompetitionData { get { return _competitionData; } set { _competitionData = value; OnPropertyChanged(); } }
 
 		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
-		//Used in XAML
+
 		public List<ParticipantRaceData> ParticipantsRace { get { return _participantsRace; } private set { } }
 
 
 		public DataContext()
 		{
+			CreateTrackNameList();
+
 			Data.CurrentRace.DriversChanged += OnDriversChanged;
 			Data.CurrentRace.RaceFinished += OnRaceFinished;
 			TrackName = Data.CurrentRace.Track.Name;
@@ -38,11 +40,13 @@ namespace Controller
 
 		public void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		public void OnRaceFinished(object sender, NextRaceEventArgs e)
 		{
+			CreateTrackNameList();
+
 			TrackName = Data.CurrentRace.Track.Name;
 			Data.CurrentRace.DriversChanged += OnDriversChanged;
 			Data.CurrentRace.RaceFinished += OnRaceFinished;
@@ -80,16 +84,14 @@ namespace Controller
 			return list;
 		}
 
-		private List<TrackCompetitionData> CreateTrackNameList(List<Track> tracks)
+		/// <summary>
+		/// Creates a List of Tracks that are left to be driven on.
+		/// </summary>
+		private void CreateTrackNameList()
 		{
-			List<TrackCompetitionData> list = new();
-			//TODO fix error
-			foreach (Track track in tracks)
-			{
-				list.Add(new TrackCompetitionData(track));
-			}
-			//list = TrackCompetition.RemainingTracks(list);
-			return list;
+			List<Track> competitionData = (from Track track in Data.Competition.Tracks
+										   select track).ToList();
+			CompetitionData = new BindingList<Track>(competitionData.ToList());
 		}
 
 		/// <summary>

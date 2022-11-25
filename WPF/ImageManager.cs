@@ -40,7 +40,7 @@ namespace WPF
 		{
 			Bitmap bitmap = new(x, y);
 			Graphics graphics = Graphics.FromImage(bitmap);
-			graphics.Clear(System.Drawing.Color.LawnGreen);
+			graphics.Clear(System.Drawing.Color.ForestGreen);
 			return bitmap;
 		}
 
