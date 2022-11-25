@@ -59,11 +59,8 @@ namespace Controller
 		/// <returns></returns>
 		private List<ParticipantCompetitionData> CreateParticipantCompetitionList(List<IParticipant> participants)
 		{
-			List<ParticipantCompetitionData> list = new();
-			foreach (IParticipant participant in participants)
-			{
-				list.Add(new ParticipantCompetitionData(participant));
-			}
+			List<ParticipantCompetitionData> list = (from participant in participants
+													 select new ParticipantCompetitionData(participant)).ToList();
 			list = ParticipantCompetitionData.SortByPoints(list);
 			return list;
 		}
@@ -75,12 +72,10 @@ namespace Controller
 		/// <returns></returns>
 		private List<ParticipantRaceData> CreateParticipantRaceList(List<IParticipant> participants)
 		{
-			List<ParticipantRaceData> list = new();
-			foreach (IParticipant participant in participants)
-			{
-				list.Add(new ParticipantRaceData(participant));
-			}
+			List<ParticipantRaceData> list = (from participant in participants
+											  select new ParticipantRaceData(participant)).ToList();
 			list = ParticipantRaceData.SortByPosition(list);
+			
 			return list;
 		}
 
