@@ -64,7 +64,7 @@ namespace Controller
 		/// Gets called when a race finishes.
 		/// Cleans everything for the next race.
 		/// </summary>
-		public void CleanUp()
+		private void CleanUp()
 		{
 			_timer.Stop();
 			DriversChanged = null;
@@ -425,7 +425,7 @@ namespace Controller
 		/// <summary>
 		/// Can be used when debugging with timer enabled.
 		/// </summary>
-		public void Stop()
+		private void Stop()
 		{
 			_timer.Enabled = false;
 		}
