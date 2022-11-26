@@ -180,7 +180,7 @@ namespace Controller
 		/// Distributes points to participants based on their position.
 		/// </summary>
 		/// <param name="finishedParticipants"></param>
-		public void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
+		public static void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
 		{
 			int count = 0;
 			foreach (IParticipant participant in finishedParticipants)
