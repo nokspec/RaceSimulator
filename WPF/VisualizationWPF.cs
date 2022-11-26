@@ -29,7 +29,7 @@ namespace WPF
 
 		//Sections
 		private const string _urlDefaultSection = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\";
-		
+
 		private const string _StartHorizontal = _urlDefaultSection + "StartHorizontal.png";
 		private const string _StartVertical = _urlDefaultSection + "StartVertical.png";
 		private const string _FinishHorizontal = _urlDefaultSection + "FinishHorizontal.png";
@@ -51,6 +51,7 @@ namespace WPF
 		private const string _GreyDriverN = _urlDefaultDriverNorth + "GreyNorth.png";
 		private const string _RedDriverN = _urlDefaultDriverNorth + "RedNorth.png";
 		private const string _YellowDriverN = _urlDefaultDriverNorth + "YellowNorth.png";
+		private const string _FireDriverN = _urlDefaultDriverNorth + "FireNorth.png";
 
 		//East
 		private const string _urlDefaultDriverEast = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\";
@@ -60,6 +61,7 @@ namespace WPF
 		private const string _GreyDriverE = _urlDefaultDriverEast + "GreyEast.png";
 		private const string _RedDriverE = _urlDefaultDriverEast + "RedEast.png";
 		private const string _YellowDriverE = _urlDefaultDriverEast + "YellowEast.png";
+		private const string _FireDriverE = _urlDefaultDriverEast + "FireEast.png";
 
 		//South
 		private const string _urlDefaultDriverSouth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\";
@@ -69,6 +71,7 @@ namespace WPF
 		private const string _GreyDriverS = _urlDefaultDriverSouth + "GreySouth.png";
 		private const string _RedDriverS = _urlDefaultDriverSouth + "RedSouth.png";
 		private const string _YellowDriverS = _urlDefaultDriverSouth + "YellowSouth.png";
+		private const string _FireDriverS = _urlDefaultDriverSouth + "FireSouth.png";
 
 		//West
 		private const string _urlDefaultDriverWest = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
@@ -76,8 +79,9 @@ namespace WPF
 		private const string _BlueDriverW = _urlDefaultDriverWest + "BlueWest.png";
 		private const string _GreenDriverW = _urlDefaultDriverWest + "GreenWest.png";
 		private const string _GreyDriverW = _urlDefaultDriverWest + "GreyWest.png";
-		private const string _RedDriverW = _urlDefaultDriverWest + "ReDWest.png";
+		private const string _RedDriverW = _urlDefaultDriverWest + "RedWest.png";
 		private const string _YellowDriverW = _urlDefaultDriverWest + "YellowWest.png";
+		private const string _FireDriverW = _urlDefaultDriverWest + "FireWest.png";
 
 		//Broken
 		private const string _Broken = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Broken.png";
@@ -244,9 +248,18 @@ namespace WPF
 		/// <param name="y"></param>
 		private static void DrawSingleParticipant(IParticipant participant, Graphics g, Direction currentDirection, int x, int y)
 		{
+			CheckParticipantSpeed(participant);
+
 			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
+
+		/// <summary>
+		/// Called by DrawSingleParticipant.
+		/// Used to check if a participant is eligible to get the fire image.
+		/// </summary>
+		/// <param name="participant"></param>
+		private static void CheckParticipantSpeed(IParticipant participant) { if (participant.Equipment.Speed > 8) participant.TeamColors = TeamColors.Fire; }
 
 		/// <summary>
 		/// Draws the "broken" image.
@@ -254,10 +267,7 @@ namespace WPF
 		/// <param name="g"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		private static void DrawBroken(Graphics g, int x, int y)
-		{
-			g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize);
-		}
+		private static void DrawBroken(Graphics g, int x, int y) { g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize); }
 
 		private static string GetColorFileName(TeamColors color, Direction currentDirection)
 		{
@@ -271,6 +281,7 @@ namespace WPF
 					TeamColors.Yellow => _YellowDriverE,
 					TeamColors.Blue => _BlueDriverE,
 					TeamColors.Grey => _GreyDriverE,
+					TeamColors.Fire => _FireDriverE,
 					_ => throw new InvalidDirectionException(),
 				},
 				//South
@@ -281,6 +292,7 @@ namespace WPF
 					TeamColors.Yellow => _YellowDriverS,
 					TeamColors.Blue => _BlueDriverS,
 					TeamColors.Grey => _GreyDriverS,
+					TeamColors.Fire => _FireDriverS,
 					_ => throw new InvalidDirectionException(),
 				},
 				//West
@@ -291,6 +303,7 @@ namespace WPF
 					TeamColors.Yellow => _YellowDriverW,
 					TeamColors.Blue => _BlueDriverW,
 					TeamColors.Grey => _GreyDriverW,
+					TeamColors.Fire => _FireDriverW,
 					_ => throw new InvalidDirectionException(),
 				},
 				//North
@@ -301,6 +314,7 @@ namespace WPF
 					TeamColors.Yellow => _YellowDriverN,
 					TeamColors.Blue => _BlueDriverN,
 					TeamColors.Grey => _GreyDriverN,
+					TeamColors.Fire => _FireDriverN,
 					_ => throw new InvalidDirectionException(),
 				},
 				_ => throw new InvalidDirectionException()
@@ -366,7 +380,7 @@ namespace WPF
 					break;
 			}
 		}
-		
+
 		/// <summary>
 		/// Calculate the size of the track.
 		/// </summary>

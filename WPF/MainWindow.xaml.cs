@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,19 +27,25 @@ namespace WPF
 	{
 		private RaceStatistics _raceStatistics;
 		private CompetitionStatistics _competitionStatistics;
+
+		//private Race Race;
 		
 		public MainWindow()
 		{
+			Initialize();
+		}
+
+		public void Initialize()
+		{
 			Data.Initialize();
-			
-			
+
+
 			Data.NextRaceEvent += OnNextRaceEvent;
-			
+
 			ImageManager.Initialize();
-			
+
 			Data.NextRace();
 			InitializeComponent();
-
 		}
 
 		public void OnNextRaceEvent(object sender, NextRaceEventArgs e)

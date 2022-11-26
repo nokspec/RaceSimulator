@@ -21,6 +21,7 @@
 		Green,
 		Yellow,
 		Grey,
-		Blue
+		Blue,
+		Fire //If speed is above certain amount, driver gets fire image
 	}
 }

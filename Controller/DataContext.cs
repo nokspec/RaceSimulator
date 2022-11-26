@@ -107,8 +107,10 @@ namespace Controller
 					return _urlDefaultCar + "RedWest.png";
 				case TeamColors.Yellow:
 					return _urlDefaultCar + "YellowWest.png";
-				default:
+				case TeamColors.Grey:
 					return _urlDefaultCar + "GreyWest.png";
+				default:
+					return _urlDefaultCar + "FireWest.png";
 			}
 		}
 	}

@@ -64,7 +64,7 @@ namespace Controller
 		/// Gets called when a race finishes.
 		/// Cleans everything for the next race.
 		/// </summary>
-		private void CleanUp()
+		public void CleanUp()
 		{
 			_timer.Stop();
 			DriversChanged = null;
@@ -104,8 +104,8 @@ namespace Controller
 				AddParticipantToFinishedParticipants();
 				ReturnStandings();
 				CompetitionPointsDistribution(FinishedParticipants);
+				CleanUp();
 				RaceFinished?.Invoke(this, new NextRaceEventArgs());
-				CleanUp(); 
 			}
 		}
 
@@ -137,14 +137,12 @@ namespace Controller
 			List<IParticipant> DrivingParticipants = new();
 			foreach (IParticipant participant in Participants)
 			{
-				if (participant.Equipment.IsBroken == false)
-					DrivingParticipants.Add(participant);
+				if (participant.Equipment.IsBroken == false) DrivingParticipants.Add(participant);
 			}
 
 			foreach (IParticipant participant in DrivingParticipants)
 			{
 				double chanceCalculation = (11 - (participant.Equipment.Quality * 0.5)) * 0.0005;
-				//NextDouble geeft waarde tussen 0.0 en 1.0.
 				if (_random.NextDouble() < chanceCalculation)
 				{
 					participant.Equipment.IsBroken = true;
@@ -427,7 +425,7 @@ namespace Controller
 		/// <summary>
 		/// Can be used when debugging with timer enabled.
 		/// </summary>
-		private void Stop()
+		public void Stop()
 		{
 			_timer.Enabled = false;
 		}
