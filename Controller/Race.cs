@@ -29,7 +29,6 @@ namespace Controller
 		public event EventHandler<NextRaceEventArgs> RaceFinished;
 
 		//Timer
-		public DateTime StartTime { get; set; }
 		private Random _random;
 		private System.Timers.Timer _timer; //Timer
 		private static int _timerInterval = 500; //Set timer interval
@@ -55,7 +54,6 @@ namespace Controller
 
 		public void Start()
 		{
-			StartTime = DateTime.Now;
 			_timer.Elapsed += OnTimedEvent; //Subscribe
 			_timer.Start();
 		}
