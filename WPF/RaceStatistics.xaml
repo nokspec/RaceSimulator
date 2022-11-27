@@ -21,7 +21,6 @@
 				<DataGridTextColumn Header="Current Section" Binding="{Binding CurrentSection.SectionTypes}"/>
 				<DataGridTextColumn Header="Amount broken" Binding="{Binding BrokenCount}" />
 				<DataGridTextColumn Header="Finished?" Binding="{Binding IsFinished}" />
-				<DataGridTextColumn Header="Finishing position" Binding="{Binding FinishingPosition}" />
 			</DataGrid.Columns>
 			<DataGrid.DataContext>
 				<Controller:DataContext/>

@@ -35,7 +35,7 @@ namespace Controller
 		private static int _timerInterval = 500; //Set timer interval
 
 		//Laps
-		public static int AmountOfLaps = 2; //Set amount of laps a race has.
+		public static int AmountOfLaps = 3; //Set amount of laps a race has.
 		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why the value is -1.
 
 		public Race(Track track, List<IParticipant> participants)
@@ -104,8 +104,8 @@ namespace Controller
 				AddParticipantToFinishedParticipants();
 				ReturnStandings();
 				CompetitionPointsDistribution(FinishedParticipants);
-				CleanUp();
 				RaceFinished?.Invoke(this, new NextRaceEventArgs());
+				CleanUp();
 			}
 		}
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" Icon="/AppIcon.png">
+        Title="RaceSim" Height="720" Width="1280" Icon="/AppIcon.png">
 	<Window.DataContext>
 		<Controller:DataContext/>
 	</Window.DataContext>

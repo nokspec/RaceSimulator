@@ -6,7 +6,6 @@ namespace Controller
 	{
 		public Section CurrentSection { get; set; }
 		public int SectionCount { get; set; }
-		public int LapsRemaining { get; set; }
 		public int BrokenCount { get; set; }
 		public bool IsFinished { get; set; }
 		public string Name { get; set; }
@@ -15,7 +14,6 @@ namespace Controller
 		public ParticipantRaceData(IParticipant participant)
 		{
 			SectionCount = participant.SectionCount;
-			LapsRemaining = participant.LapsCount - Race.AmountOfLaps;
 			CurrentSection = participant.CurrentSection;
 			BrokenCount = participant.BrokenCount;
 			IsFinished = participant.Finished;
@@ -32,7 +30,7 @@ namespace Controller
 		/// <returns></returns>
 		public static List<ParticipantRaceData> SortByPosition(List<ParticipantRaceData> list)
 		{
-			return list.OrderByDescending(x => x.SectionCount).ThenByDescending(x => x.LapsRemaining).ToList();
+			return list.OrderByDescending(x => x.SectionCount).ToList();
 		}
 	}
 }
