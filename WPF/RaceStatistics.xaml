@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF"
         xmlns:Controller="clr-namespace:Controller;assembly=Controller" x:Class="WPF.RaceStatistics"
         mc:Ignorable="d"
-        Title="RaceStatistics" Height="450" Width="600">
+        Title="RaceStatistics" Height="450" Width="680">
 	<Grid x:Name="grid" Margin="10">
 		<DataGrid ItemsSource="{Binding ParticipantsRace}" x:Name="DataGrid" MinColumnWidth="100" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False" Margin="32,7,32,10" >
 			<DataGrid.Columns>
@@ -18,6 +18,7 @@
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+				<DataGridTextColumn Header="Speed" Binding="{Binding ParticipantSpeed}"/>
 				<DataGridTextColumn Header="Current Section" Binding="{Binding CurrentSection.SectionTypes}"/>
 				<DataGridTextColumn Header="Amount broken" Binding="{Binding BrokenCount}" />
 				<DataGridTextColumn Header="Finished?" Binding="{Binding IsFinished}" />

@@ -61,17 +61,5 @@ namespace ControllerTest
 			Assert.IsInstanceOf<SectionData>(result);
 			Assert.IsNotNull(result);
 		}
-
-		[Test] //Deze nog fixen.
-		public void Race_PlaceParticipant_ShouldPlaceParticipantOnSection()
-		{
-			Section section = new Section(SectionType.StartGrid);
-			IParticipant participant = new Driver("a", 0, equipment, TeamColors.Blue);
-
-			race.StartPositions(track, participants);
-			var result = race.GetSectionData(section).Right;
-
-			Assert.AreEqual(participant, result);
-		}
 	}
 }

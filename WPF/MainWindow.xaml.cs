@@ -38,12 +38,8 @@ namespace WPF
 		public void Initialize()
 		{
 			Data.Initialize();
-
-
 			Data.NextRaceEvent += OnNextRaceEvent;
-
 			ImageManager.Initialize();
-
 			Data.NextRace();
 			InitializeComponent();
 		}
@@ -67,7 +63,6 @@ namespace WPF
 				}));
 		}
 
-		//Closes application
 		private void MenuItem_Exit_Click(object sender, RoutedEventArgs e)
 		{
 			Application.Current.Shutdown();

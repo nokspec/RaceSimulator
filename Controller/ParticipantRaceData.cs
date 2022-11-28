@@ -9,6 +9,8 @@ namespace Controller
 		public int BrokenCount { get; set; }
 		public bool IsFinished { get; set; }
 		public string Name { get; set; }
+		public int ParticipantSpeed { get; set; }
+		public int DistanceTravelled { get; set; }
 		public string ImageSource { get; set; }
 
 		public ParticipantRaceData(IParticipant participant)
@@ -17,9 +19,12 @@ namespace Controller
 			CurrentSection = participant.CurrentSection;
 			BrokenCount = participant.BrokenCount;
 			IsFinished = participant.Finished;
-				
-			ImageSource = DataContext.UrlCarImage(participant.TeamColors);
+			ParticipantSpeed = participant.CalculateSpeed();
+			DistanceTravelled = participant.DistanceTravelled;
 			Name = participant.Name;
+			
+			ImageSource = DataContext.UrlCarImage(participant.TeamColors);
+
 		}
 
 		/// <summary>
@@ -30,7 +35,7 @@ namespace Controller
 		/// <returns></returns>
 		public static List<ParticipantRaceData> SortByPosition(List<ParticipantRaceData> list)
 		{
-			return list.OrderByDescending(x => x.SectionCount).ToList();
+			return list.OrderByDescending(x => x.DistanceTravelled).ThenByDescending(x => x.SectionCount).ToList();
 		}
 	}
 }

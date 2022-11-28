@@ -113,6 +113,7 @@ namespace WPF
 			TrackHeight *= SectionSize;
 		}
 
+		#region Draw track
 		/// <summary>
 		/// Draws the track on the WPF window.
 		/// Calls DrawParticipants() to draw the participants on the track.
@@ -209,7 +210,9 @@ namespace WPF
 			}
 			return ImageManager.CreateBitmapSourceFromGdiBitmap(bitmap);
 		}
+		#endregion
 
+		#region Draw participant
 		/// <summary>
 		/// Draws participants on the track.
 		/// Calls DrawSingleParticipant to actually draw the participant.
@@ -253,13 +256,24 @@ namespace WPF
 			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
+		#endregion
 
 		/// <summary>
 		/// Called by DrawSingleParticipant.
 		/// Used to check if a participant is eligible to get the fire image.
 		/// </summary>
 		/// <param name="participant"></param>
-		private static void CheckParticipantSpeed(IParticipant participant) { if (participant.Equipment.Speed > 8) participant.TeamColors = TeamColors.Fire; }
+		private static void CheckParticipantSpeed(IParticipant participant)
+		{
+			if (participant.CalculateSpeed() > 55)
+			{
+				participant.IsFireball = true;
+			}
+			else
+			{
+				participant.IsFireball = false;
+			}
+		}
 
 		/// <summary>
 		/// Draws the "broken" image.
@@ -321,6 +335,7 @@ namespace WPF
 			};
 		}
 
+		#region Positioning
 		/// <summary>
 		/// Determines the position of the pointer.
 		/// </summary>
@@ -380,6 +395,7 @@ namespace WPF
 					break;
 			}
 		}
+		#endregion
 
 		/// <summary>
 		/// Calculate the size of the track.

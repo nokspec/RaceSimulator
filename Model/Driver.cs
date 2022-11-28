@@ -10,8 +10,13 @@
 		public bool Finished { get; set; }
 		public Section CurrentSection { get; set; }
 		public int MetersMoved { get; set; }
+		public int DistanceTravelled { get; set; }
 		public int SectionCount { get; set; }
 		public int BrokenCount { get; set; }
+		public bool IsFireball;
+		public TeamColors TeamColorsSave { get; set; }
+
+		private bool _isFireBall;
 
 		public Driver(string name, int points, IEquipment equipment, TeamColors teamColors)
 		{

@@ -33,7 +33,7 @@ namespace Controller
 		private static int _timerInterval = 500; //Set timer interval
 
 		//Laps
-		public static int AmountOfLaps = 3; //Set amount of laps a race has.
+		public static int AmountOfLaps = 1; //Set amount of laps a race has.
 		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why the value is -1.
 
 		public Race(Track track, List<IParticipant> participants)
@@ -57,6 +57,7 @@ namespace Controller
 			_timer.Start();
 		}
 
+		#region Resetting and cleaning
 		/// <summary>
 		/// Gets called when a race finishes.
 		/// Cleans everything for the next race.
@@ -82,20 +83,23 @@ namespace Controller
 			foreach (IParticipant participant in Participants)
 			{
 				participant.MetersMoved = 0;
+				participant.DistanceTravelled = 0;
 				participant.Finished = false;
 				participant.LapsCount = -1;
 				participant.SectionCount = 0;
 				participant.CurrentSection = null;
 				participant.BrokenCount = 0;
+				participant.IsFireball = false;
 			}
 		}
+		#endregion
 
 		protected void OnTimedEvent(object sender, EventArgs e)
 		{
 			CheckDriverMovement();
 			RandomizeFixing();
 			RandomizeIsBroken();
-			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track)); 
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
 			if (CheckRaceFinished()) //If the race has finished
 			{
 				AddParticipantToFinishedParticipants();
@@ -122,7 +126,7 @@ namespace Controller
 			{
 				participant.Equipment.Quality = _random.Next(1, 10);
 				participant.Equipment.Performance = _random.Next(1, 10);
-				participant.Equipment.Speed = _random.Next(4, 10); //Toegevoegd bij 5-7
+				participant.Equipment.Speed = _random.Next(4, 10);
 			}
 		}
 
@@ -139,11 +143,14 @@ namespace Controller
 
 			foreach (IParticipant participant in DrivingParticipants)
 			{
-				double chanceCalculation = (11 - (participant.Equipment.Quality * 0.5)) * 0.0005;
-				if (_random.NextDouble() < chanceCalculation)
+				if (!participant.Finished)
 				{
-					participant.Equipment.IsBroken = true;
-					participant.BrokenCount++;
+					double chanceCalculation = (11 - (participant.Equipment.Quality * 0.5)) * 0.0005;
+					if (_random.NextDouble() < chanceCalculation)
+					{
+						participant.Equipment.IsBroken = true;
+						participant.BrokenCount++;
+					}
 				}
 			}
 		}
@@ -262,14 +269,14 @@ namespace Controller
 				if (participant.Finished == true) count++;
 			}
 			if (count == Participants.Count) return true;
-			
+
 			else return false;
-			
+
 		}
 		#endregion
 
 		#region Move participants
-		
+
 		/// <summary>
 		/// Checks if a participant has moved to an other section. 
 		/// If it has, MoveParticipants() is called.
@@ -281,6 +288,7 @@ namespace Controller
 				participant.MetersMoved += participant.CalculateSpeed();
 				if (participant.MetersMoved >= 100)
 				{
+					participant.DistanceTravelled += 100;
 					participant.MetersMoved += -100;
 					MoveParticipants(participant);
 				}
