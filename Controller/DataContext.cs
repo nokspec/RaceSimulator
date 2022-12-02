@@ -21,7 +21,7 @@ namespace Controller
 		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
 		public List<ParticipantRaceData> ParticipantsRace => _participantsRace; //Used in XAML
 
-		//TODO refactor
+		//BindingList because the track names have to be removed after a race.
 		private BindingList<Track> _competitionData { get; set; }
 		public BindingList<Track> CompetitionData
 		{
