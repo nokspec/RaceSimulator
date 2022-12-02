@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllerTest", "Controlle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "WPF\WPF.csproj", "{1EE4EEB7-88D1-471E-A118-7EA2537C7942}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTest", "RaceTest\RaceTest.csproj", "{24C19114-6A87-49F4-B125-39C930312DE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaceTest", "RaceTest\RaceTest.csproj", "{24C19114-6A87-49F4-B125-39C930312DE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -23,10 +23,14 @@ namespace Controller
 			Competition.Participants.Add(new Driver("Kees", 0, new Car(10, 10, 10, false), TeamColors.Red));
 			Competition.Participants.Add(new Driver("Jan", 0, new Car(10, 10, 10, false), TeamColors.Green));
 			Competition.Participants.Add(new Driver("Pieter", 0, new Car(10, 10, 10, false), TeamColors.Blue));
+
+			#region More participants
+			//Uncomment code below to test with more participants.
 			//Competition.Participants.Add(new Driver("Uno", 0, new Car(10, 10, 10, false), TeamColors.Grey));
 			//Competition.Participants.Add(new Driver("Hendrik", 0, new Car(10, 10, 10, false), TeamColors.Yellow));
 			//Competition.Participants.Add(new Driver("Tokyo", 0, new Car(10, 10, 10, false), TeamColors.Red));
 			//Competition.Participants.Add(new Driver("Naoki", 0, new Car(10, 10, 10, false), TeamColors.Green));
+			#endregion
 		}
 
 		/// <summary>
@@ -39,7 +43,7 @@ namespace Controller
 			Competition.Tracks.Enqueue(new Track("Joure", MakeRace("Joure")));
 
 			//Put the tracks in a bindinglist so it can be displayed on the WPF
-			Competition.Q2BindingList();
+			Competition.QToBindingList();
 		}
 
 		/// <summary>

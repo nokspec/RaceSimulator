@@ -32,8 +32,8 @@ namespace Controller
 			Track = track;
 			Participants = participants;
 			_random = new Random(DateTime.Now.Millisecond);
-			_positions = new();
-			FinishedParticipants = new();
+			_positions = new Dictionary<Section, SectionData>();
+			FinishedParticipants = new List<IParticipant>();
 			StartPositions(Track, Participants);
 			RandomizeEquipment();
 

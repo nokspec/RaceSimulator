@@ -6,22 +6,22 @@ namespace Model
 	{
 		public List<IParticipant> Participants { get; set; }
 		public Queue<Track> Tracks { get; set; }
-		public BindingList<Track> TracksBList { get; set; }
+		public BindingList<Track> TracksBindingList { get; set; }
 
 		public Competition()
 		{
-			Participants = new();
-			Tracks = new();
-			TracksBList = new();
+			Participants = new List<IParticipant>();
+			Tracks = new Queue<Track>();
+			TracksBindingList = new BindingList<Track>();
 		}
 
-		public BindingList<Track> Q2BindingList()
+		public BindingList<Track> QToBindingList()
 		{
 			foreach (Track track in Tracks)
 			{
-				TracksBList.Add(track);
+				TracksBindingList.Add(track);
 			}
-			return TracksBList;
+			return TracksBindingList;
 		}
 
 		public Track NextTrack() { if (Tracks.Count > 0) return Tracks.Dequeue(); return null; }

@@ -266,6 +266,15 @@ namespace WPF
 		/// <param name="y"></param>
 		private static void DrawBroken(Graphics g, int x, int y) { g.DrawImage(ImageManager.GetImage(Broken), x, y, ParticipantSize, ParticipantSize); }
 
+		/// <summary>
+		/// Gets the url of the image of the participant.
+		/// Direction is used to determine which image to use.
+		/// </summary>
+		/// <param name="color"></param>
+		/// <param name="currentDirection"></param>
+		/// <returns></returns>
+		/// <exception cref="InvalidTeamColorException"></exception>
+		/// <exception cref="InvalidDirectionException"></exception>
 		private static string GetColorUrl(TeamColors color, Direction currentDirection)
 		{
 			return currentDirection switch

@@ -165,10 +165,9 @@ namespace RaceSimulator_Project
 		/// <returns></returns>
 		private static string ReplaceString(string input, IParticipant leftParticipant, IParticipant rightParticipant)
 		{ 
-			string leftP = leftParticipant == null ? " " : leftParticipant.Equipment.IsBroken ? "X" : leftParticipant.Name.Substring(0, 1);
-			string rightP = rightParticipant == null ? " " : rightParticipant.Equipment.IsBroken ? "X" : rightParticipant.Name.Substring(0, 1);
-			// : is null-coalescing operator.
-			return input.Replace("1", leftP).Replace("2", rightP);
+			string LeftParticipant = leftParticipant == null ? " " : leftParticipant.Equipment.IsBroken ? "X" : leftParticipant.Name.Substring(0, 1);
+			string RightParticipant = rightParticipant == null ? " " : rightParticipant.Equipment.IsBroken ? "X" : rightParticipant.Name.Substring(0, 1);
+			return input.Replace("1", LeftParticipant).Replace("2", RightParticipant);
 		}
 
 		private static string ReplaceString(string input, IParticipant participant)
