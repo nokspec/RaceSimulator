@@ -11,7 +11,7 @@
 			Sections = SectionTypeToLinkedList(sections);
 		}
 
-		private LinkedList<Section> SectionTypeToLinkedList(SectionType[] sectionTypes)
+		private static LinkedList<Section> SectionTypeToLinkedList(SectionType[] sectionTypes)
 		{
 			LinkedList<Section> sectionList = new LinkedList<Section>();
 

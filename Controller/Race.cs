@@ -1,14 +1,5 @@
 ﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
-using static Model.SectionData;
-using static System.Collections.Specialized.BitVector32;
 using Section = Model.Section;
 
 namespace Controller
@@ -18,9 +9,9 @@ namespace Controller
 		public Track Track { get; set; }
 		public Section CurrentSection;
 
+		//Collections
 		public List<IParticipant> Participants { get; set; }
 		public List<IParticipant> FinishedParticipants { get; set; }
-
 		private Dictionary<Section, SectionData> _positions;
 
 		//Events
@@ -33,8 +24,8 @@ namespace Controller
 		private static int _timerInterval = 500; //Set timer interval
 
 		//Laps
-		public static int AmountOfLaps = 1; //Set amount of laps a race has.
-		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why the value is -1.
+		public static int AmountOfLaps = 4; //Set amount of laps a race has.
+		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why -1.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -65,9 +56,9 @@ namespace Controller
 		private void CleanUp()
 		{
 			_timer.Stop();
-			DriversChanged = null;
-			RaceFinished = null;
-			CurrentSection = null;
+			DriversChanged = null!;
+			RaceFinished = null!;
+			CurrentSection = null!;
 			LapsCount = -1;
 			AmountOfLaps = 0;
 
@@ -87,14 +78,14 @@ namespace Controller
 				participant.Finished = false;
 				participant.LapsCount = -1;
 				participant.SectionCount = 0;
-				participant.CurrentSection = null;
+				participant.CurrentSection = null!;
 				participant.BrokenCount = 0;
 				participant.IsFireball = false;
 			}
 		}
 		#endregion
 
-		protected void OnTimedEvent(object sender, EventArgs e)
+		protected void OnTimedEvent(object? sender, ElapsedEventArgs elapsedEventArgs)
 		{
 			CheckDriverMovement();
 			RandomizeFixing();
@@ -115,6 +106,31 @@ namespace Controller
 			if (!_positions.ContainsKey(section)) _positions.Add(section, new SectionData());
 			return _positions[section];
 		}
+
+		#region Participant Fireball
+		/// <summary>
+		/// Called by DrawSingleParticipant.
+		/// Used to check if a participant is eligible to get the fire image.
+		/// </summary>
+		/// <param name="participant"></param>
+		public static void CheckParticipantSpeed(IParticipant participant)
+		{
+			SaveParticipantColor(participant);
+			if (participant.CalculateSpeed() > 55) participant.IsFireball = true;
+			else participant.IsFireball = false;
+		}
+
+		/// <summary>
+		/// Saves the original participant TeamColor.
+		/// </summary>
+		/// <param name="participant"></param>
+		private static void SaveParticipantColor(IParticipant participant)
+		{
+			if (participant.TeamColors != TeamColors.Fire) participant.TeamColorsSave = participant.TeamColors;
+			if (participant.IsFireball) participant.TeamColors = TeamColors.Fire;
+			else participant.TeamColors = participant.TeamColorsSave;
+		}
+		#endregion
 
 		#region Randomizing participants
 		/// <summary>
@@ -166,11 +182,11 @@ namespace Controller
 				{
 					participant.Equipment.IsBroken = false;
 
-					//Als speed groter is dan 5 wordt de speed verlaagd.
+					//If speed of participant was higher than 7, speed will go down to 6.
 					if (participant.Equipment.Speed > 7)
 						participant.Equipment.Speed--;
 
-					//Dit wordt altijd uitgevoerd.
+					//Reduce participant's quality with 1.
 					if (participant.Equipment.Quality > 1)
 						participant.Equipment.Quality--;
 				}
@@ -181,7 +197,7 @@ namespace Controller
 		#region Points management
 
 		/// <summary>
-		/// Distributes points to participants based on their position.
+		/// Distributes points to participants based on their finishing position.
 		/// </summary>
 		/// <param name="finishedParticipants"></param>
 		public static void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
@@ -212,7 +228,7 @@ namespace Controller
 		{
 			foreach (IParticipant participant in Participants)
 			{
-				//als de participant gefinished is EN de participant zit nog niet in FinishedParticipants
+				//If participant has finished and is not yet in FinishedParticipants.
 				if (participant.Finished && !FinishedParticipants.Contains(participant)) FinishedParticipants.Add(participant);
 			}
 		}
@@ -264,14 +280,9 @@ namespace Controller
 		private bool CheckRaceFinished()
 		{
 			int count = 0;
-			foreach (IParticipant participant in Participants)
-			{
-				if (participant.Finished == true) count++;
-			}
+			foreach (IParticipant participant in Participants) if (participant.Finished) count++;
 			if (count == Participants.Count) return true;
-
-			else return false;
-
+			return false;
 		}
 		#endregion
 
@@ -319,19 +330,19 @@ namespace Controller
 					if (section == participant.CurrentSection)
 					{
 						//If participant is broken
-						if (participant.Equipment.IsBroken == true) return;
+						if (participant.Equipment.IsBroken) return;
 
 						//Remove participant from currentsection
 						if (sectionData.Right == participant)
 						{
 							participant.SectionCount++; //To display drivers in correct order on race statistics screen
-							sectionData.Right = null;
+							sectionData.Right = null!;
 						}
 
 						else if (sectionData.Left == participant)
 						{
 							participant.SectionCount++;
-							sectionData.Left = null;
+							sectionData.Left = null!;
 						}
 
 						if (Track.Sections.Count <= (i + 1)) i = -1;
@@ -340,9 +351,9 @@ namespace Controller
 						SectionData nextSectionData = GetSectionData(Track.Sections.ElementAt(i + 1));
 
 						//If the next section has a free spot.
-						if (nextSectionData.Right == null)
+						if (nextSectionData.Right == null!)
 							nextSectionData.Right = participant;
-						else if (nextSectionData.Left == null)
+						else if (nextSectionData.Left == null!)
 							nextSectionData.Left = participant;
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
@@ -361,9 +372,9 @@ namespace Controller
 
 					//Remove participant from track when finished
 					if (sectionData.Right == participant)
-						sectionData.Right = null;
+						sectionData.Right = null!;
 					if (sectionData.Left == participant)
-						sectionData.Left = null;
+						sectionData.Left = null!;
 				}
 			}
 		}
@@ -426,14 +437,6 @@ namespace Controller
 			}
 		}
 		#endregion start
-
-		/// <summary>
-		/// Can be used when debugging with timer enabled.
-		/// </summary>
-		private void Stop()
-		{
-			_timer.Enabled = false;
-		}
 	}
 }
 

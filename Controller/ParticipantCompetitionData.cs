@@ -17,11 +17,11 @@ namespace Controller
 		{
 			Name = participant.Name;
 			Points = participant.Points;
-			ImageSource = DataContext.UrlCarImage(participant.TeamColors);
+			ImageSource = DataContext.DisplayCarImage(participant.TeamColors);
 		}
 
 		/// <summary>
-		/// Returns a list of Participants sorted by their points (descending).
+		/// Returns a list of Participants sorted by their points.
 		/// </summary>
 		/// <param name="list"></param>
 		/// <returns></returns>

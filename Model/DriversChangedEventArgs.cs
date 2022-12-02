@@ -7,8 +7,6 @@
 		public DriversChangedEventArgs(Track track)
 		{
 			Track = track;
-
 		}
-		
 	}
 }

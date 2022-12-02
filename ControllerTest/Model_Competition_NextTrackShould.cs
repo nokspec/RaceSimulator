@@ -1,10 +1,4 @@
-﻿using Controller;
-using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Model;
 
 
 namespace ControllerTest
@@ -53,34 +47,5 @@ namespace ControllerTest
 			Track result = _competition.NextTrack();
 			Assert.AreEqual("Test2", result.Name);
 		}
-
-		/*[Test]
-		public void NextTrack_OneInQueue_ReturnTrack()
-		{
-			_competition.Tracks.Enqueue(new Track("Turkey", Data.MakeRace("Turkey")));
-			Track result = _competition.NextTrack();
-			Assert.AreEqual("Turkey", result.Name);
-		}
-
-		[Test]
-		public void NextTrack_OneInQueue_RemoveTrackFromQueue()
-		{
-			_competition.Tracks.Enqueue(new Track("Japan", Data.MakeRace("Japan")));
-			Track result = _competition.NextTrack();
-			result = _competition.NextTrack(); //niet nog een keer Track ervoor omdat result hierboven al defined is.
-			Assert.IsNull(result);
-		}
-		
-
-		[Test]
-		public void NextTrack_TwoInQueue_ReturnNextTrack()
-		{
-			_competition.Tracks.Enqueue(new Track("Japan", Data.MakeRace("Japan")));
-			Track result = _competition.NextTrack();
-			Assert.That("Japan", Is.EqualTo("Japan"));
-			_competition.Tracks.Enqueue(new Track("Turkey", Data.MakeRace("Turkey")));
-			result = _competition.NextTrack(); //niet nog een keer Track ervoor omdat result hierboven al defined is.
-			Assert.AreEqual("Turkey", "Turkey");
-		}*/
 	}
 }

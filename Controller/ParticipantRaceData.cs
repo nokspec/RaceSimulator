@@ -23,13 +23,12 @@ namespace Controller
 			DistanceTravelled = participant.DistanceTravelled;
 			Name = participant.Name;
 			
-			ImageSource = DataContext.UrlCarImage(participant.TeamColors);
-
+			ImageSource = DataContext.DisplayCarImage(participant.TeamColors);
 		}
 
 		/// <summary>
 		/// Returns a list of Participants sorted by their position.
-		/// First by the amount of sections they've been through, secondly by the amount of laps they've driven.
+		/// First by the distance they've travelled they've been through, secondly by the amount of sections they've driven through.
 		/// </summary>
 		/// <param name="list"></param>
 		/// <returns></returns>

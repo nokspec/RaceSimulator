@@ -17,27 +17,7 @@ namespace Model
 		public int DistanceTravelled { get; set; }
 		public int SectionCount { get; set; }
 		public int BrokenCount { get; set; }
-
-		public bool IsFireball
-		{
-			//TODO refactor
-			get { return false; }
-			set
-			{
-				if (TeamColors != TeamColors.Fire)
-				{
-					TeamColorsSave = TeamColors;
-				}
-				if (value)
-				{
-					TeamColors = TeamColors.Fire;
-				}
-				else
-				{
-					TeamColors = TeamColorsSave;
-				}
-			}
-		}
+		public bool IsFireball { get; set; }
 	}
 
 	public enum TeamColors

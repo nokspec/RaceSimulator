@@ -6,22 +6,28 @@ namespace Controller
 {
 	public class DataContext : INotifyPropertyChanged
 	{
-		private static string _urlDefaultCar = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
+		private static readonly string UrlDefaultCar = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 		private string _trackName { get; set; }
-		public string TrackName { get { return _trackName; } set { _trackName = value; OnPropertyChanged(); } }
-		public Track Track { get; set; }
+		public string TrackName
+		{
+			get => _trackName;
+			set { _trackName = value; OnPropertyChanged(); }
+		}
 		private List<ParticipantCompetitionData> _participantsCompetition => CreateParticipantCompetitionList(Data.Competition.Participants);
-
-		public List<ParticipantCompetitionData> ParticipantsCompetition { get { return _participantsCompetition; } private set { } }
-
-		private BindingList<Track> _competitionData { get; set; }
-		public BindingList<Track> CompetitionData { get { return _competitionData; } set { _competitionData = value; OnPropertyChanged(); } }
-
+		public List<ParticipantCompetitionData> ParticipantsCompetition => _participantsCompetition; //Used in XAML
+		
 		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
+		public List<ParticipantRaceData> ParticipantsRace => _participantsRace; //Used in XAML
 
-		public List<ParticipantRaceData> ParticipantsRace { get { return _participantsRace; } private set { } }
+		//TODO refactor
+		private BindingList<Track> _competitionData { get; set; }
+		public BindingList<Track> CompetitionData
+		{
+			get => _competitionData;
+			set { _competitionData = value; OnPropertyChanged(); }
+		} //Used in XAML
 
 
 		public DataContext()
@@ -75,7 +81,7 @@ namespace Controller
 			List<ParticipantRaceData> list = (from participant in participants
 											  select new ParticipantRaceData(participant)).ToList();
 			list = ParticipantRaceData.SortByPosition(list);
-			
+
 			return list;
 		}
 
@@ -95,22 +101,22 @@ namespace Controller
 		/// </summary>
 		/// <param name="teamColor"></param>
 		/// <returns></returns>
-		public static string UrlCarImage(TeamColors teamColor)
+		public static string DisplayCarImage(TeamColors teamColor)
 		{
 			switch (teamColor)
 			{
 				case TeamColors.Blue:
-					return _urlDefaultCar + "BlueWest.png";
+					return UrlDefaultCar + "BlueWest.png";
 				case TeamColors.Green:
-					return _urlDefaultCar + "GreenWest.png";
+					return UrlDefaultCar + "GreenWest.png";
 				case TeamColors.Red:
-					return _urlDefaultCar + "RedWest.png";
+					return UrlDefaultCar + "RedWest.png";
 				case TeamColors.Yellow:
-					return _urlDefaultCar + "YellowWest.png";
+					return UrlDefaultCar + "YellowWest.png";
 				case TeamColors.Grey:
-					return _urlDefaultCar + "GreyWest.png";
+					return UrlDefaultCar + "GreyWest.png";
 				default:
-					return _urlDefaultCar + "FireWest.png";
+					return UrlDefaultCar + "FireWest.png";
 			}
 		}
 	}

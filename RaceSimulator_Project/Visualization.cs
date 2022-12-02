@@ -11,9 +11,9 @@ namespace RaceSimulator_Project
 		public static int Position;
 		public static int OldPosition; //Used for corners
 		public static Section CurrentSection;
-		private static Race race;
+		private static Race? race;
 
-		public static void Initialize(Race race)
+		public static void Initialize(Race? race)
 		{
 			Visualization.race = race;
 			Data.CurrentRace.DriversChanged += OnDriversChanged;
@@ -201,7 +201,7 @@ namespace RaceSimulator_Project
 		#region Draw track
 		/// <summary>
 		/// Draws the track.
-		/// Uses DeterminePosition to determine where to draw the next section.
+		/// Uses DetermineDirection to determine where to draw the next section.
 		/// 1, 3 = horizontal
 		/// 2, 4 = vertical
 		/// </summary>
@@ -214,25 +214,25 @@ namespace RaceSimulator_Project
 				switch (section.SectionTypes)
 				{
 					case SectionType.StartGrid:
-						DeterminePosition(SectionType.StartGrid, track);
+						DetermineDirection(SectionType.StartGrid, track);
 						PrintToConsole(Position is 1 or 3 ? _straightStartHorizontal : _straightStartVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.Finish:
-						DeterminePosition(SectionType.Finish, track);
+						DetermineDirection(SectionType.Finish, track);
 						PrintToConsole(Position is 1 or 3 ? _finishHorizontal : _finishVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.Straight:
-						DeterminePosition(SectionType.Straight, track);
+						DetermineDirection(SectionType.Straight, track);
 						PrintToConsole(Position is 1 or 3 ? _straightHorizontal : _straightVertical,
 							race.GetSectionData(section));
 						break;
 
 					case SectionType.RightCorner:
-						DeterminePosition(SectionType.RightCorner, track);
+						DetermineDirection(SectionType.RightCorner, track);
 						switch (OldPosition)
 						{
 							case 1:
@@ -251,7 +251,7 @@ namespace RaceSimulator_Project
 						break;
 
 					case SectionType.LeftCorner:
-						DeterminePosition(SectionType.LeftCorner, track);
+						DetermineDirection(SectionType.LeftCorner, track);
 						switch (OldPosition)
 						{
 							case 3:
@@ -273,11 +273,11 @@ namespace RaceSimulator_Project
 		}
 
 		/// <summary>
-		/// Determines the position of the next section that has to be drawn.
+		/// Determines the direction of the next section that has to be drawn.
 		/// </summary>
 		/// <param name="sectionType"></param>
 		/// <param name="track"></param>
-		private static void DeterminePosition(SectionType sectionType, Track track)
+		private static void DetermineDirection(SectionType sectionType, Track track)
 		{
 			switch (sectionType)
 			{

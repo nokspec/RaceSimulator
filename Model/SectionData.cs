@@ -2,8 +2,7 @@
 {
     public class SectionData
     {
-        public IParticipant Left { get; set; }
-
+	    public IParticipant Left { get; set; }
 		public IParticipant Right { get; set; }
 	}
 }

@@ -9,8 +9,7 @@ namespace Controller
 {
 	public class TrackCompetitionData
 	{
-		public Track Track { get; private set; }
-		public string TrackName { get; private set; }
+		public string TrackName { get; }
 
 		public TrackCompetitionData(Track track)
 		{

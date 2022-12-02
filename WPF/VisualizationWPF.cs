@@ -12,8 +12,8 @@ namespace WPF
 {
 	public static class VisualizationWPF
 	{
-		private static int XPosition;
-		private static int YPosition;
+		private static int _xPosition;
+		private static int _yPosition;
 		public static int SectionSize { get; set; }
 		public static int ParticipantSize { get; set; }
 		public static int TrackWidth { get; set; }
@@ -23,68 +23,68 @@ namespace WPF
 
 		private static Direction _direction;
 
-		private static Race _race;
+		private static Race? _race;
 
 		#region graphics
 
 		//Sections
-		private const string _urlDefaultSection = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\";
+		private const string UrlDefaultSection = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Sections\\";
 
-		private const string _StartHorizontal = _urlDefaultSection + "StartHorizontal.png";
-		private const string _StartVertical = _urlDefaultSection + "StartVertical.png";
-		private const string _FinishHorizontal = _urlDefaultSection + "FinishHorizontal.png";
-		private const string _FinishVertical = _urlDefaultSection + "FinishVertical.png";
-		private const string _StraightHorizontal = _urlDefaultSection + "StraightHorizontal.png";
-		private const string _StraightVertical = _urlDefaultSection + "StraightVertical.png";
-		private const string _CornerNE = _urlDefaultSection + "CornerNE.png";
-		private const string _CornerNW = _urlDefaultSection + "CornerNW.png";
-		private const string _CornerSE = _urlDefaultSection + "CornerSE.png";
-		private const string _CornerSW = _urlDefaultSection + "CornerSW.png";
+		private const string StartHorizontal = UrlDefaultSection + "StartHorizontal.png";
+		private const string StartVertical = UrlDefaultSection + "StartVertical.png";
+		private const string FinishHorizontal = UrlDefaultSection + "FinishHorizontal.png";
+		private const string FinishVertical = UrlDefaultSection + "FinishVertical.png";
+		private const string StraightHorizontal = UrlDefaultSection + "StraightHorizontal.png";
+		private const string StraightVertical = UrlDefaultSection + "StraightVertical.png";
+		private const string CornerNe = UrlDefaultSection + "CornerNE.png";
+		private const string CornerNw = UrlDefaultSection + "CornerNW.png";
+		private const string CornerSe = UrlDefaultSection + "CornerSE.png";
+		private const string CornerSw = UrlDefaultSection + "CornerSW.png";
 
 		//Participants
 
 		//North
-		private const string _urlDefaultDriverNorth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\";
+		private const string UrlDefaultDriverNorth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\North\\";
 
-		private const string _BlueDriverN = _urlDefaultDriverNorth + "BlueNorth.png";
-		private const string _GreenDriverN = _urlDefaultDriverNorth + "GreenNorth.png";
-		private const string _GreyDriverN = _urlDefaultDriverNorth + "GreyNorth.png";
-		private const string _RedDriverN = _urlDefaultDriverNorth + "RedNorth.png";
-		private const string _YellowDriverN = _urlDefaultDriverNorth + "YellowNorth.png";
-		private const string _FireDriverN = _urlDefaultDriverNorth + "FireNorth.png";
+		private const string BlueDriverN = UrlDefaultDriverNorth + "BlueNorth.png";
+		private const string GreenDriverN = UrlDefaultDriverNorth + "GreenNorth.png";
+		private const string GreyDriverN = UrlDefaultDriverNorth + "GreyNorth.png";
+		private const string RedDriverN = UrlDefaultDriverNorth + "RedNorth.png";
+		private const string YellowDriverN = UrlDefaultDriverNorth + "YellowNorth.png";
+		private const string FireDriverN = UrlDefaultDriverNorth + "FireNorth.png";
 
 		//East
-		private const string _urlDefaultDriverEast = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\";
+		private const string UrlDefaultDriverEast = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\East\\";
 
-		private const string _BlueDriverE = _urlDefaultDriverEast + "BlueEast.png";
-		private const string _GreenDriverE = _urlDefaultDriverEast + "GreenEast.png";
-		private const string _GreyDriverE = _urlDefaultDriverEast + "GreyEast.png";
-		private const string _RedDriverE = _urlDefaultDriverEast + "RedEast.png";
-		private const string _YellowDriverE = _urlDefaultDriverEast + "YellowEast.png";
-		private const string _FireDriverE = _urlDefaultDriverEast + "FireEast.png";
+		private const string BlueDriverE = UrlDefaultDriverEast + "BlueEast.png";
+		private const string GreenDriverE = UrlDefaultDriverEast + "GreenEast.png";
+		private const string GreyDriverE = UrlDefaultDriverEast + "GreyEast.png";
+		private const string RedDriverE = UrlDefaultDriverEast + "RedEast.png";
+		private const string YellowDriverE = UrlDefaultDriverEast + "YellowEast.png";
+		private const string FireDriverE = UrlDefaultDriverEast + "FireEast.png";
 
 		//South
-		private const string _urlDefaultDriverSouth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\";
+		private const string UrlDefaultDriverSouth = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\South\\";
 
-		private const string _BlueDriverS = _urlDefaultDriverSouth + "BlueSouth.png";
-		private const string _GreenDriverS = _urlDefaultDriverSouth + "GreenSouth.png";
-		private const string _GreyDriverS = _urlDefaultDriverSouth + "GreySouth.png";
-		private const string _RedDriverS = _urlDefaultDriverSouth + "RedSouth.png";
-		private const string _YellowDriverS = _urlDefaultDriverSouth + "YellowSouth.png";
-		private const string _FireDriverS = _urlDefaultDriverSouth + "FireSouth.png";
+		private const string BlueDriverS = UrlDefaultDriverSouth + "BlueSouth.png";
+		private const string GreenDriverS = UrlDefaultDriverSouth + "GreenSouth.png";
+		private const string GreyDriverS = UrlDefaultDriverSouth + "GreySouth.png";
+		private const string RedDriverS = UrlDefaultDriverSouth + "RedSouth.png";
+		private const string YellowDriverS = UrlDefaultDriverSouth + "YellowSouth.png";
+		private const string FireDriverS = UrlDefaultDriverSouth + "FireSouth.png";
 
 		//West
-		private const string _urlDefaultDriverWest = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
+		private const string UrlDefaultDriverWest = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
 
-		private const string _BlueDriverW = _urlDefaultDriverWest + "BlueWest.png";
-		private const string _GreenDriverW = _urlDefaultDriverWest + "GreenWest.png";
-		private const string _GreyDriverW = _urlDefaultDriverWest + "GreyWest.png";
-		private const string _RedDriverW = _urlDefaultDriverWest + "RedWest.png";
-		private const string _YellowDriverW = _urlDefaultDriverWest + "YellowWest.png";
-		private const string _FireDriverW = _urlDefaultDriverWest + "FireWest.png";
+		private const string BlueDriverW = UrlDefaultDriverWest + "BlueWest.png";
+		private const string GreenDriverW = UrlDefaultDriverWest + "GreenWest.png";
+		private const string GreyDriverW = UrlDefaultDriverWest + "GreyWest.png";
+		private const string RedDriverW = UrlDefaultDriverWest + "RedWest.png";
+		private const string YellowDriverW = UrlDefaultDriverWest + "YellowWest.png";
+		private const string FireDriverW = UrlDefaultDriverWest + "FireWest.png";
 
 		//Broken
-		private const string _Broken = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Broken.png";
+		private const string Broken = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Broken.png";
 
 		#endregion
 
@@ -96,7 +96,7 @@ namespace WPF
 			Up = 4
 		}
 
-		public static void Initialize(Race race)
+		public static void Initialize(Race? race)
 		{
 			_race = race;
 
@@ -117,7 +117,7 @@ namespace WPF
 		/// <summary>
 		/// Draws the track on the WPF window.
 		/// Calls DrawParticipants() to draw the participants on the track.
-		/// Calls DeterminePosition to determine the position of a section.
+		/// Calls DetermineDirection to determine the position of a section.
 		/// Calls MovePointerPosition() to move the pointer to the next position.
 		/// </summary>
 		/// <param name="track"></param>
@@ -125,8 +125,8 @@ namespace WPF
 		public static BitmapSource DrawTrack(Track track)
 		{
 			//Start positions
-			XPosition = 3;
-			YPosition = 2;
+			_xPosition = 3;
+			_yPosition = 2;
 
 			Bitmap bitmap = ImageManager.CreateEmptyTrack(TrackWidth, TrackHeight);
 			Graphics = Graphics.FromImage(bitmap);
@@ -139,10 +139,10 @@ namespace WPF
 						switch (_direction)
 						{
 							case Direction.Right or Direction.Left:
-								Graphics.DrawImage(ImageManager.CloneImage(_StartHorizontal), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(StartHorizontal), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Up or Direction.Down:
-								Graphics.DrawImage(ImageManager.CloneImage(_StartVertical), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(StartVertical), SectionXPosition(), SectionYPosition());
 								break;
 						}
 						break;
@@ -150,10 +150,10 @@ namespace WPF
 						switch (_direction)
 						{
 							case Direction.Right or Direction.Left:
-								Graphics.DrawImage(ImageManager.CloneImage(_FinishHorizontal), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(FinishHorizontal), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Up or Direction.Down:
-								Graphics.DrawImage(ImageManager.CloneImage(_FinishVertical), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(FinishVertical), SectionXPosition(), SectionYPosition());
 								break;
 						}
 						break;
@@ -161,10 +161,10 @@ namespace WPF
 						switch (_direction)
 						{
 							case Direction.Right or Direction.Left:
-								Graphics.DrawImage(ImageManager.CloneImage(_StraightHorizontal), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(StraightHorizontal), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Up or Direction.Down:
-								Graphics.DrawImage(ImageManager.CloneImage(_StraightVertical), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(StraightVertical), SectionXPosition(), SectionYPosition());
 								break;
 						}
 						break;
@@ -172,16 +172,16 @@ namespace WPF
 						switch (_direction)
 						{
 							case Direction.Right:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerNE), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerNe), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Down:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerSE), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerSe), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Left:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerSW), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerSw), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Up:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerNW), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerNw), SectionXPosition(), SectionYPosition());
 								break;
 						}
 						break;
@@ -190,22 +190,22 @@ namespace WPF
 						switch (_direction)
 						{
 							case Direction.Right:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerSE), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerSe), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Down:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerSW), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerSw), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Left:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerNW), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerNw), SectionXPosition(), SectionYPosition());
 								break;
 							case Direction.Up:
-								Graphics.DrawImage(ImageManager.CloneImage(_CornerNE), SectionXPosition(), SectionYPosition());
+								Graphics.DrawImage(ImageManager.CloneImage(CornerNe), SectionXPosition(), SectionYPosition());
 								break;
 						}
 						break;
 				}
 				DrawParticipants(_direction, Graphics, section);
-				DeterminePosition(section.SectionTypes, _direction);
+				DetermineDirection(section.SectionTypes, _direction);
 				MovePointerPosition();
 			}
 			return ImageManager.CreateBitmapSourceFromGdiBitmap(bitmap);
@@ -251,29 +251,12 @@ namespace WPF
 		/// <param name="y"></param>
 		private static void DrawSingleParticipant(IParticipant participant, Graphics g, Direction currentDirection, int x, int y)
 		{
-			CheckParticipantSpeed(participant);
+			Race.CheckParticipantSpeed(participant);
 
-			Bitmap participantBitmap = ImageManager.GetImage(GetColorFileName(participant.TeamColors, currentDirection));
+			Bitmap participantBitmap = ImageManager.GetImage(GetColorUrl(participant.TeamColors, currentDirection));
 			g.DrawImage(participantBitmap, x, y, ParticipantSize, ParticipantSize);
 		}
 		#endregion
-
-		/// <summary>
-		/// Called by DrawSingleParticipant.
-		/// Used to check if a participant is eligible to get the fire image.
-		/// </summary>
-		/// <param name="participant"></param>
-		private static void CheckParticipantSpeed(IParticipant participant)
-		{
-			if (participant.CalculateSpeed() > 55)
-			{
-				participant.IsFireball = true;
-			}
-			else
-			{
-				participant.IsFireball = false;
-			}
-		}
 
 		/// <summary>
 		/// Draws the "broken" image.
@@ -281,54 +264,54 @@ namespace WPF
 		/// <param name="g"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		private static void DrawBroken(Graphics g, int x, int y) { g.DrawImage(ImageManager.GetImage(_Broken), x, y, ParticipantSize, ParticipantSize); }
+		private static void DrawBroken(Graphics g, int x, int y) { g.DrawImage(ImageManager.GetImage(Broken), x, y, ParticipantSize, ParticipantSize); }
 
-		private static string GetColorFileName(TeamColors color, Direction currentDirection)
+		private static string GetColorUrl(TeamColors color, Direction currentDirection)
 		{
 			return currentDirection switch
 			{
 				//East
 				Direction.Right => color switch
 				{
-					TeamColors.Red => _RedDriverE,
-					TeamColors.Green => _GreenDriverE,
-					TeamColors.Yellow => _YellowDriverE,
-					TeamColors.Blue => _BlueDriverE,
-					TeamColors.Grey => _GreyDriverE,
-					TeamColors.Fire => _FireDriverE,
-					_ => throw new InvalidDirectionException(),
+					TeamColors.Red => RedDriverE,
+					TeamColors.Green => GreenDriverE,
+					TeamColors.Yellow => YellowDriverE,
+					TeamColors.Blue => BlueDriverE,
+					TeamColors.Grey => GreyDriverE,
+					TeamColors.Fire => FireDriverE,
+					_ => throw new InvalidDirectionException(),//TODO exception for teamcolor
 				},
 				//South
 				Direction.Down => color switch
 				{
-					TeamColors.Red => _RedDriverS,
-					TeamColors.Green => _GreenDriverS,
-					TeamColors.Yellow => _YellowDriverS,
-					TeamColors.Blue => _BlueDriverS,
-					TeamColors.Grey => _GreyDriverS,
-					TeamColors.Fire => _FireDriverS,
+					TeamColors.Red => RedDriverS,
+					TeamColors.Green => GreenDriverS,
+					TeamColors.Yellow => YellowDriverS,
+					TeamColors.Blue => BlueDriverS,
+					TeamColors.Grey => GreyDriverS,
+					TeamColors.Fire => FireDriverS,
 					_ => throw new InvalidDirectionException(),
 				},
 				//West
 				Direction.Left => color switch
 				{
-					TeamColors.Red => _RedDriverW,
-					TeamColors.Green => _GreenDriverW,
-					TeamColors.Yellow => _YellowDriverW,
-					TeamColors.Blue => _BlueDriverW,
-					TeamColors.Grey => _GreyDriverW,
-					TeamColors.Fire => _FireDriverW,
+					TeamColors.Red => RedDriverW,
+					TeamColors.Green => GreenDriverW,
+					TeamColors.Yellow => YellowDriverW,
+					TeamColors.Blue => BlueDriverW,
+					TeamColors.Grey => GreyDriverW,
+					TeamColors.Fire => FireDriverW,
 					_ => throw new InvalidDirectionException(),
 				},
 				//North
 				Direction.Up => color switch
 				{
-					TeamColors.Red => _RedDriverN,
-					TeamColors.Green => _GreenDriverN,
-					TeamColors.Yellow => _YellowDriverN,
-					TeamColors.Blue => _BlueDriverN,
-					TeamColors.Grey => _GreyDriverN,
-					TeamColors.Fire => _FireDriverN,
+					TeamColors.Red => RedDriverN,
+					TeamColors.Green => GreenDriverN,
+					TeamColors.Yellow => YellowDriverN,
+					TeamColors.Blue => BlueDriverN,
+					TeamColors.Grey => GreyDriverN,
+					TeamColors.Fire => FireDriverN,
 					_ => throw new InvalidDirectionException(),
 				},
 				_ => throw new InvalidDirectionException()
@@ -344,26 +327,26 @@ namespace WPF
 			switch (_direction)
 			{
 				case Direction.Right:
-					XPosition++;
+					_xPosition++;
 					break;
 				case Direction.Down:
-					YPosition++;
+					_yPosition++;
 					break;
 				case Direction.Left:
-					XPosition--;
+					_xPosition--;
 					break;
 				case Direction.Up:
-					YPosition--;
+					_yPosition--;
 					break;
 			}
 		}
 
 		/// <summary>
-		/// Determines the position of the next section that has to be drawn.
+		/// Determines the direction of the next section that has to be drawn.
 		/// </summary>
 		/// <param name="sectionType"></param>
 		/// <param name="direction"></param>
-		private static void DeterminePosition(SectionType sectionType, Direction direction)
+		private static void DetermineDirection(SectionType sectionType, Direction direction)
 		{
 			switch (sectionType)
 			{
@@ -404,7 +387,7 @@ namespace WPF
 		{
 			foreach (Section section in _race.Track.Sections)
 			{
-				DeterminePosition(section.SectionTypes, _direction);
+				DetermineDirection(section.SectionTypes, _direction);
 
 				switch (_direction)
 				{
@@ -460,7 +443,7 @@ namespace WPF
 		/// <returns></returns>
 		private static int SectionXPosition()
 		{
-			return XPosition * SectionSize;
+			return _xPosition * SectionSize;
 		}
 
 		/// <summary>
@@ -469,7 +452,7 @@ namespace WPF
 		/// <returns></returns>
 		private static int SectionYPosition()
 		{
-			return YPosition * SectionSize;
+			return _yPosition * SectionSize;
 		}
 	}
 }

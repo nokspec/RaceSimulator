@@ -5,12 +5,12 @@ namespace Controller
 	public static class Data
 	{
 		public static Competition Competition;
-		public static Race CurrentRace { get; set; }
+		public static Race? CurrentRace { get; set; }
 		public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
 
 		public static void Initialize()
 		{
-			Competition = new Competition(); //Initialize competition.
+			Competition = new Competition();
 			AddParticipants();
 			AddTracks();
 		}
@@ -50,7 +50,7 @@ namespace Controller
 		public static void NextRace()
 		{
 			Track currentTrack = Competition.NextTrack();
-			if (currentTrack != null) //If not null, create new race.
+			if (currentTrack != null)
 			{
 				CurrentRace = new Race(currentTrack, Competition.Participants);
 
@@ -71,7 +71,6 @@ namespace Controller
 			NextRace();
 		}
 
-		//TODO misschien hier nog exception handling toevoegen?
 		public static SectionType[] MakeRace(string naam)
 		{
 			if (naam.Equals("Rechtsom"))
