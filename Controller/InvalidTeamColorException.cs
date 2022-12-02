@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Controller
 {
-	public class InvalidDirectionException : Exception
+	public class InvalidTeamColorException : Exception
 	{
-		public InvalidDirectionException()
+		public InvalidTeamColorException()
 		{
 		}
 
-		public InvalidDirectionException(string message)
+		public InvalidTeamColorException(string message)
 			: base(message)
 		{
 		}
 
-		public InvalidDirectionException(string message, Exception inner)
+		public InvalidTeamColorException(string message, Exception inner)
 			: base(message, inner)
 		{
 		}

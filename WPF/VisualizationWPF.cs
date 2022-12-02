@@ -279,7 +279,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverE,
 					TeamColors.Grey => GreyDriverE,
 					TeamColors.Fire => FireDriverE,
-					_ => throw new InvalidDirectionException(),//TODO exception for teamcolor
+					_ => throw new InvalidTeamColorException(),
 				},
 				//South
 				Direction.Down => color switch
@@ -290,7 +290,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverS,
 					TeamColors.Grey => GreyDriverS,
 					TeamColors.Fire => FireDriverS,
-					_ => throw new InvalidDirectionException(),
+					_ => throw new InvalidTeamColorException(),
 				},
 				//West
 				Direction.Left => color switch
@@ -301,7 +301,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverW,
 					TeamColors.Grey => GreyDriverW,
 					TeamColors.Fire => FireDriverW,
-					_ => throw new InvalidDirectionException(),
+					_ => throw new InvalidTeamColorException(),
 				},
 				//North
 				Direction.Up => color switch
@@ -312,7 +312,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverN,
 					TeamColors.Grey => GreyDriverN,
 					TeamColors.Fire => FireDriverN,
-					_ => throw new InvalidDirectionException(),
+					_ => throw new InvalidTeamColorException(),
 				},
 				_ => throw new InvalidDirectionException()
 			};

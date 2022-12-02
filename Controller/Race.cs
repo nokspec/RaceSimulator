@@ -48,6 +48,28 @@ namespace Controller
 			_timer.Start();
 		}
 
+		protected void OnTimedEvent(object? sender, ElapsedEventArgs elapsedEventArgs)
+		{
+			CheckDriverMovement();
+			RandomizeFixing();
+			RandomizeIsBroken();
+			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
+			if (CheckRaceFinished()) //If the race has finished
+			{
+				AddParticipantToFinishedParticipants();
+				ReturnStandings();
+				CompetitionPointsDistribution(FinishedParticipants);
+				RaceFinished?.Invoke(this, new NextRaceEventArgs());
+				CleanUp();
+			}
+		}
+
+		public SectionData GetSectionData(Section section)
+		{
+			if (!_positions.ContainsKey(section)) _positions.Add(section, new SectionData());
+			return _positions[section];
+		}
+
 		#region Resetting and cleaning
 		/// <summary>
 		/// Gets called when a race finishes.
@@ -84,28 +106,6 @@ namespace Controller
 			}
 		}
 		#endregion
-
-		protected void OnTimedEvent(object? sender, ElapsedEventArgs elapsedEventArgs)
-		{
-			CheckDriverMovement();
-			RandomizeFixing();
-			RandomizeIsBroken();
-			DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
-			if (CheckRaceFinished()) //If the race has finished
-			{
-				AddParticipantToFinishedParticipants();
-				ReturnStandings();
-				CompetitionPointsDistribution(FinishedParticipants);
-				RaceFinished?.Invoke(this, new NextRaceEventArgs());
-				CleanUp();
-			}
-		}
-
-		public SectionData GetSectionData(Section section)
-		{
-			if (!_positions.ContainsKey(section)) _positions.Add(section, new SectionData());
-			return _positions[section];
-		}
 
 		#region Participant Fireball
 		/// <summary>

@@ -9,6 +9,8 @@ namespace Controller
 		private static readonly string UrlDefaultCar = "C:\\Users\\naoki\\OneDrive\\HBO-ICT\\Jaar 2\\C#\\RaceSimulator\\RaceSimulator_Solution\\WPF\\Images\\Participants\\West\\";
 
 		public event PropertyChangedEventHandler? PropertyChanged;
+		
+		//Track name
 		private string _trackName { get; set; }
 		public string TrackName
 		{
