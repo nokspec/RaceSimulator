@@ -15,11 +15,9 @@ namespace Controller
 			get => _trackName;
 			set { _trackName = value; OnPropertyChanged(); }
 		}
+		//Competition
 		private List<ParticipantCompetitionData> _participantsCompetition => CreateParticipantCompetitionList(Data.Competition.Participants);
 		public List<ParticipantCompetitionData> ParticipantsCompetition => _participantsCompetition; //Used in XAML
-		
-		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
-		public List<ParticipantRaceData> ParticipantsRace => _participantsRace; //Used in XAML
 
 		//BindingList because the track names have to be removed after a race.
 		private BindingList<Track> _competitionData { get; set; }
@@ -29,6 +27,9 @@ namespace Controller
 			set { _competitionData = value; OnPropertyChanged(); }
 		} //Used in XAML
 
+		//Race
+		private List<ParticipantRaceData> _participantsRace => CreateParticipantRaceList(Data.Competition.Participants);
+		public List<ParticipantRaceData> ParticipantsRace => _participantsRace; //Used in XAML
 
 		public DataContext()
 		{
