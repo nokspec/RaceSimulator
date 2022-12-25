@@ -12,16 +12,16 @@ namespace Controller
 		//Collections
 		public List<IParticipant> Participants { get; set; }
 		public List<IParticipant> FinishedParticipants { get; set; }
-		private Dictionary<Section, SectionData> _positions;
+		private readonly Dictionary<Section, SectionData> _positions;
 
 		//Events
 		public event EventHandler<DriversChangedEventArgs> DriversChanged;
 		public event EventHandler<NextRaceEventArgs> RaceFinished;
 
 		//Timer
-		private Random _random;
-		private System.Timers.Timer _timer; //Timer
-		private static int _timerInterval = 500; //Set timer interval
+		private readonly Random _random;
+		private readonly System.Timers.Timer _timer; //Timer
+		private static readonly int TimerInterval = 500; //Set timer interval
 
 		//Laps
 		public static int AmountOfLaps = 1; //Set amount of laps a race has.
@@ -34,17 +34,17 @@ namespace Controller
 			_random = new Random(DateTime.Now.Millisecond);
 			_positions = new Dictionary<Section, SectionData>();
 			FinishedParticipants = new List<IParticipant>();
-			StartPositions(Track, Participants);
+			StartPositions(Participants);
 			RandomizeEquipment();
 
 			//Timer
-			_timer = new System.Timers.Timer(_timerInterval); //Interval
+			_timer = new System.Timers.Timer(TimerInterval); //Interval
 			Start(); //Start timer
 		}
 
 		public void Start()
 		{
-			_timer.Elapsed += OnTimedEvent; //Subscribe
+			_timer.Elapsed += OnTimedEvent;
 			_timer.Start();
 		}
 
@@ -91,7 +91,7 @@ namespace Controller
 		/// <summary>
 		/// Resets all participants values to default values.
 		/// </summary>
-		public void ResetParticipants()
+		private void ResetParticipants()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -200,7 +200,7 @@ namespace Controller
 		/// Distributes points to participants based on their finishing position.
 		/// </summary>
 		/// <param name="finishedParticipants"></param>
-		public static void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
+		private static void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
 		{
 			int count = 0;
 			foreach (IParticipant participant in finishedParticipants)
@@ -224,7 +224,7 @@ namespace Controller
 		/// <summary>
 		/// Adds participant to FinishedParticipants list in order of their position.
 		/// </summary>
-		public void AddParticipantToFinishedParticipants()
+		private void AddParticipantToFinishedParticipants()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -233,7 +233,7 @@ namespace Controller
 			}
 		}
 
-		public List<IParticipant> ReturnStandings()
+		private List<IParticipant> ReturnStandings()
 		{
 			return FinishedParticipants;
 		}
@@ -246,7 +246,7 @@ namespace Controller
 		/// </summary>
 		/// <param name="participant"></param>
 		/// <returns></returns>
-		private int CountLaps(IParticipant participant)
+		private static int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
 			LapsCount++;
@@ -259,7 +259,7 @@ namespace Controller
 		/// </summary>
 		/// <param name="participant"></param>
 		/// <param name="sectionData"></param>
-		private void NextLap(IParticipant participant, SectionData sectionData)
+		private static void NextLap(IParticipant participant)
 		{
 			if (participant.LapsCount < AmountOfLaps)
 			{
@@ -292,7 +292,7 @@ namespace Controller
 		/// Checks if a participant has moved to an other section. 
 		/// If it has, MoveParticipants() is called.
 		/// </summary>
-		public void CheckDriverMovement()
+		private void CheckDriverMovement()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -313,7 +313,7 @@ namespace Controller
 		/// When a participant finishes the race, they get removed from the track.
 		/// </summary>
 		/// <param name="participant"></param>
-		public void MoveParticipants(IParticipant participant)
+		private void MoveParticipants(IParticipant participant)
 		{
 			int i = 0;
 			foreach (Section section in Track.Sections)
@@ -358,7 +358,7 @@ namespace Controller
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) NextLap(participant, nextSectionData); //They have driven one lap.
+						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) NextLap(participant); //They have driven one lap.
 
 						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) LapsCount++; //First lap has started.	
 						return;
@@ -381,12 +381,12 @@ namespace Controller
 		#endregion
 
 		#region StartPositions
+
 		/// <summary>
 		/// Places the participants on the track, prior to the race beginning.
 		/// </summary>
-		/// <param name="track"></param>
 		/// <param name="participants"></param>
-		public void StartPositions(Track track, List<IParticipant> participants)
+		public void StartPositions(List<IParticipant> participants)
 		{
 			int sectionsLength = Track.Sections.Count;
 			int participantsRemaining = Participants.Count;

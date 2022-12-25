@@ -16,7 +16,7 @@ namespace ControllerTest
 		{
 			Data.Initialize();
 			Data.NextRace();
-			Data.CurrentRace.StartPositions(Data.CurrentRace.Track, Data.CurrentRace.Participants);
+			Data.CurrentRace.StartPositions(Data.CurrentRace.Participants);
 		}
 
 		[Test]

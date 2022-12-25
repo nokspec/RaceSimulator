@@ -28,8 +28,6 @@ namespace WPF
 		private RaceStatistics _raceStatistics;
 		private CompetitionStatistics _competitionStatistics;
 
-		//private Race Race;
-		
 		public MainWindow()
 		{
 			Initialize();

@@ -18,7 +18,7 @@ namespace RaceTest
 		{
 			bool IsRandomized = true;
 
-			Data.CurrentRace.StartPositions(Data.CurrentRace.Track, Data.CurrentRace.Participants);
+			Data.CurrentRace.StartPositions(Data.CurrentRace.Participants);
 
 			//Check if there are participants that aren't randomized.
 			foreach (IParticipant participant in Data.CurrentRace.Participants)
