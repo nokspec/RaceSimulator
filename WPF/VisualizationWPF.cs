@@ -288,7 +288,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverE,
 					TeamColors.Grey => GreyDriverE,
 					TeamColors.Fire => FireDriverE,
-					_ => throw new InvalidTeamColorException(),
+					_ => throw new InvalidTeamColorException("Invalid teamcolor")
 				},
 				//South
 				Direction.Down => color switch
@@ -299,7 +299,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverS,
 					TeamColors.Grey => GreyDriverS,
 					TeamColors.Fire => FireDriverS,
-					_ => throw new InvalidTeamColorException(),
+					_ => throw new InvalidTeamColorException("Invalid teamcolor")
 				},
 				//West
 				Direction.Left => color switch
@@ -310,7 +310,7 @@ namespace WPF
 					TeamColors.Blue => BlueDriverW,
 					TeamColors.Grey => GreyDriverW,
 					TeamColors.Fire => FireDriverW,
-					_ => throw new InvalidTeamColorException(),
+					_ => throw new InvalidTeamColorException("Invalid teamcolor")
 				},
 				//North
 				Direction.Up => color switch
@@ -321,9 +321,9 @@ namespace WPF
 					TeamColors.Blue => BlueDriverN,
 					TeamColors.Grey => GreyDriverN,
 					TeamColors.Fire => FireDriverN,
-					_ => throw new InvalidTeamColorException(),
+					_ => throw new InvalidTeamColorException("Invalid teamcolor")
 				},
-				_ => throw new InvalidDirectionException()
+				_ => throw new InvalidDirectionException("Invalid direction")
 			};
 		}
 
@@ -366,24 +366,24 @@ namespace WPF
 				case SectionType.Straight:
 					break;
 				case SectionType.RightCorner:
-					if (direction == Direction.Right)
-						_direction = Direction.Down;
-					else if (direction == Direction.Up)
-						_direction = Direction.Right;
-					else if (direction == Direction.Left)
-						_direction = Direction.Up;
-					else if (direction == Direction.Down)
-						_direction = Direction.Left;
+					_direction = direction switch
+					{
+						Direction.Right => Direction.Down,
+						Direction.Up => Direction.Right,
+						Direction.Left => Direction.Up,
+						Direction.Down => Direction.Left,
+						_ => _direction
+					};
 					break;
 				case SectionType.LeftCorner:
-					if (direction == Direction.Right)
-						_direction = Direction.Up;
-					else if (direction == Direction.Down)
-						_direction = Direction.Right;
-					else if (direction == Direction.Left)
-						_direction = Direction.Down;
-					else if (direction == Direction.Up)
-						_direction = Direction.Left;
+					_direction = direction switch
+					{
+						Direction.Right => Direction.Up,
+						Direction.Down => Direction.Right,
+						Direction.Left => Direction.Down,
+						Direction.Up => Direction.Left,
+						_ => _direction
+					};
 					break;
 			}
 		}
