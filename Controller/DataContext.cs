@@ -37,9 +37,12 @@ namespace Controller
 		{
 			CreateTrackNameList();
 
-			Data.CurrentRace.DriversChanged += OnDriversChanged;
-			Data.CurrentRace.RaceFinished += OnRaceFinished;
-			TrackName = Data.CurrentRace.Track.Name;
+			if (Data.CurrentRace != null)
+			{
+				Data.CurrentRace.DriversChanged += OnDriversChanged;
+				Data.CurrentRace.RaceFinished += OnRaceFinished;
+				TrackName = Data.CurrentRace.Track.Name;
+			}
 		}
 
 		public void OnDriversChanged(object sender, DriversChangedEventArgs e)
@@ -56,9 +59,12 @@ namespace Controller
 		{
 			CreateTrackNameList();
 
-			TrackName = Data.CurrentRace.Track.Name;
-			Data.CurrentRace.DriversChanged += OnDriversChanged;
-			Data.CurrentRace.RaceFinished += OnRaceFinished;
+			if (Data.CurrentRace != null)
+			{
+				TrackName = Data.CurrentRace.Track.Name;
+				Data.CurrentRace.DriversChanged += OnDriversChanged!;
+				Data.CurrentRace.RaceFinished += OnRaceFinished!;
+			}
 		}
 
 		/// <summary>

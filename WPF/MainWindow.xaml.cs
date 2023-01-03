@@ -46,8 +46,8 @@ namespace WPF
 		{
 			ImageManager.ClearCache();
 			VisualizationWPF.Initialize(e.Race);
-			
-			Data.CurrentRace.DriversChanged += OnDriversChanged;
+
+			if (Data.CurrentRace != null) Data.CurrentRace.DriversChanged += OnDriversChanged!;
 		}
 
 		public void OnDriversChanged(object source, DriversChangedEventArgs e)

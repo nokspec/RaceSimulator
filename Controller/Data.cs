@@ -79,8 +79,7 @@ namespace Controller
 		{
 			if (naam.Equals("Rechtsom"))
 			{
-				SectionType[] trackBuilder = new SectionType[]
-				{
+				SectionType[] trackBuilder = {
 					SectionType.Finish,
 					SectionType.Straight,
 					SectionType.Straight,
@@ -102,8 +101,7 @@ namespace Controller
 			}
 			if (naam.Equals("Zwolle"))
 			{
-				SectionType[] trackBuilder = new SectionType[]
-				{
+				SectionType[] trackBuilder = {
 					SectionType.Finish,
 					SectionType.RightCorner,
 					SectionType.LeftCorner,
@@ -125,8 +123,7 @@ namespace Controller
 			}
 			if (naam.Equals("Joure"))
 			{
-				SectionType[] trackBuilder = new SectionType[]
-				{
+				SectionType[] trackBuilder = {
 					SectionType.Finish,
 					SectionType.Straight,
 					SectionType.Straight,
@@ -148,7 +145,7 @@ namespace Controller
 				};
 				return trackBuilder;
 			}
-			return null;
+			return null!;
 		}
 	}
 }

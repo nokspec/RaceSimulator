@@ -10,7 +10,7 @@ Data.NextRaceEvent += Visualization.OnNextRaceEvent;
 Data.NextRace();
 
 Visualization.Initialize(Data.CurrentRace);
-Visualization.DrawTrack(Data.CurrentRace.Track);
+if (Data.CurrentRace != null) Visualization.DrawTrack(Data.CurrentRace.Track);
 
 for (; ; ) //to keep the window opened
 {

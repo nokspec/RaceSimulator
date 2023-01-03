@@ -5,13 +5,13 @@
 		public string Name { get; set; }
 		public LinkedList<Section> Sections { get; set; }
 
-		public Track(string name, SectionType[] sections)
+		public Track(string name, SectionType[]? sections)
 		{
 			Name = name;
 			Sections = SectionTypeToLinkedList(sections);
 		}
 
-		private static LinkedList<Section> SectionTypeToLinkedList(SectionType[] sectionTypes)
+		private static LinkedList<Section> SectionTypeToLinkedList(SectionType[]? sectionTypes)
 		{
 			LinkedList<Section> sectionList = new LinkedList<Section>();
 

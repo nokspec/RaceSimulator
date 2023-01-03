@@ -223,21 +223,24 @@ namespace WPF
 		/// <param name="section"></param>
 		public static void DrawParticipants(Direction currentDirection, Graphics g, Section section)
 		{
-			IParticipant rightParticipant = _race.GetSectionData(section).Right;
-			IParticipant leftParticipant = _race.GetSectionData(section).Left;
-
-			if (rightParticipant != null)
+			if (_race != null)
 			{
-				DrawSingleParticipant(rightParticipant, g, currentDirection, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section));
-				if (rightParticipant.Equipment.IsBroken)
-					DrawBroken(g, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); //Broken image sits on top of participant
-			}
+				IParticipant rightParticipant = _race.GetSectionData(section).Right;
+				IParticipant leftParticipant = _race.GetSectionData(section).Left;
 
-			if (leftParticipant != null)
-			{
-				DrawSingleParticipant(leftParticipant, g, currentDirection, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section));
-				if (leftParticipant.Equipment.IsBroken)
-					DrawBroken(g, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section)); //Broken image sits on top of participant
+				if (rightParticipant != null!)
+				{
+					DrawSingleParticipant(rightParticipant, g, currentDirection, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section));
+					if (rightParticipant.Equipment.IsBroken)
+						DrawBroken(g, ParticipantXPosition(rightParticipant, section), ParticipantYPosition(rightParticipant, section)); //Broken image sits on top of participant
+				}
+
+				if (leftParticipant != null!)
+				{
+					DrawSingleParticipant(leftParticipant, g, currentDirection, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section));
+					if (leftParticipant.Equipment.IsBroken)
+						DrawBroken(g, ParticipantXPosition(leftParticipant, section), ParticipantYPosition(leftParticipant, section)); //Broken image sits on top of participant
+				}
 			}
 		}
 
@@ -394,20 +397,21 @@ namespace WPF
 		/// </summary>
 		private static void CalculateTrackSize()
 		{
-			foreach (Section section in _race.Track.Sections)
-			{
-				DetermineDirection(section.SectionTypes, _direction);
-
-				switch (_direction)
+			if (_race != null)
+				foreach (Section section in _race.Track.Sections)
 				{
-					case Direction.Right:
-						TrackWidth++;
-						break;
-					case Direction.Down:
-						TrackHeight++;
-						break;
+					DetermineDirection(section.SectionTypes, _direction);
+
+					switch (_direction)
+					{
+						case Direction.Right:
+							TrackWidth++;
+							break;
+						case Direction.Down:
+							TrackHeight++;
+							break;
+					}
 				}
-			}
 		}
 
 		/// <summary>
@@ -418,13 +422,17 @@ namespace WPF
 		/// <returns></returns>
 		private static int ParticipantXPosition(IParticipant participant, Section section)
 		{
-			IParticipant rightParticipant = _race.GetSectionData(section).Right;
-			IParticipant leftParticipant = _race.GetSectionData(section).Left;
+			if (_race != null)
+			{
+				IParticipant rightParticipant = _race.GetSectionData(section).Right;
+				IParticipant leftParticipant = _race.GetSectionData(section).Left;
 
-			if (participant == rightParticipant)
-				return SectionXPosition() + (SectionSize / 2) - (ParticipantSize / 2) - (ParticipantSize / 2);
-			if (participant == leftParticipant)
-				return SectionXPosition() + (SectionSize / 2) - (ParticipantSize / 2) + (ParticipantSize / 2);
+				if (participant == rightParticipant)
+					return SectionXPosition() + (SectionSize / 2) - (ParticipantSize / 2) - (ParticipantSize / 2);
+				if (participant == leftParticipant)
+					return SectionXPosition() + (SectionSize / 2) - (ParticipantSize / 2) + (ParticipantSize / 2);
+			}
+
 			return 0;
 		}
 
@@ -436,13 +444,17 @@ namespace WPF
 		/// <returns></returns>
 		private static int ParticipantYPosition(IParticipant participant, Section section)
 		{
-			IParticipant rightParticipant = _race.GetSectionData(section).Right;
-			IParticipant leftParticipant = _race.GetSectionData(section).Left;
+			if (_race != null)
+			{
+				IParticipant rightParticipant = _race.GetSectionData(section).Right;
+				IParticipant leftParticipant = _race.GetSectionData(section).Left;
 
-			if (participant == rightParticipant)
-				return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) - (ParticipantSize / 2);
-			if (participant == leftParticipant)
-				return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) + (ParticipantSize / 2);
+				if (participant == rightParticipant)
+					return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) - (ParticipantSize / 2);
+				if (participant == leftParticipant)
+					return SectionYPosition() + (SectionSize / 2) - (ParticipantSize / 2) + (ParticipantSize / 2);
+			}
+
 			return 0;
 		}
 

@@ -7,7 +7,7 @@ namespace Controller
 	public class Race
 	{
 		public Track Track { get; set; }
-		public Section CurrentSection;
+		public Section? CurrentSection;
 
 		//Collections
 		public List<IParticipant> Participants { get; set; }
@@ -15,17 +15,17 @@ namespace Controller
 		private readonly Dictionary<Section, SectionData> _positions;
 
 		//Events
-		public event EventHandler<DriversChangedEventArgs> DriversChanged;
-		public event EventHandler<NextRaceEventArgs> RaceFinished;
+		public event EventHandler<DriversChangedEventArgs>? DriversChanged;
+		public event EventHandler<NextRaceEventArgs>? RaceFinished;
 
 		//Timer
 		private readonly Random _random;
 		private readonly System.Timers.Timer _timer; //Timer
-		private static readonly int TimerInterval = 500; //Set timer interval
+		private static readonly int TimerInterval = 200; //Set timer interval
 
 		//Laps
-		public static int AmountOfLaps = 1; //Set amount of laps a race has.
-		public static int LapsCount = -1; //Startgrid sits behind the finish, that's why -1.
+		private static int _amountOfLaps = 1; //Set amount of laps a race has.
+		private static int _lapsCount = -1; //Startgrid sits behind the finish, that's why -1.
 
 		public Race(Track track, List<IParticipant> participants)
 		{
@@ -81,8 +81,8 @@ namespace Controller
 			DriversChanged = null!;
 			RaceFinished = null!;
 			CurrentSection = null!;
-			LapsCount = -1;
-			AmountOfLaps = 0;
+			_lapsCount = -1;
+			_amountOfLaps = 0;
 
 			FinishedParticipants.Clear();
 			ResetParticipants();
@@ -200,7 +200,7 @@ namespace Controller
 		/// Distributes points to participants based on their finishing position.
 		/// </summary>
 		/// <param name="finishedParticipants"></param>
-		private static void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
+		public void CompetitionPointsDistribution(List<IParticipant> finishedParticipants)
 		{
 			int count = 0;
 			foreach (IParticipant participant in finishedParticipants)
@@ -224,7 +224,7 @@ namespace Controller
 		/// <summary>
 		/// Adds participant to FinishedParticipants list in order of their position.
 		/// </summary>
-		private void AddParticipantToFinishedParticipants()
+		public void AddParticipantToFinishedParticipants()
 		{
 			foreach (IParticipant participant in Participants)
 			{
@@ -249,8 +249,8 @@ namespace Controller
 		private static int CountLaps(IParticipant participant)
 		{
 			participant.LapsCount++;
-			LapsCount++;
-			return LapsCount;
+			_lapsCount++;
+			return _lapsCount;
 		}
 
 		/// <summary>
@@ -259,13 +259,13 @@ namespace Controller
 		/// </summary>
 		/// <param name="participant"></param>
 		/// <param name="sectionData"></param>
-		private static void NextLap(IParticipant participant)
+		public void NextLap(IParticipant participant)
 		{
-			if (participant.LapsCount < AmountOfLaps)
+			if (participant.LapsCount < _amountOfLaps)
 			{
 				CountLaps(participant);
 			}
-			else if (participant.LapsCount == (AmountOfLaps))
+			else if (participant.LapsCount == (_amountOfLaps))
 			{
 				participant.Finished = true;
 			}
@@ -324,7 +324,7 @@ namespace Controller
 					if (participant == sectionData.Right || participant == sectionData.Left) //Make sure participants move
 					{
 						participant.CurrentSection = section;
-						LapsCount++;
+						_lapsCount++;
 					}
 
 					if (section == participant.CurrentSection)
@@ -358,9 +358,9 @@ namespace Controller
 
 						participant.CurrentSection = Track.Sections.ElementAt(i + 1);
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount >= 0) NextLap(participant); //They have driven one lap.
+						if (section.SectionTypes == SectionType.Finish && _lapsCount >= 0) NextLap(participant); //They have driven one lap.
 
-						if (section.SectionTypes == SectionType.Finish && LapsCount == -1) LapsCount++; //First lap has started.	
+						if (section.SectionTypes == SectionType.Finish && _lapsCount == -1) _lapsCount++; //First lap has started.	
 						return;
 					}
 					i++;
@@ -437,6 +437,7 @@ namespace Controller
 			}
 		}
 		#endregion start
+
 	}
 }
 
