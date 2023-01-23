@@ -267,7 +267,10 @@ namespace WPF
 		/// <param name="g"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		private static void DrawBroken(Graphics g, int x, int y) { g.DrawImage(ImageManager.GetImage(Broken), x, y, ParticipantSize, ParticipantSize); }
+		private static void DrawBroken(Graphics g, int x, int y)
+		{
+			g.DrawImage(ImageManager.GetImage(Broken), x, y, ParticipantSize, ParticipantSize);
+		}
 
 		/// <summary>
 		/// Gets the url of the image of the participant.
